@@ -1,6 +1,5 @@
 import React from "react";
 
-// Importá las imágenes desde src/assets (Vite resuelve las rutas en producción)
 import fotoPerfil from "./assets/Foto-Perfil.jpg";
 import lost        from "./assets/LostSwampFoto.png";
 import steven      from "./assets/WhereisStevenFoto.jpg";
@@ -52,9 +51,8 @@ export default function App() {
                 <p>Estas son algunas de las tecnologías las cuales uso.</p>
                 <div className="aptitudes">
                     <div className="tech-list">
-                        <img src="https://www.horuss.com.mx/wp-content/uploads/2019/04/c.png" className="tech" alt="C" />
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/ISO_C%2B%2B_Logo.svg/1822px-ISO_C%2B%2B_Logo.svg.png" className="tech" alt="C++" />
-                        <img src="https://unity.com/logo-unity-web.png" className="tech" alt="Unity" />
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/4/4f/Csharp_Logo.png" className="tech" alt="C#" />
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/8/8a/Official_unity_logo.png" className="tech" alt="Unity" />
                         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Git-logo.svg/1280px-Git-logo.svg.png" className="tech" alt="Git" />
                     </div>
                 </div>
@@ -65,6 +63,7 @@ export default function App() {
                     <div className="tech-list">
                         <img src="https://upload.wikimedia.org/wikipedia/fr/3/33/Reaper_Logo.png" className="tech" alt="Reaper" />
                         <img src="https://www.seekpng.com/png/full/222-2229726_intro-to-html-css-html-css-icon.png" className="tech" alt="HTML/CSS" />
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/2300px-React-icon.svg.png" className="tech" alt="React" />
                         <img src="https://download.blender.org/branding/community/blender_community_badge_white.png" className="tech" alt="Blender" />
                     </div>
                 </div>
