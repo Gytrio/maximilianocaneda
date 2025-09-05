@@ -1,8 +1,7 @@
-/* Reset mínimo */
+/* ========= Reset mínimo ========= */
 *,
 *::before,
 *::after { box-sizing: border-box; }
-
 img { max-width: 100%; height: auto; display: block; }
 
 body{
@@ -10,10 +9,10 @@ body{
     font-family: 'Open Sans', sans-serif;
 }
 
-/* Header */
+/* ========= Header ========= */
 header{
     height: 65px;
-    background-color: #000000;
+    background-color: #000;
     color: #fff;
     display: flex;
     align-items: center;
@@ -22,29 +21,16 @@ header{
     font-size: large;
 }
 
-/* Foto */
-.cara{
-    /* Antes: height: 700px; border-radius: 800px; */
-    width: 100%;
-    max-width: 320px;
-    aspect-ratio: 1/1;
-    height: auto;
-    border-radius: 50%;
-    object-fit: cover;
-    border-radius: 0;
-}
-
-/* Sección UNO (presentación) */
+/* ========= Sección UNO ========= */
 .uno{
     width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: center;
-    /* Antes: height: calc(100vh - 65px); */
-    min-height: calc(100svh - 65px); /* svh más fiable en mobile */
+    /* antes: height: calc(100vh - 65px); */
+    min-height: calc(100svh - 65px);     /* svh: mejor en mobile */
     background-color: #410202ee;
-    color: white;
-    /* padding-top: 10%; */
+    color: #fff;
 }
 
 .caja-central{
@@ -54,9 +40,8 @@ header{
     flex-direction: row;
     border-radius: 20px;
     overflow: hidden;
-    /* Antes: height: 50%;  → dejemos que se adapte al contenido */
-    background: transparent; /* opcional */
-    gap: 0;
+    /* antes: height: 50%;  → dejamos que crezca con el contenido */
+    align-items: stretch;               /* ← hace que ambos paneles tengan igual altura */
 }
 
 .caja-cara{
@@ -65,7 +50,15 @@ header{
     align-items: center;
     width: 40%;
     background-color: #424242;
-    padding: 16px;
+    padding: 0;                         /* ← sin borde gris interno */
+}
+
+/* FOTO: llena el panel gris */
+.cara{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;                  /* ← cubre sin deformar (recorta exceso) */
+    border-radius: 0;                   /* ← cuadrada */
 }
 
 .caja-presentacion{
@@ -78,10 +71,10 @@ header{
     padding: 10px 16px;
 }
 
-/* Sección DOS */
+/* ========= Sección DOS ========= */
 .dos{
     background-color: #F2F2F2;
-    /* Antes: height: 850px; → que crezca si hace falta */
+    /* antes: height: 850px; */
     min-height: 600px;
     display: flex;
     flex-direction: column;
@@ -94,9 +87,7 @@ header{
     padding-bottom: 24px;
 }
 
-.aptitudes{
-    width: 50%;
-}
+.aptitudes{ width: 50%; }
 
 .tech-list{
     display: flex;
@@ -106,14 +97,12 @@ header{
     padding-top: 10px;
 }
 
-.tech{
-    height: 90px;
-}
+.tech{ height: 90px; }
 
-/* Sección TRES (proyectos) */
+/* ========= Sección TRES (proyectos) ========= */
 .tres{
     background-color: #410202ee;
-    /* Antes: height: 600px; → permitir crecer */
+    /* antes: height: 600px; */
     min-height: 600px;
     display: flex;
     justify-content: flex-start;
@@ -124,35 +113,27 @@ header{
 }
 
 .proyectos{
-    /* Antes: width: 60%; display: flex; justify-content: space-between; */
     width: 90%;
     max-width: 1100px;
     display: flex;
-    flex-wrap: wrap;          /* 👈 permite varias filas */
-    gap: 20px;                /* separación consistente */
-    justify-content: center;  /* centrar cards */
+    flex-wrap: wrap;         /* ← permite varias filas */
+    gap: 20px;
+    justify-content: center; /* ← centra las cards */
 }
 
 .card{
     text-align: center;
-    /* Antes: width: 30%;  → fluido y con máximo */
-    flex: 1 1 300px;
+    flex: 1 1 300px;         /* ← ancho fluido */
     max-width: 360px;
-    border: solid #F2F2F2 1px;
+    border: 1px solid #F2F2F2;
     border-radius: 10px;
     padding: 10px;
     background: transparent;
 }
 
-.card img{
-    width: 100%;
-    height: auto;
-    display: block;
-}
+.card img{ width: 100%; height: auto; display: block; }
 
-.card a, footer a {
-    color: white;
-}
+.card a, footer a { color: #fff; }
 
 .red-social{
     height: 60px;
@@ -160,9 +141,9 @@ header{
     border-radius: 10px;
 }
 
-/* Footer */
+/* ========= Footer ========= */
 footer{
-    background-color: #000000;
+    background-color: #000;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -179,33 +160,27 @@ footer{
     gap: 12px;
 }
 
-/* Responsivo */
-@media (max-width: 1000px) {
+/* ========= Responsivo ========= */
+@media (max-width: 1000px){
     .caja-central{
         width: 90%;
-        /* Antes: height: 70%; */
         flex-direction: column;
     }
     .caja-cara{
         width: 100%;
-        height: auto;       /* Antes: 50% */
-        padding: 20px;
+        /* altura visible para que la foto siga cubriendo bien */
+        height: clamp(240px, 45vw, 420px);
     }
     .caja-presentacion{
         width: 100%;
-        height: auto;       /* Antes: 50% */
         align-items: flex-start;
     }
-    .aptitudes{
-        width: auto;
-    }
+    .aptitudes{ width: auto; }
     .dos{
-        min-height: auto;   /* antes height: auto; ya no forzamos altura */
+        min-height: auto;
         padding: 0 10px 10px 10px;
     }
-    .tres{
-        min-height: auto;
-    }
+    .tres{ min-height: auto; }
     .proyectos{
         width: 100%;
         align-items: center;
@@ -213,19 +188,16 @@ footer{
         padding-bottom: 20px;
     }
     .card{
-        /* Antes: width: 80% y margin-top: 20px; */
         flex: 1 1 80%;
         max-width: 620px;
         margin-top: 20px;
     }
-    .red-social{
-        margin: 0 10px;
-    }
+    .red-social{ margin: 0 10px; }
 }
 
-/* Animaciones (FIX): usar 'flash' realmente */
-.animated {
-    animation-name: flash;         /* antes 'parpadeo' (no existía) */
+/* ========= Animación cursor ========= */
+.animated{
+    animation-name: flash;              /* antes había 'parpadeo' sin keyframes */
     animation-duration: 1s;
     animation-timing-function: linear;
     animation-iteration-count: infinite;
@@ -236,17 +208,15 @@ footer{
     -webkit-animation-iteration-count: infinite;
 }
 
-@-webkit-keyframes flash {
+@-webkit-keyframes flash{
     0%, 50%, 100% { opacity: 1; }
-    25%, 75%     { opacity: 0; }
+    25%, 75%      { opacity: 0; }
 }
-@keyframes flash {
+@keyframes flash{
     0%, 50%, 100% { opacity: 1; }
-    25%, 75%     { opacity: 0; }
+    25%, 75%      { opacity: 0; }
 }
-
-/* Atajo por si querés forzar el estilo con clase */
-.flash {
+.flash{
     -webkit-animation-name: flash;
     animation-name: flash;
 }
