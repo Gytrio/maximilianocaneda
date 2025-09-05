@@ -1,5 +1,11 @@
 import React from "react";
 
+// Importá las imágenes desde src/assets (Vite resuelve las rutas en producción)
+import fotoPerfil from "./assets/Foto-Perfil.jpg";
+import lost        from "./assets/LostSwampFoto.png";
+import steven      from "./assets/WhereisStevenFoto.jpg";
+import catacombs   from "./assets/Catacombsofempire.jpg";
+
 export default function App() {
     return (
         <>
@@ -12,13 +18,13 @@ export default function App() {
             <section className="uno">
                 <div className="caja-central">
                     <div className="caja-cara">
-                        <img className="cara" src="/Foto-Perfil.jpg" alt="Maximiliano Caneda" />
+                        <img className="cara" src={fotoPerfil} alt="Maximiliano Caneda" />
                     </div>
                     <div className="caja-presentacion">
                         <div>
                             <h1>Bienvenidos</h1>
                             <p className="presentacion">
-                                Soy Maxi, aquí tengo muestras de los distintos proyectos que tuve el placer de trabajar a lo largo de los años tanto como estudiante como para empresas.
+                                Soy Maxi, aquí tengo muestras de los distintos proyectos que tuve el placer de trabajar a lo largo de los años.
                             </p>
                         </div>
                     </div>
@@ -71,7 +77,7 @@ export default function App() {
                     <div className="card">
                         <a href="https://youtu.be/kIOqWF8WLMY" target="_blank" rel="noreferrer">
                             <h3>Lost in the Swamp</h3>
-                            <img src="/LostSwampFoto.png" alt="Lost in the Swamp" />
+                            <img src={lost} alt="Lost in the Swamp" />
                         </a>
                         <p>Juego realizado en 4 días como prueba de ingreso, la a única condición es que la duracion ronde los 10 minutos de gameplay.</p>
                         <a href="https://youtu.be/kIOqWF8WLMY" target="_blank" rel="noreferrer">Ver</a>
@@ -80,7 +86,7 @@ export default function App() {
                     <div className="card">
                         <a href="https://youtu.be/6PNvMrnnZ7o" target="_blank" rel="noreferrer">
                             <h3>Where is Steven?</h3>
-                            <img src="/WhereisStevenFoto.jpg" alt="Where is Steven?" />
+                            <img src={steven} alt="Where is Steven?" />
                         </a>
                         <p>Desarrollado con libertad creativa en 10 días para la empresa Interlude.</p>
                         <a href="https://youtu.be/6PNvMrnnZ7o" target="_blank" rel="noreferrer">Ver</a>
@@ -89,7 +95,7 @@ export default function App() {
                     <div className="card">
                         <a href="https://youtu.be/4uFiRBiggKE" target="_blank" rel="noreferrer">
                             <h3>Catacombs of Empire</h3>
-                            <img src="/Catacombsofempire.jpg" alt="Catacombs of Empire" />
+                            <img src={catacombs} alt="Catacombs of Empire" />
                         </a>
                         <p>Tuve libertad creativa para crear el juego base y los 4 mapas extras. Desarrollado para la empresa Interlude.</p>
                         <a href="https://youtu.be/4uFiRBiggKE" target="_blank" rel="noreferrer">Ver</a>
