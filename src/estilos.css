@@ -101,7 +101,7 @@ header{
     padding-left: 20%;
     padding-right: 20%;
     padding-top: 1%;
-    padding-bottom: 24px;
+    padding-bottom: 5%;
 }
 
 .aptitudes{ width: 50%; }
@@ -119,7 +119,6 @@ header{
 /* ========= Sección TRES (proyectos) ========= */
 .tres{
     background-color: #410202ee;
-    min-height: 600px;
     display: flex;
     justify-content: flex-start;
     flex-direction: column;
