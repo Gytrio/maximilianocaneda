@@ -27,7 +27,6 @@ header{
     display: flex;
     flex-direction: row;
     justify-content: center;
-    /* antes: height: calc(100vh - 65px); */
     min-height: calc(100svh - 65px);     /* svh: mejor en mobile */
     background-color: #410202ee;
     color: #fff;
@@ -40,41 +39,60 @@ header{
     flex-direction: row;
     border-radius: 20px;
     overflow: hidden;
-    /* antes: height: 50%;  → dejamos que crezca con el contenido */
-    align-items: stretch;               /* ← hace que ambos paneles tengan igual altura */
+    align-items: stretch;               /* ambos paneles = misma altura */
 }
 
+/* Panel de la foto */
 .caja-cara{
     display: flex;
     justify-content: center;
     align-items: center;
     width: 40%;
     background-color: #424242;
-    padding: 0;                         /* ← sin borde gris interno */
+    padding: 0;                         /* sin borde gris interno */
 }
 
 /* FOTO: llena el panel gris */
 .cara{
     width: 100%;
     height: 100%;
-    object-fit: cover;                  /* ← cubre sin deformar (recorta exceso) */
-    border-radius: 0;                   /* ← cuadrada */
+    object-fit: cover;                  /* cubre sin deformar (recorta exceso) */
+    border-radius: 0;                   /* cuadrada */
 }
 
+/* Panel de texto (se ajusta a la altura de la foto) */
 .caja-presentacion{
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: stretch;
     width: 60%;
     background-color: #F2F2F2;
     color: #303030;
-    padding: 10px 16px;
+    padding: 0;                         /* quitamos padding del contenedor */
+}
+/* Contenido del panel de texto: centrado vertical */
+.caja-presentacion > div{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;            /* centra título + párrafo */
+    padding: 32px 40px;
+    gap: 8px;
+}
+
+.caja-presentacion h1{
+    margin: 0 0 10px 0;
+    line-height: 1.15;
+}
+.presentacion{
+    margin: 0;
+    max-width: 46ch;                    /* ancho de lectura cómodo */
+    line-height: 1.6;
 }
 
 /* ========= Sección DOS ========= */
 .dos{
     background-color: #F2F2F2;
-    /* antes: height: 850px; */
     min-height: 600px;
     display: flex;
     flex-direction: column;
@@ -102,7 +120,6 @@ header{
 /* ========= Sección TRES (proyectos) ========= */
 .tres{
     background-color: #410202ee;
-    /* antes: height: 600px; */
     min-height: 600px;
     display: flex;
     justify-content: flex-start;
@@ -116,14 +133,14 @@ header{
     width: 90%;
     max-width: 1100px;
     display: flex;
-    flex-wrap: wrap;         /* ← permite varias filas */
+    flex-wrap: wrap;         /* varias filas si hace falta */
     gap: 20px;
-    justify-content: center; /* ← centra las cards */
+    justify-content: center; /* centrar cards */
 }
 
 .card{
     text-align: center;
-    flex: 1 1 300px;         /* ← ancho fluido */
+    flex: 1 1 300px;         /* ancho fluido */
     max-width: 360px;
     border: 1px solid #F2F2F2;
     border-radius: 10px;
@@ -132,7 +149,6 @@ header{
 }
 
 .card img{ width: 100%; height: auto; display: block; }
-
 .card a, footer a { color: #fff; }
 
 .red-social{
@@ -168,12 +184,13 @@ footer{
     }
     .caja-cara{
         width: 100%;
-        /* altura visible para que la foto siga cubriendo bien */
-        height: clamp(240px, 45vw, 420px);
+        height: clamp(240px, 45vw, 420px); /* alto cómodo para que la foto siga cubriendo */
     }
     .caja-presentacion{
         width: 100%;
-        align-items: flex-start;
+    }
+    .caja-presentacion > div{
+        padding: 24px;
     }
     .aptitudes{ width: auto; }
     .dos{
@@ -197,26 +214,15 @@ footer{
 
 /* ========= Animación cursor ========= */
 .animated{
-    animation-name: flash;              /* antes había 'parpadeo' sin keyframes */
+    animation-name: flash;
     animation-duration: 1s;
     animation-timing-function: linear;
     animation-iteration-count: infinite;
-
     -webkit-animation-name: flash;
     -webkit-animation-duration: 1s;
     -webkit-animation-timing-function: linear;
     -webkit-animation-iteration-count: infinite;
 }
-
-@-webkit-keyframes flash{
-    0%, 50%, 100% { opacity: 1; }
-    25%, 75%      { opacity: 0; }
-}
-@keyframes flash{
-    0%, 50%, 100% { opacity: 1; }
-    25%, 75%      { opacity: 0; }
-}
-.flash{
-    -webkit-animation-name: flash;
-    animation-name: flash;
-}
+@-webkit-keyframes flash{ 0%,50%,100%{opacity:1} 25%,75%{opacity:0} }
+@keyframes flash{ 0%,50%,100%{opacity:1} 25%,75%{opacity:0} }
+.flash{ -webkit-animation-name: flash; animation-name: flash; }
