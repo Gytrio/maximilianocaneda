@@ -24,7 +24,7 @@ header{
 /* ========= Sección UNO ========= */
 .uno{
     display: flex;
-    background-color: #410202;
+    background-color: #4d1313;
     justify-content: center;   /* centro horizontal */
     align-items: center;       /* centro vertical */
     min-height: calc(100svh - 65px); /* ya lo tenías, asegura alto pantalla */
