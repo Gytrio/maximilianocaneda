@@ -1,32 +1,51 @@
+/* Reset mínimo */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+img { max-width: 100%; height: auto; display: block; }
+
 body{
     margin: 0;
     font-family: 'Open Sans', sans-serif;
 }
+
+/* Header */
 header{
     height: 65px;
     background-color: #000000;
-    color: rgb(255, 255, 255);
+    color: #fff;
     display: flex;
     align-items: center;
     padding-left: 25px;
-    font-family:monospace;
-    
+    font-family: monospace;
     font-size: large;
 }
+
+/* Foto */
 .cara{
-    border-radius: 800px;
-    height: 700px;
+    /* Antes: height: 700px; border-radius: 800px; */
+    width: 100%;
+    max-width: 320px;
+    aspect-ratio: 1/1;
+    height: auto;
+    border-radius: 50%;
+    object-fit: cover;
 }
+
+/* Sección UNO (presentación) */
 .uno{
     width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: center;
-    height: calc(100vh - 65px);
+    /* Antes: height: calc(100vh - 65px); */
+    min-height: calc(100svh - 65px); /* svh más fiable en mobile */
     background-color: #410202ee;
     color: white;
     /* padding-top: 10%; */
 }
+
 .caja-central{
     margin-top: 10%;
     width: 50%;
@@ -34,15 +53,20 @@ header{
     flex-direction: row;
     border-radius: 20px;
     overflow: hidden;
-    height: 50%;
+    /* Antes: height: 50%;  → dejemos que se adapte al contenido */
+    background: transparent; /* opcional */
+    gap: 0;
 }
+
 .caja-cara{
     display: flex;
     justify-content: center;
     align-items: center;
     width: 40%;
     background-color: #424242;
+    padding: 16px;
 }
+
 .caja-presentacion{
     display: flex;
     justify-content: center;
@@ -50,12 +74,14 @@ header{
     width: 60%;
     background-color: #F2F2F2;
     color: #303030;
-    padding: 10px;
+    padding: 10px 16px;
 }
 
+/* Sección DOS */
 .dos{
     background-color: #F2F2F2;
-    height: 850px;
+    /* Antes: height: 850px; → que crezca si hace falta */
+    min-height: 600px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -64,13 +90,18 @@ header{
     padding-left: 20%;
     padding-right: 20%;
     padding-top: 1%;
+    padding-bottom: 24px;
 }
+
 .aptitudes{
     width: 50%;
 }
+
 .tech-list{
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    gap: 16px;
     padding-top: 10px;
 }
 
@@ -78,30 +109,46 @@ header{
     height: 90px;
 }
 
+/* Sección TRES (proyectos) */
 .tres{
     background-color: #410202ee;
-    height: 600px;
+    /* Antes: height: 600px; → permitir crecer */
+    min-height: 600px;
     display: flex;
     justify-content: flex-start;
     flex-direction: column;
     align-items: center;
     color: #F2F2F2;
+    padding-bottom: 24px;
 }
+
 .proyectos{
-    width: 60%;
+    /* Antes: width: 60%; display: flex; justify-content: space-between; */
+    width: 90%;
+    max-width: 1100px;
     display: flex;
-    justify-content: space-between;
+    flex-wrap: wrap;          /* 👈 permite varias filas */
+    gap: 20px;                /* separación consistente */
+    justify-content: center;  /* centrar cards */
 }
+
 .card{
     text-align: center;
-    width: 30%;
+    /* Antes: width: 30%;  → fluido y con máximo */
+    flex: 1 1 300px;
+    max-width: 360px;
     border: solid #F2F2F2 1px;
     border-radius: 10px;
     padding: 10px;
+    background: transparent;
 }
+
 .card img{
     width: 100%;
+    height: auto;
+    display: block;
 }
+
 .card a, footer a {
     color: white;
 }
@@ -112,6 +159,7 @@ header{
     border-radius: 10px;
 }
 
+/* Footer */
 footer{
     background-color: #000000;
     display: flex;
@@ -119,84 +167,85 @@ footer{
     justify-content: flex-start;
     align-items: center;
     color: #F2F2F2;
-    height: 250px;
+    min-height: 250px;
+    padding: 16px 0 24px;
 }
+
 .contacto{
     width: 30%;
     display: flex;
     justify-content: center;
+    gap: 12px;
 }
 
+/* Responsivo */
 @media (max-width: 1000px) {
     .caja-central{
         width: 90%;
-        height: 70%;
+        /* Antes: height: 70%; */
         flex-direction: column;
     }
     .caja-cara{
         width: 100%;
-        height: 50%;
+        height: auto;       /* Antes: 50% */
+        padding: 20px;
     }
     .caja-presentacion{
         width: 100%;
-        height: 50%;
+        height: auto;       /* Antes: 50% */
         align-items: flex-start;
     }
     .aptitudes{
         width: auto;
     }
     .dos{
-        height: auto;
+        min-height: auto;   /* antes height: auto; ya no forzamos altura */
         padding: 0 10px 10px 10px;
-
     }
     .tres{
-        height: auto;
+        min-height: auto;
     }
     .proyectos{
-        flex-direction: column;
         width: 100%;
         align-items: center;
-        justify-content: space-between;
+        justify-content: center;
         padding-bottom: 20px;
     }
     .card{
-        width: 80%;
+        /* Antes: width: 80% y margin-top: 20px; */
+        flex: 1 1 80%;
+        max-width: 620px;
         margin-top: 20px;
     }
     .red-social{
-        margin: 0 10px 0 10px;
+        margin: 0 10px;
     }
 }
 
+/* Animaciones (FIX): usar 'flash' realmente */
 .animated {
-    animation-name: parpadeo;
+    animation-name: flash;         /* antes 'parpadeo' (no existía) */
     animation-duration: 1s;
     animation-timing-function: linear;
     animation-iteration-count: infinite;
-  
-    -webkit-animation-name:parpadeo;
-    -webkit-animation-duration: 3s;
-    -webkit-animation-timing-function: cubic-bezier(0, 1.21, 0, 1.1);
+
+    -webkit-animation-name: flash;
+    -webkit-animation-duration: 1s;
+    -webkit-animation-timing-function: linear;
     -webkit-animation-iteration-count: infinite;
-   }
-   @-webkit-keyframes flash {
-    0%, 50%, 100% {
-    opacity: 1;
-    }
-   25%, 75% {
-    opacity: 0;
-    }
-   }
-   @keyframes flash {
-    0%, 50%, 100% {
-    opacity: 1;
-    }
-   25%, 75% {
-    opacity: 0;
-    }
-   }
-   .flash {
+}
+
+@-webkit-keyframes flash {
+    0%, 50%, 100% { opacity: 1; }
+    25%, 75%     { opacity: 0; }
+}
+@keyframes flash {
+    0%, 50%, 100% { opacity: 1; }
+    25%, 75%     { opacity: 0; }
+}
+
+/* Atajo por si querés forzar el estilo con clase */
+.flash {
     -webkit-animation-name: flash;
     animation-name: flash;
-   }
+}
