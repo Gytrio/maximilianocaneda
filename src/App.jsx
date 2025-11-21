@@ -16,13 +16,18 @@ export default function App() {
                         <h3>C:\\Users\\Maximiliano-Caneda&gt;</h3>
                     </div>
                 </div>
+                <nav className="nav-links">
+                    <a href="#hero">Inicio</a>
+                    <a href="#sobre-mi">Sobre mí</a>
+                    <a href="#proyectos">Proyectos</a>
+                    <a href="#contacto">Contacto</a>
+                </nav>
                 <div className="status">
                     RUNNING<div className="animated flash">_</div>
                 </div>
             </header>
 
-            {/* Sección UNO (presentación) */}
-            <section className="hero">
+            <section className="hero" id="hero">
                 <div className="grid-overlay" aria-hidden />
                 <div className="hero-card">
                     <div className="badge-row">
@@ -31,47 +36,118 @@ export default function App() {
                         <span className="badge">Code &amp; Creativity</span>
                     </div>
                     <div className="hero-body">
-                        <div className="caja-cara">
-                            <img className="cara" src={fotoPerfil} alt="Maximiliano Caneda" />
-                        </div>
-                        <div className="caja-presentacion">
-                            <div>
+                        <div className="hero-left">
+                            <div className="hero-header">
+                                <p className="tag">Unity / C# / Sistemas / UI/UX</p>
                                 <h1>Bienvenidos</h1>
                                 <p className="presentacion">
-                                    Soy Maxi, aquí tengo muestras de los distintos proyectos que tuve el placer de trabajar a lo largo de los años.
+                                    Soy Maxi, programador y diseñador de videojuegos. Mezclo sistemas limpios con ideas jugables rápidas para construir experiencias con ritmo, claridad y personalidad.
                                 </p>
-                                <div className="cta-row">
-                                    <span className="chip">Gameplay prototyping</span>
-                                    <span className="chip">Optimización</span>
-                                    <span className="chip">Narrativa interactiva</span>
+                            </div>
+                            <div className="cta-row">
+                                <a className="primary-btn" href="#proyectos">Ver proyectos</a>
+                                <a className="ghost-btn" href="#contacto">Hablemos</a>
+                                <span className="status-pill">Disponible para freelance</span>
+                            </div>
+                            <div className="hero-grid">
+                                <div className="stat">
+                                    <span className="stat-number">10+</span>
+                                    <span className="stat-label">Prototipos</span>
                                 </div>
+                                <div className="stat">
+                                    <span className="stat-number">3</span>
+                                    <span className="stat-label">Lanzados en NFT</span>
+                                </div>
+                                <div className="stat">
+                                    <span className="stat-number">4</span>
+                                    <span className="stat-label">Años creando</span>
+                                </div>
+                                <div className="skill-stack">
+                                    <p className="stack-label">Stack</p>
+                                    <div className="stack-chips">
+                                        <span className="chip">Gameplay prototyping</span>
+                                        <span className="chip">Optimización</span>
+                                        <span className="chip">Narrativa interactiva</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="hero-right">
+                            <div className="profile-card">
+                                <div className="caja-cara">
+                                    <img className="cara" src={fotoPerfil} alt="Maximiliano Caneda" />
+                                </div>
+                                <div className="profile-meta">
+                                    <p className="profile-name">Maximiliano Caneda</p>
+                                    <p className="profile-role">Unity Developer • Game Designer</p>
+                                    <div className="mini-tags">
+                                        <span className="pill">Shooter &amp; puzzles</span>
+                                        <span className="pill">UI reactiva</span>
+                                        <span className="pill">Iteración rápida</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="code-panel" aria-label="Snippet de presentación">
+                                <div className="code-bar">
+                                    <span className="dot red" />
+                                    <span className="dot yellow" />
+                                    <span className="dot green" />
+                                    <span className="code-title">intro.cs</span>
+                                </div>
+                                <pre>
+                                    <code>
+                                        {`public class Maxi : UnityDeveloper {
+    public string Rol => "Gameplay & Systems";
+    public string[] Highlights => {
+        "Shooter loops", "UI reactiva", "Narrativa" };
+    public void Ready() => Ship();
+}`}
+                                    </code>
+                                </pre>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            {/* Sección DOS (sobre mí + aptitudes) */}
-            <section className="section-panel">
+            <section className="section-panel" id="sobre-mi">
                 <div className="section-header">
                     <div className="accent-bar" aria-hidden />
                     <h2>Sobre mí</h2>
                 </div>
-                <p className="texto">
-                    Buenas, soy Maximiliano Caneda, nacido el 5 de abril del 2000 y actualmente viviendo en Lanús, Buenos Aires.
-                    <br />
-                    Fui a ingles desde los 7 años hasta los 18, esto me permitió obtener vocabulario y reglas gramaticales tanto general como específico de programación y videojuegos.
-                    <br />
-                    <br />
-                    Me recibí de técnico en programación en el EEST N° 5 "John F. Kennedy" y actualmente soy estudiante de la carrera Licenciatura en desarrollo de simuladores y videojuegos de la Universidad Abierta Interamericana,
-                    solo me falta rendir dos exámenes finales y defender mi tesis “El bajo nivel competitivo genera respuestas emocionales agresivas en jugadores”.
-                    <br />
-                    <br />
-                    Trabaje en la empresa de juegos NFT{" "}
-                    <a href="https://twitter.com/ProjInterlude" target="_blank" rel="noreferrer">Interlude.gg</a> durante 1 año y realice 3 juegos para esta empresa.
-                    Como estudiante tuve el placer de participar en el{" "}
-                    <a href="https://live-games.itch.io/" target="_blank" rel="noreferrer">Laboratorio de videojuegos experimentales de la UAI</a> de manera activa durante la pandemia entre 2020 e inicios de 2021.
-                </p>
+                <div className="panel-grid">
+                    <div className="panel-card">
+                        <p className="texto">
+                            Soy Maximiliano Caneda, 24 años, desarrollador y diseñador de videojuegos en Lanús, Buenos Aires. Mi formación en inglés desde chico me ayudó a absorber documentación, pipelines y referencias de programación sin barreras.
+                        </p>
+                        <p className="texto">
+                            Me recibí de técnico en programación en el EEST N° 5 "John F. Kennedy" y estoy finalizando la Licenciatura en desarrollo de simuladores y videojuegos en la UAI. Solo resta aprobar dos finales y defender mi tesis “El bajo nivel competitivo genera respuestas emocionales agresivas en jugadores”.
+                        </p>
+                    </div>
+                    <div className="panel-card">
+                        <p className="texto">
+                            Trabajé en la empresa de juegos NFT{" "}
+                            <a href="https://twitter.com/ProjInterlude" target="_blank" rel="noreferrer">Interlude.gg</a> durante 1 año y realicé 3 juegos para esta empresa. Como estudiante, participé activamente en el{" "}
+                            <a href="https://live-games.itch.io/" target="_blank" rel="noreferrer">Laboratorio de videojuegos experimentales de la UAI</a> durante la pandemia entre 2020 e inicios de 2021.
+                        </p>
+                        <div className="timeline">
+                            <div className="timeline-item">
+                                <span className="pill">2020-2021</span>
+                                <span>Laboratorio de videojuegos UAI</span>
+                            </div>
+                            <div className="timeline-item">
+                                <span className="pill">2022</span>
+                                <span>Interlude.gg - 3 juegos NFT</span>
+                            </div>
+                            <div className="timeline-item">
+                                <span className="pill">Hoy</span>
+                                <span>Lic. desarrollo de simuladores y videojuegos</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <div className="section-header">
                     <div className="accent-bar" aria-hidden />
@@ -98,8 +174,7 @@ export default function App() {
                 </div>
             </section>
 
-            {/* Sección TRES (proyectos) */}
-            <section className="projects">
+            <section className="projects" id="proyectos">
                 <div className="section-header">
                     <div className="accent-bar" aria-hidden />
                     <h2>Mis Proyectos</h2>
@@ -137,13 +212,15 @@ export default function App() {
                 </div>
             </section>
 
-            <footer>
+            <footer id="contacto">
                 <h2>Contactame</h2>
                 <div className="contacto">
                     <hr />
                     <a href="https://www.linkedin.com/in/maximiliano-caneda" target="_blank" rel="noreferrer">
                         <img src="https://cdn.worldvectorlogo.com/logos/linkedin-icon-2.svg" className="red-social" alt="LinkedIn" />
                     </a>
+                    <a href="https://twitter.com/maxi_caneda" target="_blank" rel="noreferrer" className="pill">Twitter / X</a>
+                    <a href="mailto:maxicaneda45@gmail.com" className="pill">Email</a>
                     <hr />
                 </div>
                 <h2>maxicaneda45@gmail.com</h2>
