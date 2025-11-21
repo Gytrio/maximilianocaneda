@@ -12,7 +12,6 @@ export default function App() {
                 <div className="brand">
                     <span className="pulse-dot" aria-hidden />
                     <div>
-                        <p className="tag">Portfolio.exe</p>
                         <h3>C:\\Users\\Maximiliano-Caneda&gt;</h3>
                     </div>
                 </div>
@@ -38,7 +37,7 @@ export default function App() {
                     <div className="hero-body">
                         <div className="hero-left">
                             <div className="hero-header">
-                                <p className="tag">Unity / C# / Sistemas / UI/UX</p>
+                                <p className="tag">Unity / C#</p>
                                 <h1>Bienvenidos</h1>
                                 <p className="presentacion">
                                     Soy Maxi, programador y diseñador de videojuegos. Mezclo sistemas limpios con ideas jugables rápidas para construir experiencias con ritmo, claridad y personalidad.
@@ -47,7 +46,7 @@ export default function App() {
                             <div className="cta-row">
                                 <a className="primary-btn" href="#proyectos">Ver proyectos</a>
                                 <a className="ghost-btn" href="#contacto">Hablemos</a>
-                                <span className="status-pill">Disponible para freelance</span>
+                                <span className="status-pill">Disponible para trabajo</span>
                             </div>
                             <div className="hero-grid">
                                 <div className="stat">
@@ -61,14 +60,6 @@ export default function App() {
                                 <div className="stat">
                                     <span className="stat-number">4</span>
                                     <span className="stat-label">Años creando</span>
-                                </div>
-                                <div className="skill-stack">
-                                    <p className="stack-label">Stack</p>
-                                    <div className="stack-chips">
-                                        <span className="chip">Gameplay prototyping</span>
-                                        <span className="chip">Optimización</span>
-                                        <span className="chip">Narrativa interactiva</span>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -87,25 +78,6 @@ export default function App() {
                                         <span className="pill">Iteración rápida</span>
                                     </div>
                                 </div>
-                            </div>
-
-                            <div className="code-panel" aria-label="Snippet de presentación">
-                                <div className="code-bar">
-                                    <span className="dot red" />
-                                    <span className="dot yellow" />
-                                    <span className="dot green" />
-                                    <span className="code-title">intro.cs</span>
-                                </div>
-                                <pre>
-                                    <code>
-                                        {`public class Maxi : UnityDeveloper {
-    public string Rol => "Gameplay & Systems";
-    public string[] Highlights => {
-        "Shooter loops", "UI reactiva", "Narrativa" };
-    public void Ready() => Ship();
-}`}
-                                    </code>
-                                </pre>
                             </div>
                         </div>
                     </div>
@@ -181,7 +153,7 @@ export default function App() {
                 </div>
                 <div className="proyectos">
                     <div className="card">
-                        <div className="card-code"># survival • 10 mins • 4 días</div>
+                        <div className="card-code">Supervivencia • 10 mins • 4 días</div>
                         <a href="https://youtu.be/kIOqWF8WLMY" target="_blank" rel="noreferrer">
                             <h3>Lost in the Swamp</h3>
                             <img src={lost} alt="Lost in the Swamp" />
@@ -191,7 +163,7 @@ export default function App() {
                     </div>
 
                     <div className="card">
-                        <div className="card-code"># puzzle • 10 días • cliente</div>
+                        <div className="card-code">Puzzle • 10 días • cliente</div>
                         <a href="https://youtu.be/6PNvMrnnZ7o" target="_blank" rel="noreferrer">
                             <h3>Where is Steven?</h3>
                             <img src={steven} alt="Where is Steven?" />
@@ -201,7 +173,7 @@ export default function App() {
                     </div>
 
                     <div className="card">
-                        <div className="card-code"># acción • 4 mapas extra</div>
+                        <div className="card-code">Acción • 4 mapas extra</div>
                         <a href="https://youtu.be/4uFiRBiggKE" target="_blank" rel="noreferrer">
                             <h3>Catacombs of Empire</h3>
                             <img src={catacombs} alt="Catacombs of Empire" />
@@ -219,8 +191,6 @@ export default function App() {
                     <a href="https://www.linkedin.com/in/maximiliano-caneda" target="_blank" rel="noreferrer">
                         <img src="https://cdn.worldvectorlogo.com/logos/linkedin-icon-2.svg" className="red-social" alt="LinkedIn" />
                     </a>
-                    <a href="https://twitter.com/maxi_caneda" target="_blank" rel="noreferrer" className="pill">Twitter / X</a>
-                    <a href="mailto:maxicaneda45@gmail.com" className="pill">Email</a>
                     <hr />
                 </div>
                 <h2>maxicaneda45@gmail.com</h2>
