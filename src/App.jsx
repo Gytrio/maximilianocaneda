@@ -37,11 +37,6 @@ export default function App() {
                         <div className="hero-left">
                             <div className="hero-header">
                                 <div className="identity">
-                                    <div className="identity-photo">
-                                        <div className="caja-cara">
-                                            <img className="cara" src={fotoPerfil} alt="Maximiliano Caneda" />
-                                        </div>
-                                    </div>
                                     <div className="identity-copy">
                                         <p className="tag">Unity / C#</p>
                                         <h1>Maximiliano Caneda</h1>

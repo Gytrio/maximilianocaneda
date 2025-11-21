@@ -225,23 +225,9 @@ body {
 
 .identity {
     display: grid;
-    grid-template-columns: auto 1fr;
+    grid-template-columns: 1fr;
     gap: 18px;
-    align-items: center;
-}
-
-.identity-photo {
-    position: relative;
-}
-
-.identity-photo::after {
-    content: "";
-    position: absolute;
-    inset: -8px;
-    border-radius: 18px;
-    background: radial-gradient(circle at 30% 30%, rgba(255, 45, 85, 0.18), transparent 45%);
-    filter: blur(12px);
-    z-index: 0;
+    align-items: start;
 }
 
 .identity-copy {
@@ -305,8 +291,8 @@ body {
 }
 
 .caja-cara.big {
-    width: 320px;
-    height: 320px;
+    width: 360px;
+    height: 360px;
     margin-top: 6px;
 }
 
