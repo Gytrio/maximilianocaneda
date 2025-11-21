@@ -31,7 +31,6 @@ export default function App() {
                 <div className="hero-card">
                     <div className="badge-row">
                         <span className="badge">Unity Dev</span>
-                        <span className="badge">Game Designer</span>
                         <span className="badge">Code &amp; Creativity</span>
                     </div>
                     <div className="hero-body">
@@ -44,9 +43,9 @@ export default function App() {
                                 </p>
                             </div>
                             <div className="cta-row">
-                                <a className="primary-btn" href="#proyectos">Ver proyectos</a>
-                                <a className="ghost-btn" href="#contacto">Hablemos</a>
-                                <span className="status-pill">Disponible para trabajo</span>
+                                <a className="cta-btn primary" href="#proyectos">Ver proyectos</a>
+                                <a className="cta-btn outline" href="#contacto">Hablemos</a>
+                                <span className="cta-btn accent">Disponible para trabajo</span>
                             </div>
                             <div className="hero-grid">
                                 <div className="stat">
@@ -71,11 +70,13 @@ export default function App() {
                                 </div>
                                 <div className="profile-meta">
                                     <p className="profile-name">Maximiliano Caneda</p>
-                                    <p className="profile-role">Unity Developer • Game Designer</p>
+                                    <p className="profile-role">Unity Developer</p>
                                     <div className="mini-tags">
-                                        <span className="pill">Shooter &amp; puzzles</span>
-                                        <span className="pill">UI reactiva</span>
-                                        <span className="pill">Iteración rápida</span>
+                                        <span className="pill">Shooter</span>
+                                        <span className="pill">Puzzles</span>
+                                        <span className="pill">Plataformero</span>
+                                        <span className="pill">Pensamiento crítico</span>
+                                        <span className="pill">Adaptabilidad</span>
                                     </div>
                                 </div>
                             </div>
