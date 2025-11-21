@@ -212,15 +212,43 @@ body {
 
 .hero-left {
     display: grid;
-    gap: 16px;
+    gap: 18px;
 }
 
 .hero-header {
     background: rgba(255, 255, 255, 0.02);
     border: 1px solid var(--border);
     border-radius: 18px;
-    padding: 18px 18px 16px;
+    padding: 20px 18px 18px;
     box-shadow: var(--shadow);
+}
+
+.identity {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 18px;
+    align-items: center;
+}
+
+.identity-photo {
+    position: relative;
+}
+
+.identity-photo::after {
+    content: "";
+    position: absolute;
+    inset: -8px;
+    border-radius: 18px;
+    background: radial-gradient(circle at 30% 30%, rgba(255, 45, 85, 0.18), transparent 45%);
+    filter: blur(12px);
+    z-index: 0;
+}
+
+.identity-copy {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: 6px;
 }
 
 .hero-grid {
@@ -254,12 +282,13 @@ body {
     background: rgba(255, 255, 255, 0.02);
     border: 1px solid var(--border);
     border-radius: 18px;
-    padding: 12px 12px 14px;
+    padding: 16px;
     box-shadow: var(--shadow);
     display: grid;
-    grid-template-columns: auto 1fr;
+    grid-template-columns: 1fr;
     gap: 14px;
     align-items: center;
+    justify-items: center;
 }
 
 .caja-cara {
@@ -269,10 +298,16 @@ body {
     background: radial-gradient(circle, rgba(255, 255, 255, 0.05), rgba(255, 45, 85, 0.06));
     border: 1px solid var(--border);
     border-radius: 14px;
-    padding: 14px;
+    padding: 16px;
     box-shadow: var(--shadow);
-    width: 240px;
-    height: 240px;
+    width: 260px;
+    height: 260px;
+}
+
+.caja-cara.big {
+    width: 320px;
+    height: 320px;
+    margin-top: 6px;
 }
 
 .cara {
@@ -286,35 +321,38 @@ body {
 
 .profile-meta {
     display: grid;
-    gap: 6px;
+    gap: 8px;
+    text-align: center;
 }
 
 .profile-name {
     margin: 0;
-    font-size: 20px;
+    font-size: 24px;
     font-weight: 700;
 }
 
 .profile-role {
     margin: 0;
-    color: var(--muted);
+    color: #f5f5f7;
+    font-weight: 700;
 }
 
 .mini-tags {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
+    margin-top: 6px;
 }
 
 h1 {
     margin: 0 0 10px;
-    font-size: clamp(32px, 5vw, 42px);
+    font-size: clamp(36px, 6vw, 48px);
 }
 
 .presentacion {
     color: var(--muted);
     line-height: 1.6;
-    margin: 0 0 18px;
+    margin: 6px 0 18px;
 }
 
 .cta-row {
@@ -347,10 +385,11 @@ h1 {
     box-shadow: 0 12px 34px rgba(255, 45, 85, 0.35);
 }
 
-.cta-btn.outline {
+.cta-btn.primary.ghost {
     background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(255, 255, 255, 0.2);
     color: var(--text);
+    border-color: rgba(255, 255, 255, 0.35);
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.35);
 }
 
 .cta-btn.accent {
@@ -474,6 +513,25 @@ h1 {
     text-decoration: none;
 }
 
+.availability {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    padding: 8px 14px;
+    border-radius: 12px;
+    background: linear-gradient(120deg, rgba(255, 45, 85, 0.18), rgba(255, 45, 85, 0.36));
+    border: 1px solid rgba(255, 45, 85, 0.5);
+    color: #fff;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+    box-shadow: 0 12px 28px rgba(255, 45, 85, 0.28);
+}
+
+.availability-pill {
+    margin: 4px auto 0;
+}
+
 .section-panel h3 {
     margin-top: 32px;
     margin-bottom: 8px;
@@ -518,6 +576,14 @@ h1 {
 /* Proyectos */
 .projects {
     padding-bottom: 90px;
+}
+
+#sobre-mi:target,
+#proyectos:target,
+#contacto:target {
+    animation: glow-section 1.6s ease;
+    box-shadow: 0 0 0 2px rgba(255, 45, 85, 0.45), 0 0 32px rgba(255, 45, 85, 0.28);
+    border-radius: 20px;
 }
 
 .proyectos {
@@ -730,4 +796,16 @@ footer {
     0% { transform: scale(1); opacity: 1; }
     50% { transform: scale(1.2); opacity: 0.6; }
     100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes glow-section {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 45, 85, 0.35), 0 0 10px rgba(255, 45, 85, 0.2);
+    }
+    40% {
+        box-shadow: 0 0 0 2px rgba(255, 45, 85, 0.6), 0 0 30px rgba(255, 45, 85, 0.35);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 45, 85, 0);
+    }
 }

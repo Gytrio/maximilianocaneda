@@ -36,16 +36,33 @@ export default function App() {
                     <div className="hero-body">
                         <div className="hero-left">
                             <div className="hero-header">
-                                <p className="tag">Unity / C#</p>
-                                <h1>Bienvenidos</h1>
+                                <div className="identity">
+                                    <div className="identity-photo">
+                                        <div className="caja-cara">
+                                            <img className="cara" src={fotoPerfil} alt="Maximiliano Caneda" />
+                                        </div>
+                                    </div>
+                                    <div className="identity-copy">
+                                        <p className="tag">Unity / C#</p>
+                                        <h1>Maximiliano Caneda</h1>
+                                        <p className="profile-role">Unity Developer</p>
+                                        <div className="availability">Disponibilidad inmediata</div>
+                                    </div>
+                                </div>
                                 <p className="presentacion">
-                                    Soy Maxi, programador y diseñador de videojuegos. Mezclo sistemas limpios con ideas jugables rápidas para construir experiencias con ritmo, claridad y personalidad.
+                                    Mezclo sistemas limpios con ideas jugables rápidas para construir experiencias con ritmo, claridad y personalidad.
                                 </p>
+                                <div className="mini-tags">
+                                    <span className="pill">Shooter</span>
+                                    <span className="pill">Puzzles</span>
+                                    <span className="pill">Plataformero</span>
+                                    <span className="pill">Pensamiento crítico</span>
+                                    <span className="pill">Adaptabilidad</span>
+                                </div>
                             </div>
                             <div className="cta-row">
                                 <a className="cta-btn primary" href="#proyectos">Ver proyectos</a>
-                                <a className="cta-btn outline" href="#contacto">Hablemos</a>
-                                <span className="cta-btn accent">Disponible para trabajo</span>
+                                <a className="cta-btn primary ghost" href="#contacto">Hablemos</a>
                             </div>
                             <div className="hero-grid">
                                 <div className="stat">
@@ -54,30 +71,24 @@ export default function App() {
                                 </div>
                                 <div className="stat">
                                     <span className="stat-number">3</span>
-                                    <span className="stat-label">Lanzados en NFT</span>
+                                    <span className="stat-label">Juegos desarrollados</span>
                                 </div>
                                 <div className="stat">
                                     <span className="stat-number">4</span>
-                                    <span className="stat-label">Años creando</span>
+                                    <span className="stat-label">Años de experiencia</span>
                                 </div>
                             </div>
                         </div>
 
                         <div className="hero-right">
                             <div className="profile-card">
-                                <div className="caja-cara">
-                                    <img className="cara" src={fotoPerfil} alt="Maximiliano Caneda" />
-                                </div>
                                 <div className="profile-meta">
                                     <p className="profile-name">Maximiliano Caneda</p>
                                     <p className="profile-role">Unity Developer</p>
-                                    <div className="mini-tags">
-                                        <span className="pill">Shooter</span>
-                                        <span className="pill">Puzzles</span>
-                                        <span className="pill">Plataformero</span>
-                                        <span className="pill">Pensamiento crítico</span>
-                                        <span className="pill">Adaptabilidad</span>
-                                    </div>
+                                    <div className="availability availability-pill">Disponibilidad inmediata</div>
+                                </div>
+                                <div className="caja-cara big">
+                                    <img className="cara" src={fotoPerfil} alt="Maximiliano Caneda" />
                                 </div>
                             </div>
                         </div>
