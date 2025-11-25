@@ -34,26 +34,29 @@ export default function App() {
                         <span className="badge">Code &amp; Creativity</span>
                     </div>
                     <div className="hero-body">
-                        <div className="hero-left">
-                            <div className="hero-header">
-                                <div className="identity">
-                                    <div className="identity-copy">
-                                        <p className="tag">Unity / C#</p>
-                                        <h1>Maximiliano Caneda</h1>
-                                        <p className="profile-role">Unity Developer</p>
-                                        <div className="availability">Disponibilidad inmediata</div>
+                        <div className="hero-main">
+                            <div className="hero-focus">
+                                <div className="hero-photo">
+                                    <div className="caja-cara big">
+                                        <img className="cara" src={fotoPerfil} alt="Maximiliano Caneda" />
                                     </div>
                                 </div>
-                                <p className="presentacion">
-                                    Mezclo sistemas limpios con ideas jugables rápidas para construir experiencias con ritmo, claridad y personalidad.
-                                </p>
-                                <div className="mini-tags">
-                                    <span className="pill">Shooter</span>
-                                    <span className="pill">Puzzles</span>
-                                    <span className="pill">Plataformero</span>
-                                    <span className="pill">Pensamiento crítico</span>
-                                    <span className="pill">Adaptabilidad</span>
+                                <div className="identity-copy">
+                                    <p className="tag">Unity / C#</p>
+                                    <h1>Maximiliano Caneda</h1>
+                                    <p className="profile-role">Unity Developer</p>
+                                    <div className="availability availability-pill">Disponibilidad inmediata</div>
                                 </div>
+                            </div>
+                            <p className="presentacion">
+                                Mezclo sistemas limpios con ideas jugables rápidas para construir experiencias con ritmo, claridad y personalidad.
+                            </p>
+                            <div className="mini-tags">
+                                <span className="pill">Shooter</span>
+                                <span className="pill">Puzzles</span>
+                                <span className="pill">Plataformero</span>
+                                <span className="pill">Pensamiento crítico</span>
+                                <span className="pill">Adaptabilidad</span>
                             </div>
                             <div className="cta-row">
                                 <a className="cta-btn primary" href="#proyectos">Ver proyectos</a>
@@ -71,19 +74,6 @@ export default function App() {
                                 <div className="stat">
                                     <span className="stat-number">4</span>
                                     <span className="stat-label">Años de experiencia</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="hero-right">
-                            <div className="profile-card">
-                                <div className="profile-meta">
-                                    <p className="profile-name">Maximiliano Caneda</p>
-                                    <p className="profile-role">Unity Developer</p>
-                                    <div className="availability availability-pill">Disponibilidad inmediata</div>
-                                </div>
-                                <div className="caja-cara big">
-                                    <img className="cara" src={fotoPerfil} alt="Maximiliano Caneda" />
                                 </div>
                             </div>
                         </div>

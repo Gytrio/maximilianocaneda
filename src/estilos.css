@@ -204,30 +204,24 @@ body {
 }
 
 .hero-body {
-    display: grid;
-    grid-template-columns: 1.1fr 0.9fr;
-    gap: 26px;
-    align-items: start;
+    display: block;
 }
 
-.hero-left {
+.hero-main {
     display: grid;
     gap: 18px;
 }
 
-.hero-header {
+.hero-focus {
     background: rgba(255, 255, 255, 0.02);
     border: 1px solid var(--border);
     border-radius: 18px;
-    padding: 20px 18px 18px;
+    padding: 18px;
     box-shadow: var(--shadow);
-}
-
-.identity {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(260px, 340px) 1fr;
     gap: 18px;
-    align-items: start;
+    align-items: center;
 }
 
 .identity-copy {
@@ -235,6 +229,12 @@ body {
     z-index: 1;
     display: grid;
     gap: 6px;
+}
+
+.hero-photo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .hero-grid {
@@ -255,26 +255,6 @@ body {
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.6px;
-}
-
-.hero-right {
-    display: grid;
-    gap: 14px;
-    justify-items: center;
-    align-content: start;
-}
-
-.profile-card {
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid var(--border);
-    border-radius: 18px;
-    padding: 16px;
-    box-shadow: var(--shadow);
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 14px;
-    align-items: center;
-    justify-items: center;
 }
 
 .caja-cara {
@@ -567,8 +547,7 @@ h1 {
 #sobre-mi:target,
 #proyectos:target,
 #contacto:target {
-    animation: glow-section 1.6s ease;
-    box-shadow: 0 0 0 2px rgba(255, 45, 85, 0.45), 0 0 32px rgba(255, 45, 85, 0.28);
+    animation: glow-section 1.6s ease forwards;
     border-radius: 20px;
 }
 
@@ -714,8 +693,12 @@ footer {
 }
 
 @media (max-width: 900px) {
-    .hero-body {
+    .hero-focus {
         grid-template-columns: 1fr;
+    }
+
+    .identity-copy {
+        text-align: center;
     }
 
     .contacto {
