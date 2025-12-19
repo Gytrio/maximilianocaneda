@@ -48,9 +48,7 @@ export default function App() {
                                     <div className="availability availability-pill">Disponibilidad inmediata</div>
                                 </div>
                             </div>
-                            <p className="presentacion">
-                                Mezclo sistemas limpios con ideas jugables rápidas para construir experiencias con ritmo, claridad y personalidad.
-                            </p>
+                            
                             <div className="mini-tags">
                                 <span className="pill">Shooter</span>
                                 <span className="pill">Puzzles</span>
@@ -92,7 +90,8 @@ export default function App() {
                             Soy Maximiliano Caneda, 24 años, desarrollador y diseñador de videojuegos en Lanús, Buenos Aires. Mi formación en inglés desde chico me ayudó a absorber documentación, pipelines y referencias de programación sin barreras.
                         </p>
                         <p className="texto">
-                            Me recibí de técnico en programación en el EEST N° 5 "John F. Kennedy" y estoy finalizando la Licenciatura en desarrollo de simuladores y videojuegos en la UAI. Solo resta aprobar dos finales y defender mi tesis “El bajo nivel competitivo genera respuestas emocionales agresivas en jugadores”.
+                            Me recibí de técnico en programación en el EEST N° 5 "John F. Kennedy" y estoy finalizando la Licenciatura en desarrollo de simuladores y videojuegos en la UAI. Solo resta aprobar dos finales y defender mi tesis “El bajo nivel competitivo genera respuestas emocionales agresivas en jugadores”.\n
+                            Tambien complete una capacitacion de React.Js para mejorar mi apartado de tecnico en programacion Full Stack de Buenos Aires Ciudad.
                         </p>
                     </div>
                     <div className="panel-card">
@@ -125,9 +124,17 @@ export default function App() {
                 <p className="texto">Estas son algunas de las tecnologías las cuales uso.</p>
                 <div className="aptitudes">
                     <div className="tech-list">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/4/4f/Csharp_Logo.png" className="tech" alt="C#" />
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/8/8a/Official_unity_logo.png" className="tech" alt="Unity" />
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Git-logo.svg/1280px-Git-logo.svg.png" className="tech" alt="Git" />
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/4/4f/Csharp_Logo.png" className="tech"
+                             alt="C#"/>
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/8/8a/Official_unity_logo.png"
+                             className="tech" alt="Unity"/>
+                        <img
+                            src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Git-logo.svg/1280px-Git-logo.svg.png"
+                            className="tech" alt="Git"/>
+                        <img
+                            src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/2300px-React-icon.svg.png"
+                            className="tech" alt="React"/>
+
                     </div>
                 </div>
 
@@ -137,7 +144,6 @@ export default function App() {
                     <div className="tech-list">
                         <img src="https://upload.wikimedia.org/wikipedia/fr/3/33/Reaper_Logo.png" className="tech" alt="Reaper" />
                         <img src="https://www.seekpng.com/png/full/222-2229726_intro-to-html-css-html-css-icon.png" className="tech" alt="HTML/CSS" />
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/React-icon.svg/2300px-React-icon.svg.png" className="tech" alt="React" />
                         <img src="https://download.blender.org/branding/community/blender_community_badge_white.png" className="tech" alt="Blender" />
                     </div>
                 </div>
