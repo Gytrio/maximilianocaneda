@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 import fotoPerfil from "./assets/Foto-Perfil.jpg";
 import lost from "./assets/LostSwampFoto.png";
@@ -6,8 +6,221 @@ import steven from "./assets/WhereisStevenFoto.jpg";
 import catacombs from "./assets/Catacombsofempire.jpg";
 
 export default function App() {
+    const [language, setLanguage] = useState(() => {
+        const stored = localStorage.getItem("portfolio-language");
+        return stored === "en" || stored === "es" ? stored : "";
+    });
+
+    useEffect(() => {
+        document.body.style.overflow = language ? "auto" : "hidden";
+        if (language) {
+            localStorage.setItem("portfolio-language", language);
+        }
+        return () => {
+            document.body.style.overflow = "auto";
+        };
+    }, [language]);
+
+    const content = useMemo(
+        () => ({
+            es: {
+                nav: {
+                    home: "Inicio",
+                    about: "Sobre mí",
+                    projects: "Proyectos",
+                    contact: "Contacto",
+                },
+                badges: ["Unity Dev", "Código y creatividad"],
+                tag: "Unity / C#",
+                role: "Unity Developer",
+                availability: "Disponibilidad inmediata",
+                miniTags: ["Shooter", "Puzzles", "Plataformero", "Pensamiento crítico", "Adaptabilidad"],
+                cta: {
+                    projects: "Ver proyectos",
+                    contact: "Hablemos",
+                },
+                stats: [
+                    { number: "10+", label: "Prototipos" },
+                    { number: "3", label: "Juegos desarrollados" },
+                    { number: "4", label: "Años de experiencia" },
+                ],
+                about: {
+                    title: "Sobre mí",
+                    paragraphs: [
+                        "Soy Maximiliano Caneda, 24 años, desarrollador y diseñador de videojuegos en Lanús, Buenos Aires. Mi formación en inglés desde chico me ayudó a absorber documentación, pipelines y referencias de programación sin barreras.",
+                        "Me recibí de técnico en programación en el EEST N° 5 \"John F. Kennedy\" y estoy finalizando la Licenciatura en desarrollo de simuladores y videojuegos en la UAI. Solo resta aprobar dos finales y defender mi tesis “El bajo nivel competitivo genera respuestas emocionales agresivas en jugadores”. Tambien complete una capacitacion de React.Js para mejorar mi apartado de tecnico en programacion Full Stack de Buenos Aires Ciudad.",
+                    ],
+                    work: "Trabajé en la empresa de juegos NFT ",
+                    workSpan:
+                        " durante 1 año y realicé 3 juegos para esta empresa. Como estudiante, participé activamente en el ",
+                    workEnd: " durante la pandemia entre 2020 e inicios de 2021.",
+                },
+                timeline: {
+                    title: "Aptitudes",
+                    intro: "Estas son algunas de las tecnologías las cuales uso.",
+                    secondaryTitle: "Conocimientos secundarios",
+                    secondaryIntro: "Estas son algunas de las tecnologías de las que tengo conocimientos",
+                    items: [
+                        { year: "2020-2021", label: "Laboratorio de videojuegos UAI" },
+                        { year: "2022", label: "Interlude.gg - 3 juegos NFT" },
+                        { year: "Hoy", label: "Lic. desarrollo de simuladores y videojuegos" },
+                    ],
+                },
+                projects: {
+                    title: "Mis Proyectos",
+                    cards: [
+                        {
+                            code: "Supervivencia • 10 mins • 4 días",
+                            title: "Lost in the Swamp",
+                            description:
+                                "Juego realizado en 4 días como prueba de ingreso, la a única condición es que la duracion ronde los 10 minutos de gameplay.",
+                            link: "Ver gameplay",
+                        },
+                        {
+                            code: "Puzzle • 10 días • cliente",
+                            title: "Where is Steven?",
+                            description: "Desarrollado con libertad creativa en 10 días para la empresa Interlude.",
+                            link: "Ver gameplay",
+                        },
+                        {
+                            code: "Acción • 4 mapas extra",
+                            title: "Catacombs of Empire",
+                            description:
+                                "Tuve libertad creativa para crear el juego base y los 4 mapas extras. Desarrollado para la empresa Interlude.",
+                            link: "Ver gameplay",
+                        },
+                    ],
+                },
+                footer: {
+                    title: "Contactame",
+                    email: "maxicaneda45@gmail.com",
+                },
+                languageModal: {
+                    title: "Elegí el idioma",
+                    subtitle: "Seleccioná cómo querés navegar el porfolio.",
+                    spanish: "Español",
+                    english: "Inglés",
+                },
+                scrollTop: "Ir al inicio",
+                toggleLabel: "Cambiar idioma",
+            },
+            en: {
+                nav: {
+                    home: "Home",
+                    about: "About",
+                    projects: "Projects",
+                    contact: "Contact",
+                },
+                badges: ["Unity Dev", "Code & Creativity"],
+                tag: "Unity / C#",
+                role: "Unity Developer",
+                availability: "Available immediately",
+                miniTags: ["Shooter", "Puzzles", "Platformer", "Critical thinking", "Adaptability"],
+                cta: {
+                    projects: "See projects",
+                    contact: "Let’s talk",
+                },
+                stats: [
+                    { number: "10+", label: "Prototypes" },
+                    { number: "3", label: "Released games" },
+                    { number: "4", label: "Years of experience" },
+                ],
+                about: {
+                    title: "About me",
+                    paragraphs: [
+                        "I'm Maximiliano Caneda, 24 years old, a video game developer and designer based in Lanús, Buenos Aires. Training in English since childhood helped me absorb documentation, pipelines, and programming references without barriers.",
+                        "I graduated as a programming technician at EEST N° 5 \"John F. Kennedy\" and I'm finishing my Bachelor's in simulator and video game development at UAI. I only need to pass two finals and defend my thesis “Low competitive levels generate aggressive emotional responses in players”. I also completed a React.js course to strengthen my Full Stack programming skills from Buenos Aires Ciudad.",
+                    ],
+                    work: "I worked at the NFT game company ",
+                    workSpan:
+                        " for 1 year and created 3 games for the company. As a student, I actively participated in the ",
+                    workEnd: " during the pandemic between 2020 and early 2021.",
+                },
+                timeline: {
+                    title: "Skills",
+                    intro: "These are some of the technologies I use.",
+                    secondaryTitle: "Secondary knowledge",
+                    secondaryIntro: "These are some of the technologies I have experience with.",
+                    items: [
+                        { year: "2020-2021", label: "UAI experimental game lab" },
+                        { year: "2022", label: "Interlude.gg - 3 NFT games" },
+                        { year: "Today", label: "B.A. in simulator & video game development" },
+                    ],
+                },
+                projects: {
+                    title: "My Projects",
+                    cards: [
+                        {
+                            code: "Survival • 10 mins • 4 days",
+                            title: "Lost in the Swamp",
+                            description:
+                                "A game built in 4 days as an admission test, with the only condition being around 10 minutes of gameplay.",
+                            link: "Watch gameplay",
+                        },
+                        {
+                            code: "Puzzle • 10 days • client",
+                            title: "Where is Steven?",
+                            description: "Developed with full creative freedom in 10 days for Interlude.",
+                            link: "Watch gameplay",
+                        },
+                        {
+                            code: "Action • 4 extra maps",
+                            title: "Catacombs of Empire",
+                            description:
+                                "I had creative freedom to create the base game and four extra maps. Developed for Interlude.",
+                            link: "Watch gameplay",
+                        },
+                    ],
+                },
+                footer: {
+                    title: "Contact me",
+                    email: "maxicaneda45@gmail.com",
+                },
+                languageModal: {
+                    title: "Choose your language",
+                    subtitle: "Select how you want to explore the portfolio.",
+                    spanish: "Spanish",
+                    english: "English",
+                },
+                scrollTop: "Back to top",
+                toggleLabel: "Switch language",
+            },
+        }),
+        []
+    );
+
+    const copy = content[language || "es"];
+
+    const handleLanguageSelect = (nextLanguage) => {
+        setLanguage(nextLanguage);
+    };
+
+    const handleToggleLanguage = () => {
+        setLanguage((current) => (current === "es" ? "en" : "es"));
+    };
+
+    const handleScrollTop = () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+
     return (
         <div className="page">
+            {!language && (
+                <div className="language-modal" role="dialog" aria-modal="true" aria-label={copy.languageModal.title}>
+                    <div className="language-card">
+                        <h2>{copy.languageModal.title}</h2>
+                        <p>{copy.languageModal.subtitle}</p>
+                        <div className="language-actions">
+                            <button type="button" onClick={() => handleLanguageSelect("es")}>
+                                {copy.languageModal.spanish}
+                            </button>
+                            <button type="button" onClick={() => handleLanguageSelect("en")}>
+                                {copy.languageModal.english}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
             <header className="top-bar">
                 <div className="brand">
                     <span className="pulse-dot" aria-hidden />
@@ -16,22 +229,31 @@ export default function App() {
                     </div>
                 </div>
                 <nav className="nav-links">
-                    <a href="#hero">Inicio</a>
-                    <a href="#sobre-mi">Sobre mí</a>
-                    <a href="#proyectos">Proyectos</a>
-                    <a href="#contacto">Contacto</a>
+                    <a href="#hero">{copy.nav.home}</a>
+                    <a href="#sobre-mi">{copy.nav.about}</a>
+                    <a href="#proyectos">{copy.nav.projects}</a>
+                    <a href="#contacto">{copy.nav.contact}</a>
                 </nav>
-                <div className="status">
-                    RUNNING<div className="animated flash">_</div>
-                </div>
+                <button className="status lang-toggle" type="button" onClick={handleToggleLanguage} aria-label={copy.toggleLabel}>
+                    <span className="lang-icon" aria-hidden>
+                        🌐
+                    </span>
+                    <span className="lang-text">{language ? language.toUpperCase() : "ES/EN"}</span>
+                    <div className="animated flash" aria-hidden>
+                        _
+                    </div>
+                </button>
             </header>
 
             <section className="hero" id="hero">
                 <div className="grid-overlay" aria-hidden />
                 <div className="hero-card">
                     <div className="badge-row">
-                        <span className="badge">Unity Dev</span>
-                        <span className="badge">Code &amp; Creativity</span>
+                        {copy.badges.map((badge) => (
+                            <span className="badge" key={badge}>
+                                {badge}
+                            </span>
+                        ))}
                     </div>
                     <div className="hero-body">
                         <div className="hero-main">
@@ -42,37 +264,31 @@ export default function App() {
                                     </div>
                                 </div>
                                 <div className="identity-copy">
-                                    <p className="tag">Unity / C#</p>
+                                    <p className="tag">{copy.tag}</p>
                                     <h1>Maximiliano Caneda</h1>
-                                    <p className="profile-role">Unity Developer</p>
-                                    <div className="availability availability-pill">Disponibilidad inmediata</div>
+                                    <p className="profile-role">{copy.role}</p>
+                                    <div className="availability availability-pill">{copy.availability}</div>
                                 </div>
                             </div>
                             
                             <div className="mini-tags">
-                                <span className="pill">Shooter</span>
-                                <span className="pill">Puzzles</span>
-                                <span className="pill">Plataformero</span>
-                                <span className="pill">Pensamiento crítico</span>
-                                <span className="pill">Adaptabilidad</span>
+                                {copy.miniTags.map((tag) => (
+                                    <span className="pill" key={tag}>
+                                        {tag}
+                                    </span>
+                                ))}
                             </div>
                             <div className="cta-row">
-                                <a className="cta-btn primary" href="#proyectos">Ver proyectos</a>
-                                <a className="cta-btn primary ghost" href="#contacto">Hablemos</a>
+                                <a className="cta-btn primary" href="#proyectos">{copy.cta.projects}</a>
+                                <a className="cta-btn primary ghost" href="#contacto">{copy.cta.contact}</a>
                             </div>
                             <div className="hero-grid">
-                                <div className="stat">
-                                    <span className="stat-number">10+</span>
-                                    <span className="stat-label">Prototipos</span>
-                                </div>
-                                <div className="stat">
-                                    <span className="stat-number">3</span>
-                                    <span className="stat-label">Juegos desarrollados</span>
-                                </div>
-                                <div className="stat">
-                                    <span className="stat-number">4</span>
-                                    <span className="stat-label">Años de experiencia</span>
-                                </div>
+                                {copy.stats.map((stat) => (
+                                    <div className="stat" key={stat.label}>
+                                        <span className="stat-number">{stat.number}</span>
+                                        <span className="stat-label">{stat.label}</span>
+                                    </div>
+                                ))}
                             </div>
                         </div>
                     </div>
@@ -82,46 +298,40 @@ export default function App() {
             <section className="section-panel" id="sobre-mi">
                 <div className="section-header">
                     <div className="accent-bar" aria-hidden />
-                    <h2>Sobre mí</h2>
+                    <h2>{copy.about.title}</h2>
                 </div>
                 <div className="panel-grid">
                     <div className="panel-card">
-                        <p className="texto">
-                            Soy Maximiliano Caneda, 24 años, desarrollador y diseñador de videojuegos en Lanús, Buenos Aires. Mi formación en inglés desde chico me ayudó a absorber documentación, pipelines y referencias de programación sin barreras.
-                        </p>
-                        <p className="texto">
-                            Me recibí de técnico en programación en el EEST N° 5 "John F. Kennedy" y estoy finalizando la Licenciatura en desarrollo de simuladores y videojuegos en la UAI. Solo resta aprobar dos finales y defender mi tesis “El bajo nivel competitivo genera respuestas emocionales agresivas en jugadores”.\n
-                            Tambien complete una capacitacion de React.Js para mejorar mi apartado de tecnico en programacion Full Stack de Buenos Aires Ciudad.
-                        </p>
+                        {copy.about.paragraphs.map((paragraph) => (
+                            <p className="texto" key={paragraph}>
+                                {paragraph}
+                            </p>
+                        ))}
                     </div>
                     <div className="panel-card">
                         <p className="texto">
-                            Trabajé en la empresa de juegos NFT{" "}
-                            <a href="https://twitter.com/ProjInterlude" target="_blank" rel="noreferrer">Interlude.gg</a> durante 1 año y realicé 3 juegos para esta empresa. Como estudiante, participé activamente en el{" "}
-                            <a href="https://live-games.itch.io/" target="_blank" rel="noreferrer">Laboratorio de videojuegos experimentales de la UAI</a> durante la pandemia entre 2020 e inicios de 2021.
+                            {copy.about.work}
+                            <a href="https://twitter.com/ProjInterlude" target="_blank" rel="noreferrer">Interlude.gg</a>
+                            {copy.about.workSpan}
+                            <a href="https://live-games.itch.io/" target="_blank" rel="noreferrer">Laboratorio de videojuegos experimentales de la UAI</a>
+                            {copy.about.workEnd}
                         </p>
                         <div className="timeline">
-                            <div className="timeline-item">
-                                <span className="pill">2020-2021</span>
-                                <span>Laboratorio de videojuegos UAI</span>
-                            </div>
-                            <div className="timeline-item">
-                                <span className="pill">2022</span>
-                                <span>Interlude.gg - 3 juegos NFT</span>
-                            </div>
-                            <div className="timeline-item">
-                                <span className="pill">Hoy</span>
-                                <span>Lic. desarrollo de simuladores y videojuegos</span>
-                            </div>
+                            {copy.timeline.items.map((item) => (
+                                <div className="timeline-item" key={item.label}>
+                                    <span className="pill">{item.year}</span>
+                                    <span>{item.label}</span>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>
 
                 <div className="section-header">
                     <div className="accent-bar" aria-hidden />
-                    <h2>Aptitudes</h2>
+                    <h2>{copy.timeline.title}</h2>
                 </div>
-                <p className="texto">Estas son algunas de las tecnologías las cuales uso.</p>
+                <p className="texto">{copy.timeline.intro}</p>
                 <div className="aptitudes">
                     <div className="tech-list">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/4/4f/Csharp_Logo.png" className="tech"
@@ -138,8 +348,8 @@ export default function App() {
                     </div>
                 </div>
 
-                <h3>Conocimientos secundarios</h3>
-                <p className="texto">Estas son algunas de las tecnologías de las que tengo conocimientos</p>
+                <h3>{copy.timeline.secondaryTitle}</h3>
+                <p className="texto">{copy.timeline.secondaryIntro}</p>
                 <div className="aptitudes">
                     <div className="tech-list">
                         <img src="https://upload.wikimedia.org/wikipedia/fr/3/33/Reaper_Logo.png" className="tech" alt="Reaper" />
@@ -152,43 +362,49 @@ export default function App() {
             <section className="projects" id="proyectos">
                 <div className="section-header">
                     <div className="accent-bar" aria-hidden />
-                    <h2>Mis Proyectos</h2>
+                    <h2>{copy.projects.title}</h2>
                 </div>
                 <div className="proyectos">
                     <div className="card">
-                        <div className="card-code">Supervivencia • 10 mins • 4 días</div>
+                        <div className="card-code">{copy.projects.cards[0].code}</div>
                         <a href="https://youtu.be/kIOqWF8WLMY" target="_blank" rel="noreferrer">
-                            <h3>Lost in the Swamp</h3>
+                            <h3>{copy.projects.cards[0].title}</h3>
                             <img src={lost} alt="Lost in the Swamp" />
                         </a>
-                        <p>Juego realizado en 4 días como prueba de ingreso, la a única condición es que la duracion ronde los 10 minutos de gameplay.</p>
-                        <a className="link-button" href="https://youtu.be/kIOqWF8WLMY" target="_blank" rel="noreferrer">Ver gameplay</a>
+                        <p>{copy.projects.cards[0].description}</p>
+                        <a className="link-button" href="https://youtu.be/kIOqWF8WLMY" target="_blank" rel="noreferrer">
+                            {copy.projects.cards[0].link}
+                        </a>
                     </div>
 
                     <div className="card">
-                        <div className="card-code">Puzzle • 10 días • cliente</div>
+                        <div className="card-code">{copy.projects.cards[1].code}</div>
                         <a href="https://youtu.be/6PNvMrnnZ7o" target="_blank" rel="noreferrer">
-                            <h3>Where is Steven?</h3>
+                            <h3>{copy.projects.cards[1].title}</h3>
                             <img src={steven} alt="Where is Steven?" />
                         </a>
-                        <p>Desarrollado con libertad creativa en 10 días para la empresa Interlude.</p>
-                        <a className="link-button" href="https://youtu.be/6PNvMrnnZ7o" target="_blank" rel="noreferrer">Ver gameplay</a>
+                        <p>{copy.projects.cards[1].description}</p>
+                        <a className="link-button" href="https://youtu.be/6PNvMrnnZ7o" target="_blank" rel="noreferrer">
+                            {copy.projects.cards[1].link}
+                        </a>
                     </div>
 
                     <div className="card">
-                        <div className="card-code">Acción • 4 mapas extra</div>
+                        <div className="card-code">{copy.projects.cards[2].code}</div>
                         <a href="https://youtu.be/4uFiRBiggKE" target="_blank" rel="noreferrer">
-                            <h3>Catacombs of Empire</h3>
+                            <h3>{copy.projects.cards[2].title}</h3>
                             <img src={catacombs} alt="Catacombs of Empire" />
                         </a>
-                        <p>Tuve libertad creativa para crear el juego base y los 4 mapas extras. Desarrollado para la empresa Interlude.</p>
-                        <a className="link-button" href="https://youtu.be/4uFiRBiggKE" target="_blank" rel="noreferrer">Ver gameplay</a>
+                        <p>{copy.projects.cards[2].description}</p>
+                        <a className="link-button" href="https://youtu.be/4uFiRBiggKE" target="_blank" rel="noreferrer">
+                            {copy.projects.cards[2].link}
+                        </a>
                     </div>
                 </div>
             </section>
 
             <footer id="contacto">
-                <h2>Contactame</h2>
+                <h2>{copy.footer.title}</h2>
                 <div className="contacto">
                     <hr />
                     <a href="https://www.linkedin.com/in/maximiliano-caneda" target="_blank" rel="noreferrer">
@@ -196,8 +412,15 @@ export default function App() {
                     </a>
                     <hr />
                 </div>
-                <h2>maxicaneda45@gmail.com</h2>
+                <h2>{copy.footer.email}</h2>
             </footer>
+
+            <button className="scroll-top-toast" type="button" onClick={handleScrollTop} aria-label={copy.scrollTop}>
+                <span className="scroll-top-icon" aria-hidden>
+                    ↑
+                </span>
+                <span className="scroll-top-label">{copy.scrollTop}</span>
+            </button>
         </div>
     );
 }
