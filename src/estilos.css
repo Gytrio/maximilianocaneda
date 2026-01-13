@@ -125,6 +125,32 @@ body {
     letter-spacing: 1px;
 }
 
+.lang-toggle {
+    border: none;
+    background: transparent;
+    color: var(--text);
+    cursor: pointer;
+    padding: 6px 10px;
+    border-radius: 999px;
+    transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.lang-toggle:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--accent);
+    transform: translateY(-1px);
+}
+
+.lang-icon {
+    font-size: 16px;
+}
+
+.lang-text {
+    font-size: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--muted);
+}
+
 /* Hero */
 .hero {
     position: relative;
@@ -682,6 +708,108 @@ footer {
 .red-social:hover {
     transform: translateY(-4px);
     box-shadow: 0 12px 24px rgba(255, 45, 85, 0.2);
+}
+
+/* Language modal */
+.language-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(8, 8, 13, 0.9);
+    backdrop-filter: blur(10px);
+    width: 100vw;
+    height: 100vh;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+}
+
+.language-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 28px;
+    width: min(420px, 90%);
+    text-align: center;
+    box-shadow: var(--shadow);
+}
+
+.language-card h2 {
+    margin-top: 0;
+    margin-bottom: 8px;
+}
+
+.language-card p {
+    margin-top: 0;
+    color: var(--muted);
+}
+
+.language-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 18px;
+}
+
+.language-actions button {
+    border: none;
+    border-radius: 999px;
+    padding: 10px 18px;
+    font-weight: 700;
+    cursor: pointer;
+    background: linear-gradient(90deg, rgba(255, 45, 85, 0.9), rgba(255, 95, 122, 0.8));
+    color: white;
+    box-shadow: 0 10px 25px rgba(255, 45, 85, 0.25);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.language-actions button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 35px rgba(255, 45, 85, 0.35);
+}
+
+/* Scroll-to-top toast */
+.scroll-top-toast {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 999px;
+    padding: 10px 16px;
+    background: rgba(20, 20, 32, 0.9);
+    color: var(--text);
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    z-index: 20;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.scroll-top-toast:hover {
+    transform: translateY(-2px);
+    background: rgba(255, 45, 85, 0.18);
+    box-shadow: 0 15px 35px rgba(255, 45, 85, 0.3);
+}
+
+.scroll-top-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: rgba(255, 45, 85, 0.2);
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.scroll-top-label {
+    font-size: 13px;
+    font-weight: 600;
 }
 
 /* Responsivo */
