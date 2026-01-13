@@ -47,7 +47,7 @@ export default function App() {
                 about: {
                     title: "Sobre mí",
                     paragraphs: [
-                        "Soy Maximiliano Caneda, desarrollador y diseñador de videojuegos de Lanús, Buenos Aires. Mi formación en inglés desde temprana edad me permitió trabajar cómodamente con documentación técnica, pipelines y referencias de programación internacionales.",
+                        "Soy Maximiliano Caneda, tengo 25 años y soy desarrollador y diseñador de videojuegos de Lanús, Buenos Aires. Mi formación en inglés desde temprana edad me permitió trabajar cómodamente con documentación técnica, pipelines y referencias de programación internacionales.",
                         "Me gradué como Licenciado en Desarrollo de Simuladores y Videojuegos en la Universidad Abierta Interamericana (UAI) con un promedio de 8.70, y también soy Técnico en Programación por la EEST N° 5 “John F. Kennedy”. Mi tesis se tituló “El bajo nivel competitivo genera respuestas emocionales agresivas en jugadores”.",
                         "Además, completé una capacitación en React.js para fortalecer mi perfil como desarrollador Full Stack, combinando programación, diseño y desarrollo de sistemas interactivos tanto en videojuegos como en aplicaciones web.",
                     ],
@@ -64,6 +64,7 @@ export default function App() {
                     items: [
                         { year: "2020-2021", label: "Laboratorio de videojuegos UAI" },
                         { year: "2022", label: "Interlude.gg - 3 juegos NFT" },
+                        { year: "2024-2025", label: "Games Station Studio" },
                         { year: "Hoy", label: "Lic. desarrollo de simuladores y videojuegos" },
                     ],
                 },
@@ -129,7 +130,7 @@ export default function App() {
                 about: {
                     title: "About me",
                     paragraphs: [
-                        "I am Maximiliano Caneda, a video game developer and designer based in Lanús, Buenos Aires. My early English education allows me to work comfortably with technical documentation, programming pipelines, and international development resources.",
+                        "I am Maximiliano Caneda, I am 25 years old, and a video game developer and designer based in Lanús, Buenos Aires. My early English education allows me to work comfortably with technical documentation, programming pipelines, and international development resources.",
                         "I hold a Bachelor’s degree in Simulation and Video Game Development from Universidad Abierta Interamericana (UAI), graduating with a GPA of 8.70. I am also a Programming Technician from EEST N° 5 “John F. Kennedy”. My thesis was titled “Low competitive levels generate aggressive emotional responses in players.”",
                         "In addition, I completed a React.js training program to strengthen my Full Stack development skills, allowing me to combine programming, design, and system development across both games and web applications.",
                     ],
@@ -146,6 +147,7 @@ export default function App() {
                     items: [
                         { year: "2020-2021", label: "UAI experimental game lab" },
                         { year: "2022", label: "Interlude.gg - 3 NFT games" },
+                        { year: "2024-2025", label: "Games Station Studio" },
                         { year: "Today", label: "B.A. in simulator & video game development" },
                     ],
                 },
