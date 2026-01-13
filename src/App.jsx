@@ -47,8 +47,9 @@ export default function App() {
                 about: {
                     title: "Sobre mí",
                     paragraphs: [
-                        "Soy Maximiliano Caneda, 24 años, desarrollador y diseñador de videojuegos en Lanús, Buenos Aires. Mi formación en inglés desde chico me ayudó a absorber documentación, pipelines y referencias de programación sin barreras.",
-                        "Me recibí de técnico en programación en el EEST N° 5 \"John F. Kennedy\" y estoy finalizando la Licenciatura en desarrollo de simuladores y videojuegos en la UAI. Solo resta aprobar dos finales y defender mi tesis “El bajo nivel competitivo genera respuestas emocionales agresivas en jugadores”. Tambien complete una capacitacion de React.Js para mejorar mi apartado de tecnico en programacion Full Stack de Buenos Aires Ciudad.",
+                        "Soy Maximiliano Caneda, desarrollador y diseñador de videojuegos de Lanús, Buenos Aires. Mi formación en inglés desde temprana edad me permitió trabajar cómodamente con documentación técnica, pipelines y referencias de programación internacionales.",
+                        "Me gradué como Licenciado en Desarrollo de Simuladores y Videojuegos en la Universidad Abierta Interamericana (UAI) con un promedio de 8.70, y también soy Técnico en Programación por la EEST N° 5 “John F. Kennedy”. Mi tesis se tituló “El bajo nivel competitivo genera respuestas emocionales agresivas en jugadores”.",
+                        "Además, completé una capacitación en React.js para fortalecer mi perfil como desarrollador Full Stack, combinando programación, diseño y desarrollo de sistemas interactivos tanto en videojuegos como en aplicaciones web.",
                     ],
                     work: "Trabajé en la empresa de juegos NFT ",
                     workSpan:
@@ -128,8 +129,9 @@ export default function App() {
                 about: {
                     title: "About me",
                     paragraphs: [
-                        "I'm Maximiliano Caneda, 24 years old, a video game developer and designer based in Lanús, Buenos Aires. Training in English since childhood helped me absorb documentation, pipelines, and programming references without barriers.",
-                        "I graduated as a programming technician at EEST N° 5 \"John F. Kennedy\" and I'm finishing my Bachelor's in simulator and video game development at UAI. I only need to pass two finals and defend my thesis “Low competitive levels generate aggressive emotional responses in players”. I also completed a React.js course to strengthen my Full Stack programming skills from Buenos Aires Ciudad.",
+                        "I am Maximiliano Caneda, a video game developer and designer based in Lanús, Buenos Aires. My early English education allows me to work comfortably with technical documentation, programming pipelines, and international development resources.",
+                        "I hold a Bachelor’s degree in Simulation and Video Game Development from Universidad Abierta Interamericana (UAI), graduating with a GPA of 8.70. I am also a Programming Technician from EEST N° 5 “John F. Kennedy”. My thesis was titled “Low competitive levels generate aggressive emotional responses in players.”",
+                        "In addition, I completed a React.js training program to strengthen my Full Stack development skills, allowing me to combine programming, design, and system development across both games and web applications.",
                     ],
                     work: "I worked at the NFT game company ",
                     workSpan:
