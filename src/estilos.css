@@ -318,6 +318,12 @@ footer[id] {
     align-items: start;
 }
 
+/* Sin el video destacado la presentacion ocupa una sola columna, acotada para que se lea bien. */
+.intro-grid.is-single {
+    grid-template-columns: 1fr;
+    max-width: 78ch;
+}
+
 .lead {
     margin: 0 0 16px;
     font-family: 'Poppins', sans-serif;
@@ -410,26 +416,17 @@ footer[id] {
     font-size: 20px;
 }
 
-.panel-grid {
+/* ---------- "Sobre mi": un unico bloque de texto corrido ---------- */
+.about-text {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 22px;
+    gap: 18px;
+    max-width: 76ch;
+    margin-top: 6px;
 }
 
-.panel-card {
-    background: var(--bg);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    padding: 26px;
-    box-shadow: var(--shadow-sm);
-}
-
-.panel-card .texto {
+.about-text .texto {
+    margin: 0;
     max-width: none;
-}
-
-.panel-card .texto:first-child {
-    margin-top: 0;
 }
 
 /* ---------- Estudios y experiencia laboral ---------- */

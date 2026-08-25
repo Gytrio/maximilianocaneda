@@ -13,9 +13,29 @@ import reaperLogo from "./assets/tech/reaper.svg";
 import htmlLogo from "./assets/tech/html5.svg";
 import cssLogo from "./assets/tech/css3.svg";
 import blenderLogo from "./assets/tech/blender.svg";
+import pythonLogo from "./assets/tech/python.svg";
 import linkedinLogo from "./assets/tech/linkedin.svg";
 
 const ROOT_PATH = "C:\\Users\\Maximiliano-Caneda";
+
+/* Poner en true para volver a mostrar el video de "Proyecto destacado" al lado de la presentacion. */
+const SHOW_FEATURED_PROJECT = false;
+
+/* Unico lugar a tocar si hace falta: la edad del "Sobre mi" se calcula sola a partir de esta fecha. */
+const BIRTH_DATE = "2000-04-05";
+
+/* Devuelve los anios cumplidos, restando uno si todavia no paso el cumpleanios de este anio. */
+function calculateAge(isoBirthDate, today = new Date()) {
+    const birth = new Date(`${isoBirthDate}T00:00:00`);
+    let age = today.getFullYear() - birth.getFullYear();
+    const monthDiff = today.getMonth() - birth.getMonth();
+
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+        age -= 1;
+    }
+
+    return age;
+}
 
 const SECTIONS = [
     { id: "hero", navKey: "home", segment: { es: "", en: "" } },
@@ -38,6 +58,7 @@ const PRIMARY_TECH = [
 ];
 
 const SECONDARY_TECH = [
+    { src: pythonLogo, alt: "Python", name: "Python" },
     { src: reaperLogo, alt: "Reaper", name: "Reaper" },
     { src: htmlLogo, alt: "HTML5", name: "HTML5" },
     { src: cssLogo, alt: "CSS3", name: "CSS3" },
@@ -74,6 +95,7 @@ export default function App() {
     });
     const [activeSection, setActiveSection] = useState("hero");
     const [emailCopied, setEmailCopied] = useState(false);
+    const age = useMemo(() => calculateAge(BIRTH_DATE), []);
 
     /* El aviso de "copiado" vuelve solo al estado normal. */
     useEffect(() => {
@@ -154,14 +176,45 @@ export default function App() {
                 about: {
                     title: "Sobre mí",
                     kicker: "Perfil",
-                    paragraphs: [
-                        "Soy Maximiliano Caneda, tengo 25 años y soy desarrollador y diseñador de videojuegos de Lanús, Buenos Aires. Mi formación en inglés desde temprana edad me permitió trabajar cómodamente con documentación técnica, pipelines y referencias de programación internacionales.",
-                        "Me gradué como Licenciado en Producción de Simuladores y Videojuegos en la Universidad Abierta Interamericana (UAI) con un promedio de 8.70, y también soy Técnico en Programación por la EEST N° 5 “John F. Kennedy”. Mi tesis se tituló “El bajo nivel competitivo genera respuestas emocionales agresivas en jugadores”.",
-                        "Además, completé una capacitación en React.js para fortalecer mi perfil como desarrollador Full Stack, combinando programación, diseño y desarrollo de sistemas interactivos tanto en videojuegos como en aplicaciones web.",
+                    /* Parrafos previos al que lleva los enlaces. */
+                    paragraphsBefore: [
+                        `Soy Maximiliano Caneda, tengo ${age} años y soy desarrollador y diseñador de videojuegos de Lanús, Buenos Aires. Mi formación en inglés desde temprana edad me permite trabajar cómodamente con documentación técnica, pipelines y referencias de programación internacionales.`,
+                        "Me gradué como Licenciado en Producción de Simuladores y Videojuegos en la Universidad Abierta Interamericana (UAI) con un promedio de 8.70, y también soy Técnico en Programación por la EEST N° 5 “John F. Kennedy”. Mi tesis se tituló “El bajo nivel competitivo genera respuestas emocionales agresivas en jugadores”. Más adelante completé una capacitación en React.js que reforzó mi perfil como desarrollador Full Stack, de modo que hoy combino programación, diseño y desarrollo de sistemas interactivos tanto en videojuegos como en aplicaciones web.",
                     ],
-                    work: "Trabajé en la empresa de juegos NFT ",
-                    workSpan: " durante 1 año y realicé 3 juegos para esta empresa. Como estudiante, participé activamente en el ",
-                    workEnd: " entre 2020 y 2024.",
+                    work: "En el plano profesional trabajé durante un año en Interlude.gg, una empresa de juegos NFT para la que desarrollé tres juegos completos, y entre 2020 y 2024 participé activamente en el ",
+                    workEnd: ", donde exploré mecánicas experimentales junto a otros estudiantes.",
+                    /* Parrafo posterior al que lleva el enlace: cierra el relato profesional. */
+                    paragraphsAfter: [
+                        "Más recientemente trabajé en Games Station Studio, en dos de sus juegos: Heroes of Valhalla y Grow Empire: Rome. En Heroes of Valhalla desarrollé la inteligencia artificial que decide qué habilidad lanza cada héroe, evaluando las necesidades del combate, el contexto de la partida y el área de efecto para elegir la más conveniente en cada situación.",
+                    ],
+                },
+                freelance: {
+                    kicker: "Independiente",
+                    title: "Trabajos freelance",
+                    intro: "Proyectos que tomé por cuenta propia, en desarrollo de videojuegos y en programación.",
+                    items: [
+                        {
+                            period: "Unity Developer",
+                            title: "Minijuegos para otras empresas",
+                            details: [
+                                "Desarrollé un arcade de minitanques.",
+                                "Recreé un estadio con público resuelto mediante texturas y lo dejé optimizado para correr de forma fluida en celulares.",
+                                "Desarrollo en C# con el motor Unity.",
+                            ],
+                        },
+                        {
+                            period: "Programador",
+                            title: "Satelital",
+                            place: "Sistema de rendiciones de gastos con IA",
+                            details: [
+                                "Desarrollé un sistema con inteligencia artificial que automatiza las rendiciones de gastos: lee los comprobantes y verifica que el Excel esté completo.",
+                                "Completa los datos que faltan y corrige los que están mal cargados.",
+                                "Imputa cada gasto a la cuenta corriente que corresponde según su tipo.",
+                                "Incluye un visor en el que la IA cataloga cada error por tipo, lo que permite entender y resolver los problemas de forma rápida e intuitiva.",
+                                "Desarrollo en Python.",
+                            ],
+                        },
+                    ],
                 },
                 education: {
                     kicker: "Formación",
@@ -212,7 +265,7 @@ export default function App() {
                             title: "Games Station Studio",
                             place: "Desarrollo de videojuegos",
                             details: [
-                                "Desarrollé mecánicas para los juegos Heroes of Valhalla y Grow Empire Rome.",
+                                "Desarrollé mecánicas para los juegos Heroes of Valhalla y Grow Empire: Rome.",
                                 "Refactorización de código, optimización, corrección de bugs, testing, documentación y reparación de herramientas para el desarrollo legacy.",
                                 "Desarrollo en C# usando patrones de diseño y prácticas variadas, en contacto con distintas disciplinas de arte y game design.",
                             ],
@@ -240,7 +293,7 @@ export default function App() {
                         {
                             period: "2021 - 2022",
                             title: "Interlude.gg",
-                            place: "Empresa de juegos NFT",
+                            place: "Unity Developer",
                             details: [
                                 "Desarrollé los juegos Lost in the Swamp, Where is Steven? y Catacombs of Empire junto a sus 4 mapas en Unity, con total libertad creativa.",
                                 "Desarrollo en C# aplicando prácticas, principios y patrones como POO, metodologías ágiles, Clean Code y State.",
@@ -326,14 +379,45 @@ export default function App() {
                 about: {
                     title: "About me",
                     kicker: "Profile",
-                    paragraphs: [
-                        "I am Maximiliano Caneda, I am 25 years old, and a video game developer and designer based in Lanús, Buenos Aires. My early English education allows me to work comfortably with technical documentation, programming pipelines, and international development resources.",
-                        "I hold a Bachelor’s degree in Simulation and Video Game Production from Universidad Abierta Interamericana (UAI), graduating with a GPA of 8.70. I am also a Programming Technician from EEST N° 5 “John F. Kennedy”. My thesis was titled “Low competitive levels generate aggressive emotional responses in players.”",
-                        "In addition, I completed a React.js training program to strengthen my Full Stack development skills, allowing me to combine programming, design, and system development across both games and web applications.",
+                    /* Parrafos previos al que lleva los enlaces. */
+                    paragraphsBefore: [
+                        `I am Maximiliano Caneda, I am ${age} years old, and a video game developer and designer based in Lanús, Buenos Aires. My early English education lets me work comfortably with technical documentation, programming pipelines, and international development resources.`,
+                        "I hold a Bachelor’s degree in Simulation and Video Game Production from Universidad Abierta Interamericana (UAI), graduating with a GPA of 8.70, and I am also a Programming Technician from EEST N° 5 “John F. Kennedy”. My thesis was titled “Low competitive levels generate aggressive emotional responses in players.” I later completed a React.js training program that strengthened my Full Stack profile, so today I combine programming, design, and system development across both games and web applications.",
                     ],
-                    work: "I worked at the NFT game company ",
-                    workSpan: " for 1 year and created 3 games for the company. As a student, I actively participated in the ",
-                    workEnd: " between 2020 and 2024.",
+                    work: "Professionally, I spent a year at Interlude.gg, an NFT game company for which I built three complete games, and between 2020 and 2024 I took an active part in the ",
+                    workEnd: ", where I explored experimental mechanics alongside other students.",
+                    /* Parrafo posterior al que lleva el enlace: cierra el relato profesional. */
+                    paragraphsAfter: [
+                        "More recently I worked at Games Station Studio on two of their games: Heroes of Valhalla and Grow Empire: Rome. On Heroes of Valhalla I developed the artificial intelligence that decides which ability each hero casts, weighing what the fight needs, the context of the match and the area of effect in order to pick the most useful one in each situation.",
+                    ],
+                },
+                freelance: {
+                    kicker: "Independent",
+                    title: "Freelance work",
+                    intro: "Projects I took on independently, in video game development and in programming.",
+                    items: [
+                        {
+                            period: "Unity Developer",
+                            title: "Minigames for other companies",
+                            details: [
+                                "Built an arcade mini-tank game.",
+                                "Recreated a stadium whose crowd was resolved through textures, and optimised it to run smoothly on mobile.",
+                                "C# development with the Unity engine.",
+                            ],
+                        },
+                        {
+                            period: "Programmer",
+                            title: "Satelital",
+                            place: "AI-powered expense report system",
+                            details: [
+                                "Developed an artificial intelligence system that automates expense reports: it reads the receipts and checks that the spreadsheet is complete.",
+                                "Fills in the missing data and corrects whatever was entered incorrectly.",
+                                "Books each expense to the matching current account according to its type.",
+                                "Includes a viewer where the AI categorises every error by type, making problems quick and intuitive to understand and resolve.",
+                                "Developed in Python.",
+                            ],
+                        },
+                    ],
                 },
                 education: {
                     kicker: "Education",
@@ -384,7 +468,7 @@ export default function App() {
                             title: "Games Station Studio",
                             place: "Video game development",
                             details: [
-                                "Developed mechanics for the games Heroes of Valhalla and Grow Empire Rome.",
+                                "Developed mechanics for the games Heroes of Valhalla and Grow Empire: Rome.",
                                 "Code refactoring, optimisation, bug fixing, testing, documentation and repair of legacy development tools.",
                                 "C# development using design patterns and varied practices, working alongside different art and game design disciplines.",
                             ],
@@ -412,7 +496,7 @@ export default function App() {
                         {
                             period: "2021 - 2022",
                             title: "Interlude.gg",
-                            place: "NFT game company",
+                            place: "Unity Developer",
                             details: [
                                 "Built the games Lost in the Swamp, Where is Steven? and Catacombs of Empire along with its 4 maps in Unity, with full creative freedom.",
                                 "C# development applying practices, principles and patterns such as OOP, agile methodologies, Clean Code and State.",
@@ -477,7 +561,7 @@ export default function App() {
                 toggleLabel: "Switch language",
             },
         }),
-        []
+        [age]
     );
 
     const activeLanguage = language || "es";
@@ -631,7 +715,7 @@ export default function App() {
             </section>
 
             <section className="intro">
-                <div className="intro-grid">
+                <div className={`intro-grid${SHOW_FEATURED_PROJECT ? "" : " is-single"}`}>
                     <div className="intro-copy">
                         <p className="lead">{copy.intro.lead}</p>
                         <p className="texto">{copy.intro.body}</p>
@@ -662,18 +746,20 @@ export default function App() {
                         </div>
                     </div>
 
-                    <div className="intro-media">
-                        <span className="media-label">{copy.intro.featuredLabel}</span>
-                        <div className="media-frame">
-                            <iframe
-                                src={`https://www.youtube-nocookie.com/embed/${PROJECT_MEDIA[0].videoId}`}
-                                title={copy.intro.featuredTitle}
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                allowFullScreen
-                                loading="lazy"
-                            />
+                    {SHOW_FEATURED_PROJECT && (
+                        <div className="intro-media">
+                            <span className="media-label">{copy.intro.featuredLabel}</span>
+                            <div className="media-frame">
+                                <iframe
+                                    src={`https://www.youtube-nocookie.com/embed/${PROJECT_MEDIA[0].videoId}`}
+                                    title={copy.intro.featuredTitle}
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowFullScreen
+                                    loading="lazy"
+                                />
+                            </div>
                         </div>
-                    </div>
+                    )}
                 </div>
 
             </section>
@@ -684,36 +770,34 @@ export default function App() {
                     <h2>{copy.about.title}</h2>
                 </div>
 
-                <div className="panel-grid">
-                    <div className="panel-card">
-                        {copy.about.paragraphs.map((paragraph) => (
-                            <p className="texto" key={paragraph}>
-                                {paragraph}
-                            </p>
-                        ))}
-                    </div>
-                    <div className="panel-card">
-                        <p className="texto">
-                            {copy.about.work}
-                            <a href="https://twitter.com/ProjInterlude" target="_blank" rel="noreferrer">
-                                Interlude.gg
-                            </a>
-                            {copy.about.workSpan}
-                            <a href="https://live-games.itch.io/" target="_blank" rel="noreferrer">
-                                Laboratorio de videojuegos experimentales de la UAI
-                            </a>
-                            {copy.about.workEnd}
+                {/* Un unico relato: presentacion, formacion, empleos y freelance en el mismo hilo. */}
+                <div className="about-text">
+                    {copy.about.paragraphsBefore.map((paragraph) => (
+                        <p className="texto" key={paragraph}>
+                            {paragraph}
                         </p>
-                    </div>
+                    ))}
+                    <p className="texto">
+                        {copy.about.work}
+                        <a href="https://live-games.itch.io/" target="_blank" rel="noreferrer">
+                            Laboratorio de videojuegos experimentales de la UAI
+                        </a>
+                        {copy.about.workEnd}
+                    </p>
+                    {copy.about.paragraphsAfter.map((paragraph) => (
+                        <p className="texto" key={paragraph}>
+                            {paragraph}
+                        </p>
+                    ))}
                 </div>
 
                 <div className="section-header spaced">
-                    <span className="kicker">{copy.education.kicker}</span>
-                    <h2>{copy.education.title}</h2>
+                    <span className="kicker">{copy.experience.kicker}</span>
+                    <h2>{copy.experience.title}</h2>
                 </div>
-                <p className="texto">{copy.education.intro}</p>
+                <p className="texto">{copy.experience.intro}</p>
                 <ol className="record-list">
-                    {copy.education.items.map((item) => (
+                    {copy.experience.items.map((item) => (
                         <li className="record-item" key={item.title}>
                             <span className="record-period">{item.period}</span>
                             <div className="record-body">
@@ -730,12 +814,34 @@ export default function App() {
                 </ol>
 
                 <div className="section-header spaced">
-                    <span className="kicker">{copy.experience.kicker}</span>
-                    <h2>{copy.experience.title}</h2>
+                    <span className="kicker">{copy.freelance.kicker}</span>
+                    <h2>{copy.freelance.title}</h2>
                 </div>
-                <p className="texto">{copy.experience.intro}</p>
+                <p className="texto">{copy.freelance.intro}</p>
                 <ol className="record-list">
-                    {copy.experience.items.map((item) => (
+                    {copy.freelance.items.map((item) => (
+                        <li className="record-item" key={item.title}>
+                            <span className="record-period">{item.period}</span>
+                            <div className="record-body">
+                                <h4>{item.title}</h4>
+                                {item.place && <p className="record-place">{item.place}</p>}
+                                <ul className="record-detail">
+                                    {item.details.map((detail) => (
+                                        <li key={detail}>{detail}</li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </li>
+                    ))}
+                </ol>
+
+                <div className="section-header spaced">
+                    <span className="kicker">{copy.education.kicker}</span>
+                    <h2>{copy.education.title}</h2>
+                </div>
+                <p className="texto">{copy.education.intro}</p>
+                <ol className="record-list">
+                    {copy.education.items.map((item) => (
                         <li className="record-item" key={item.title}>
                             <span className="record-period">{item.period}</span>
                             <div className="record-body">
