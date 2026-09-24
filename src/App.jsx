@@ -157,19 +157,21 @@ export default function App() {
                     title: "Sobre mí",
                     kicker: "Perfil",
                     highlights: [
-                        "Soy Unity Developer y Game Designer con más de cuatro años de experiencia desarrollando videojuegos en C#. Mi última experiencia fue en Games Station Studio, donde desarrollé el sistema de habilidades y distintas mecánicas para Heroes of Valhalla y Grow Empire Rome, además de refactorizar y optimizar código legacy, corregir bugs y reparar herramientas internas del equipo.",
-                        "Trabajo con patrones de diseño como State y Facade, POO y Clean Code, y me muevo con soltura en todo el ciclo de un juego: prototipo, gameplay, UI/UX, testing, optimización y builds. Colaboré con equipos multidisciplinarios de arte y game design de Argentina, Uruguay y Francia, y también desarrollo aplicaciones web como Desarrollador Full Stack con React.",
+                        "Soy Maximiliano Caneda, desarrollador y diseñador de videojuegos de Argentina. Hace más de cuatro años que trabajo con Unity y C#, llevando ideas desde el prototipo hasta juegos terminados y jugables. Trabajé en Games Station Studio, Lightning Vortex Technologies e Interlude.gg, y como investigador experimental en el Laboratorio LIVE de la UAI.",
+                        "Desarrollé los juegos Lost in the Swamp, Where is Steven? y Catacombs of Empire, y mecánicas para Heroes of Valhalla y Grow Empire Rome. En Heroes of Valhalla hice el sistema de habilidades automatizado. Además, tengo inglés técnico, lo que me permite trabajar con documentación, herramientas y equipos internacionales.",
                     ],
                     more: [
-                        "Soy Maximiliano Caneda, tengo 25 años y soy de Lanús, Buenos Aires. Mi formación en inglés desde temprana edad me permitió trabajar cómodamente con documentación técnica, pipelines y referencias de programación internacionales.",
-                        "Me gradué como Licenciado en Producción de Simuladores y Videojuegos en la Universidad Abierta Interamericana (UAI) con un promedio de 8.70, y también me recibí de Técnico en Programación como Desarrollador Full Stack en la EEST N° 5 “John F. Kennedy”. Mi tesis se tituló “El bajo nivel competitivo genera respuestas emocionales agresivas en jugadores”.",
+                        "Tengo 25 años. Me gradué como Licenciado en Producción de Simuladores y Videojuegos en la Universidad Abierta Interamericana (UAI) con un promedio de 8.70, y me recibí de Técnico en Programación como Desarrollador Full Stack en la EEST N° 5 “John F. Kennedy”. Mi tesis se tituló “El bajo nivel competitivo genera respuestas emocionales agresivas en jugadores”.",
+                        "En Games Station Studio, además del sistema de habilidades, refactoricé y optimicé código legacy, corregí bugs, hice testing y documentación, y reparé herramientas internas del equipo, trabajando junto a las áreas de arte y game design.",
                     ],
-                    work: "Trabajé en la empresa de juegos NFT ",
-                    workSpan: " durante 1 año y realicé 3 juegos para esta empresa. Como estudiante, participé activamente en el ",
+                    work: "Trabajé durante 1 año en la empresa de juegos NFT ",
+                    workSpan: ", donde realicé 3 juegos con total libertad creativa junto a un equipo de Francia, Uruguay y Argentina. Como estudiante, participé activamente en el ",
                     workLab: "Laboratorio de videojuegos experimentales de la UAI",
-                    workEnd: " entre 2020 y 2024.",
-                    closing:
-                        "En 2026 completé la capacitación en Desarrollo Full Stack con React.js en Talento Tech, para seguir fortaleciendo mi perfil combinando programación, diseño y desarrollo de sistemas interactivos tanto en videojuegos como en aplicaciones web.",
+                    workEnd: " entre 2020 y 2024, desarrollando prototipos con mecánicas experimentales.",
+                    closing: [
+                        "Trabajo con patrones de diseño como State y Facade, POO, Clean Code y metodologías ágiles, y me muevo con soltura en todo el ciclo de un juego: prototipo, gameplay, UI/UX, testing, optimización y builds.",
+                        "En 2026 completé la capacitación en Desarrollo Full Stack con React.js en Talento Tech, para combinar programación, diseño y desarrollo de sistemas interactivos tanto en videojuegos como en aplicaciones web.",
+                    ],
                     showMore: "Ver más",
                     showLess: "Retraer",
                 },
@@ -340,19 +342,21 @@ export default function App() {
                     title: "About me",
                     kicker: "Profile",
                     highlights: [
-                        "I am a Unity Developer and Game Designer with over four years of experience building video games in C#. Most recently I worked at Games Station Studio, where I developed the skill system and several mechanics for Heroes of Valhalla and Grow Empire Rome, while also refactoring and optimising legacy code, fixing bugs and repairing the team’s internal tools.",
-                        "I work with design patterns such as State and Facade, OOP and Clean Code, and I am comfortable across the whole life cycle of a game: prototyping, gameplay, UI/UX, testing, optimisation and builds. I have collaborated with multidisciplinary art and game design teams from Argentina, Uruguay and France, and I also build web applications as a Full Stack Developer with React.",
+                        "I am Maximiliano Caneda, a video game developer and designer from Argentina. I have been working with Unity and C# for over four years, taking ideas from prototype to finished, playable games. I have worked at Games Station Studio, Lightning Vortex Technologies and Interlude.gg, and as an experimental researcher at the UAI LIVE Lab.",
+                        "I built the games Lost in the Swamp, Where is Steven? and Catacombs of Empire, and developed mechanics for Heroes of Valhalla and Grow Empire Rome. For Heroes of Valhalla I built the automated skill system. I also have technical English, which lets me work with documentation, tools and international teams.",
                     ],
                     more: [
-                        "I am Maximiliano Caneda, I am 25 years old and I am based in Lanús, Buenos Aires. My early English education allows me to work comfortably with technical documentation, programming pipelines, and international development resources.",
-                        "I hold a Bachelor’s degree in Simulation and Video Game Production from Universidad Abierta Interamericana (UAI), graduating with a GPA of 8.70. I also graduated as a Programming Technician, qualified as a Full Stack Developer, from EEST N° 5 “John F. Kennedy”. My thesis was titled “Low competitive levels generate aggressive emotional responses in players.”",
+                        "I am 25 years old. I hold a Bachelor’s degree in Simulation and Video Game Production from Universidad Abierta Interamericana (UAI), graduating with a GPA of 8.70, and I graduated as a Programming Technician, qualified as a Full Stack Developer, from EEST N° 5 “John F. Kennedy”. My thesis was titled “Low competitive levels generate aggressive emotional responses in players.”",
+                        "At Games Station Studio, besides the skill system, I refactored and optimised legacy code, fixed bugs, handled testing and documentation, and repaired the team’s internal tools, working alongside the art and game design teams.",
                     ],
-                    work: "I worked at the NFT game company ",
-                    workSpan: " for 1 year and created 3 games for the company. As a student, I actively participated in the ",
+                    work: "I worked for 1 year at the NFT game company ",
+                    workSpan: ", where I created 3 games with full creative freedom alongside a team from France, Uruguay and Argentina. As a student, I actively participated in the ",
                     workLab: "UAI experimental video game lab",
-                    workEnd: " between 2020 and 2024.",
-                    closing:
-                        "In 2026 I completed the Full Stack Development with React.js training at Talento Tech, to keep strengthening my profile by combining programming, design, and interactive system development across both games and web applications.",
+                    workEnd: " between 2020 and 2024, building prototypes with experimental mechanics.",
+                    closing: [
+                        "I work with design patterns such as State and Facade, OOP, Clean Code and agile methodologies, and I am comfortable across the whole life cycle of a game: prototyping, gameplay, UI/UX, testing, optimisation and builds.",
+                        "In 2026 I completed the Full Stack Development with React.js training at Talento Tech, to combine programming, design and interactive system development across both games and web applications.",
+                    ],
                     showMore: "Show more",
                     showLess: "Show less",
                 },
@@ -745,7 +749,11 @@ export default function App() {
                                 </a>
                                 {copy.about.workEnd}
                             </p>
-                            <p className="texto">{copy.about.closing}</p>
+                            {copy.about.closing.map((paragraph) => (
+                                <p className="texto" key={paragraph}>
+                                    {paragraph}
+                                </p>
+                            ))}
                         </div>
                     </div>
 
