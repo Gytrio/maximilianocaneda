@@ -225,10 +225,12 @@ export default function App() {
                     kicker: "Trayectoria",
                     title: "Experiencia laboral",
                     intro: "Los estudios y equipos donde desarrollé videojuegos.",
+                    visit: "Visitar el sitio de",
                     items: [
                         {
                             period: "2024 - 2025",
                             title: "Games Station Studio",
+                            url: "https://gstationstudio.com/",
                             place: "Unity Developer",
                             details: [
                                 "Desarrollé mecánicas para los juegos Heroes of Valhalla y Grow Empire Rome.",
@@ -238,7 +240,8 @@ export default function App() {
                         },
                         {
                             period: "2020 - 2024",
-                            title: "Laboratorio LIVE - UAI",
+                            title: "LIVE - UAI",
+                            url: "https://live-games.itch.io/",
                             place: "Investigador experimental",
                             details: [
                                 "Desarrollo de juegos y prototipos con mecánicas experimentales o poco usadas.",
@@ -410,10 +413,12 @@ export default function App() {
                     kicker: "Track record",
                     title: "Work experience",
                     intro: "The studios and teams where I built video games.",
+                    visit: "Visit the website of",
                     items: [
                         {
                             period: "2024 - 2025",
                             title: "Games Station Studio",
+                            url: "https://gstationstudio.com/",
                             place: "Unity Developer",
                             details: [
                                 "Developed mechanics for the games Heroes of Valhalla and Grow Empire Rome.",
@@ -423,7 +428,8 @@ export default function App() {
                         },
                         {
                             period: "2020 - 2024",
-                            title: "LIVE Lab - UAI",
+                            title: "LIVE - UAI",
+                            url: "https://live-games.itch.io/",
                             place: "Experimental researcher",
                             details: [
                                 "Development of games and prototypes with experimental or rarely used mechanics.",
@@ -812,7 +818,7 @@ export default function App() {
                 <p className="texto">{copy.experience.intro}</p>
                 <ol className="record-list">
                     {copy.experience.items.map((item) => (
-                        <li className="record-item" key={item.title}>
+                        <li className={`record-item${item.url ? " has-link" : ""}`} key={item.title}>
                             <span className="record-period">{item.period}</span>
                             <div className="record-body">
                                 <h4>{item.title}</h4>
@@ -823,6 +829,27 @@ export default function App() {
                                     ))}
                                 </ul>
                             </div>
+                            {item.url && (
+                                <a
+                                    className="record-link"
+                                    href={item.url}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    aria-label={`${copy.experience.visit} ${item.title}`}
+                                    title={`${copy.experience.visit} ${item.title}`}
+                                >
+                                    <svg viewBox="0 0 24 24" aria-hidden focusable="false">
+                                        <path
+                                            fill="none"
+                                            stroke="currentColor"
+                                            strokeWidth="2"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            d="M14 4h6v6m0-6-9 9M18 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4"
+                                        />
+                                    </svg>
+                                </a>
+                            )}
                         </li>
                     ))}
                 </ol>

@@ -532,6 +532,38 @@ footer[id] {
     background: var(--bg-soft);
 }
 
+/* Boton al sitio web del lugar, centrado a la derecha del item. */
+.record-item.has-link {
+    grid-template-columns: 190px 1fr auto;
+}
+
+.record-link {
+    align-self: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    margin-right: 20px;
+    border: 1px solid var(--line-strong);
+    border-radius: 50%;
+    background: var(--bg);
+    color: var(--ink);
+    transition: transform 0.16s ease, background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.record-link:hover {
+    transform: translateY(-2px);
+    background: var(--ink);
+    border-color: var(--ink);
+    color: #fff;
+}
+
+.record-link svg {
+    width: 19px;
+    height: 19px;
+}
+
 .record-period {
     font-family: 'JetBrains Mono', monospace;
     font-size: 12.5px;
@@ -1055,9 +1087,15 @@ footer {
         margin-left: auto;
     }
 
-    .record-item {
+    .record-item,
+    .record-item.has-link {
         grid-template-columns: 1fr;
         gap: 8px;
+    }
+
+    .record-link {
+        justify-self: start;
+        margin: 6px 0 0;
     }
 }
 
