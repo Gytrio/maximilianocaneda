@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 
 import fotoPerfil from "./assets/Foto-Perfil.jpg";
 import lost from "./assets/LostSwampFoto.png";
@@ -74,6 +74,8 @@ export default function App() {
     });
     const [activeSection, setActiveSection] = useState("hero");
     const [emailCopied, setEmailCopied] = useState(false);
+    const [aboutExpanded, setAboutExpanded] = useState(false);
+    const aboutCardRef = useRef(null);
 
     /* El aviso de "copiado" vuelve solo al estado normal. */
     useEffect(() => {
@@ -154,14 +156,24 @@ export default function App() {
                 about: {
                     title: "Sobre mí",
                     kicker: "Perfil",
-                    paragraphs: [
-                        "Soy Maximiliano Caneda, tengo 25 años y soy desarrollador y diseñador de videojuegos de Lanús, Buenos Aires. Mi formación en inglés desde temprana edad me permitió trabajar cómodamente con documentación técnica, pipelines y referencias de programación internacionales.",
-                        "Me gradué como Licenciado en Producción de Simuladores y Videojuegos en la Universidad Abierta Interamericana (UAI) con un promedio de 8.70, y también soy Técnico en Programación por la EEST N° 5 “John F. Kennedy”. Mi tesis se tituló “El bajo nivel competitivo genera respuestas emocionales agresivas en jugadores”.",
-                        "Además, completé una capacitación en React.js para fortalecer mi perfil como desarrollador Full Stack, combinando programación, diseño y desarrollo de sistemas interactivos tanto en videojuegos como en aplicaciones web.",
+                    highlights: [
+                        "Soy Maximiliano Caneda, desarrollador y diseñador de videojuegos de Argentina. Hace más de cuatro años que trabajo con Unity y C#, llevando ideas desde el prototipo hasta juegos terminados y jugables. Trabajé en Games Station Studio, Lightning Vortex Technologies e Interlude.gg, y como investigador experimental en el Laboratorio LIVE de la UAI.",
+                        "Desarrollé los juegos Lost in the Swamp, Where is Steven? y Catacombs of Empire, y mecánicas para Heroes of Valhalla y Grow Empire Rome. En Heroes of Valhalla hice el sistema de habilidades automatizado. Además, tengo inglés técnico, lo que me permite trabajar con documentación, herramientas y equipos internacionales.",
                     ],
-                    work: "Trabajé en la empresa de juegos NFT ",
-                    workSpan: " durante 1 año y realicé 3 juegos para esta empresa. Como estudiante, participé activamente en el ",
-                    workEnd: " entre 2020 y 2024.",
+                    more: [
+                        "Tengo 25 años. Me gradué como Licenciado en Producción de Simuladores y Videojuegos en la Universidad Abierta Interamericana (UAI) con un promedio de 8.70, y me recibí de Técnico en Programación como Desarrollador Full Stack en la EEST N° 5 “John F. Kennedy”. Mi tesis se tituló “El bajo nivel competitivo genera respuestas emocionales agresivas en jugadores”.",
+                        "En Games Station Studio, además del sistema de habilidades, refactoricé y optimicé código legacy, corregí bugs, hice testing y documentación, y reparé herramientas internas del equipo, trabajando junto a las áreas de arte y game design.",
+                    ],
+                    work: "Trabajé durante 1 año en la empresa de juegos NFT ",
+                    workSpan: ", donde realicé 3 juegos con total libertad creativa junto a un equipo de Francia, Uruguay y Argentina. Como estudiante, participé activamente en el ",
+                    workLab: "Laboratorio de videojuegos experimentales de la UAI",
+                    workEnd: " entre 2020 y 2024, desarrollando prototipos con mecánicas experimentales.",
+                    closing: [
+                        "Trabajo con patrones de diseño como State y Facade, POO, Clean Code y metodologías ágiles, y me muevo con soltura en todo el ciclo de un juego: prototipo, gameplay, UI/UX, testing, optimización y builds.",
+                        "En 2026 completé la capacitación en Desarrollo Full Stack con React.js en Talento Tech, para combinar programación, diseño y desarrollo de sistemas interactivos tanto en videojuegos como en aplicaciones web.",
+                    ],
+                    showMore: "Ver más",
+                    showLess: "Retraer",
                 },
                 education: {
                     kicker: "Formación",
@@ -186,7 +198,10 @@ export default function App() {
                             period: "2012 - 2018",
                             title: "Técnico en Programación",
                             place: "EEST N° 5 “John F. Kennedy”",
-                            details: ["Base sólida en algoritmos, estructuras de datos y desarrollo de software."],
+                            details: [
+                                "Me recibí como Desarrollador Full Stack.",
+                                "Base sólida en algoritmos, estructuras de datos y desarrollo de software.",
+                            ],
                         },
                         {
                             period: "2007 - 2018",
@@ -196,8 +211,9 @@ export default function App() {
                             ],
                         },
                         {
-                            period: "Capacitación",
+                            period: "2026",
                             title: "Desarrollo Full Stack con React.js",
+                            place: "Capacitación · Talento Tech",
                             details: ["Programación web moderna para complementar mi perfil de desarrollador."],
                         },
                     ],
@@ -210,7 +226,7 @@ export default function App() {
                         {
                             period: "2024 - 2025",
                             title: "Games Station Studio",
-                            place: "Desarrollo de videojuegos",
+                            place: "Unity Developer",
                             details: [
                                 "Desarrollé mecánicas para los juegos Heroes of Valhalla y Grow Empire Rome.",
                                 "Refactorización de código, optimización, corrección de bugs, testing, documentación y reparación de herramientas para el desarrollo legacy.",
@@ -220,7 +236,7 @@ export default function App() {
                         {
                             period: "2020 - 2024",
                             title: "Laboratorio LIVE - UAI",
-                            place: "Laboratorio de videojuegos experimentales",
+                            place: "Investigador experimental",
                             details: [
                                 "Desarrollo de juegos y prototipos con mecánicas experimentales o poco usadas.",
                                 "Desarrollo en C# usando patrones de diseño y prácticas como Facade, State, Clean Code y POO.",
@@ -288,7 +304,6 @@ export default function App() {
                 footer: {
                     kicker: "Contacto",
                     title: "Contactame",
-                    intro: "¿Tenés un proyecto en mente? Escribime y lo charlamos.",
                     email: "maxicaneda45@gmail.com",
                     emailCta: "Enviar un correo",
                     copy: "Copiar correo",
@@ -326,14 +341,24 @@ export default function App() {
                 about: {
                     title: "About me",
                     kicker: "Profile",
-                    paragraphs: [
-                        "I am Maximiliano Caneda, I am 25 years old, and a video game developer and designer based in Lanús, Buenos Aires. My early English education allows me to work comfortably with technical documentation, programming pipelines, and international development resources.",
-                        "I hold a Bachelor’s degree in Simulation and Video Game Production from Universidad Abierta Interamericana (UAI), graduating with a GPA of 8.70. I am also a Programming Technician from EEST N° 5 “John F. Kennedy”. My thesis was titled “Low competitive levels generate aggressive emotional responses in players.”",
-                        "In addition, I completed a React.js training program to strengthen my Full Stack development skills, allowing me to combine programming, design, and system development across both games and web applications.",
+                    highlights: [
+                        "I am Maximiliano Caneda, a video game developer and designer from Argentina. I have been working with Unity and C# for over four years, taking ideas from prototype to finished, playable games. I have worked at Games Station Studio, Lightning Vortex Technologies and Interlude.gg, and as an experimental researcher at the UAI LIVE Lab.",
+                        "I built the games Lost in the Swamp, Where is Steven? and Catacombs of Empire, and developed mechanics for Heroes of Valhalla and Grow Empire Rome. For Heroes of Valhalla I built the automated skill system. I also have technical English, which lets me work with documentation, tools and international teams.",
                     ],
-                    work: "I worked at the NFT game company ",
-                    workSpan: " for 1 year and created 3 games for the company. As a student, I actively participated in the ",
-                    workEnd: " between 2020 and 2024.",
+                    more: [
+                        "I am 25 years old. I hold a Bachelor’s degree in Simulation and Video Game Production from Universidad Abierta Interamericana (UAI), graduating with a GPA of 8.70, and I graduated as a Programming Technician, qualified as a Full Stack Developer, from EEST N° 5 “John F. Kennedy”. My thesis was titled “Low competitive levels generate aggressive emotional responses in players.”",
+                        "At Games Station Studio, besides the skill system, I refactored and optimised legacy code, fixed bugs, handled testing and documentation, and repaired the team’s internal tools, working alongside the art and game design teams.",
+                    ],
+                    work: "I worked for 1 year at the NFT game company ",
+                    workSpan: ", where I created 3 games with full creative freedom alongside a team from France, Uruguay and Argentina. As a student, I actively participated in the ",
+                    workLab: "UAI experimental video game lab",
+                    workEnd: " between 2020 and 2024, building prototypes with experimental mechanics.",
+                    closing: [
+                        "I work with design patterns such as State and Facade, OOP, Clean Code and agile methodologies, and I am comfortable across the whole life cycle of a game: prototyping, gameplay, UI/UX, testing, optimisation and builds.",
+                        "In 2026 I completed the Full Stack Development with React.js training at Talento Tech, to combine programming, design and interactive system development across both games and web applications.",
+                    ],
+                    showMore: "Show more",
+                    showLess: "Show less",
                 },
                 education: {
                     kicker: "Education",
@@ -358,7 +383,10 @@ export default function App() {
                             period: "2012 - 2018",
                             title: "Programming Technician",
                             place: "EEST N° 5 “John F. Kennedy”",
-                            details: ["Solid grounding in algorithms, data structures and software development."],
+                            details: [
+                                "Graduated as a Full Stack Developer.",
+                                "Solid grounding in algorithms, data structures and software development.",
+                            ],
                         },
                         {
                             period: "2007 - 2018",
@@ -368,8 +396,9 @@ export default function App() {
                             ],
                         },
                         {
-                            period: "Training",
+                            period: "2026",
                             title: "Full Stack development with React.js",
+                            place: "Training · Talento Tech",
                             details: ["Modern web programming to round out my developer profile."],
                         },
                     ],
@@ -382,7 +411,7 @@ export default function App() {
                         {
                             period: "2024 - 2025",
                             title: "Games Station Studio",
-                            place: "Video game development",
+                            place: "Unity Developer",
                             details: [
                                 "Developed mechanics for the games Heroes of Valhalla and Grow Empire Rome.",
                                 "Code refactoring, optimisation, bug fixing, testing, documentation and repair of legacy development tools.",
@@ -392,7 +421,7 @@ export default function App() {
                         {
                             period: "2020 - 2024",
                             title: "LIVE Lab - UAI",
-                            place: "Experimental video game lab",
+                            place: "Experimental researcher",
                             details: [
                                 "Development of games and prototypes with experimental or rarely used mechanics.",
                                 "C# development using design patterns and practices such as Facade, State, Clean Code and OOP.",
@@ -460,7 +489,6 @@ export default function App() {
                 footer: {
                     kicker: "Contact",
                     title: "Contact me",
-                    intro: "Got a project in mind? Drop me a line and let’s talk.",
                     email: "maxicaneda45@gmail.com",
                     emailCta: "Send an email",
                     copy: "Copy email",
@@ -496,6 +524,17 @@ export default function App() {
 
     const handleToggleLanguage = () => {
         setLanguage((current) => (current === "es" ? "en" : "es"));
+    };
+
+    /* Al retraer, si la tarjeta quedo por encima de la pantalla se la vuelve a mostrar. */
+    const handleToggleAbout = () => {
+        const collapsing = aboutExpanded;
+        setAboutExpanded(!collapsing);
+
+        const card = aboutCardRef.current;
+        if (collapsing && card && card.getBoundingClientRect().top < 0) {
+            card.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
     };
 
     const handleScrollTop = () => {
@@ -684,27 +723,59 @@ export default function App() {
                     <h2>{copy.about.title}</h2>
                 </div>
 
-                <div className="panel-grid">
-                    <div className="panel-card">
-                        {copy.about.paragraphs.map((paragraph) => (
-                            <p className="texto" key={paragraph}>
-                                {paragraph}
-                            </p>
-                        ))}
-                    </div>
-                    <div className="panel-card">
-                        <p className="texto">
-                            {copy.about.work}
-                            <a href="https://twitter.com/ProjInterlude" target="_blank" rel="noreferrer">
-                                Interlude.gg
-                            </a>
-                            {copy.about.workSpan}
-                            <a href="https://live-games.itch.io/" target="_blank" rel="noreferrer">
-                                Laboratorio de videojuegos experimentales de la UAI
-                            </a>
-                            {copy.about.workEnd}
+                <div className={`panel-card about-card${aboutExpanded ? " is-expanded" : ""}`} ref={aboutCardRef}>
+                    {copy.about.highlights.map((paragraph) => (
+                        <p className="texto about-highlight" key={paragraph}>
+                            {paragraph}
                         </p>
+                    ))}
+
+                    {/* El resto del texto queda recortado con un degradado hasta que se expande. */}
+                    <div className="about-more" id="about-more">
+                        <div className="about-more-inner">
+                            {copy.about.more.map((paragraph) => (
+                                <p className="texto" key={paragraph}>
+                                    {paragraph}
+                                </p>
+                            ))}
+                            <p className="texto">
+                                {copy.about.work}
+                                <a href="https://twitter.com/ProjInterlude" target="_blank" rel="noreferrer">
+                                    Interlude.gg
+                                </a>
+                                {copy.about.workSpan}
+                                <a href="https://live-games.itch.io/" target="_blank" rel="noreferrer">
+                                    {copy.about.workLab}
+                                </a>
+                                {copy.about.workEnd}
+                            </p>
+                            {copy.about.closing.map((paragraph) => (
+                                <p className="texto" key={paragraph}>
+                                    {paragraph}
+                                </p>
+                            ))}
+                        </div>
                     </div>
+
+                    <button
+                        className="about-toggle"
+                        type="button"
+                        onClick={handleToggleAbout}
+                        aria-expanded={aboutExpanded}
+                        aria-controls="about-more"
+                    >
+                        {aboutExpanded ? copy.about.showLess : copy.about.showMore}
+                        <svg viewBox="0 0 24 24" aria-hidden focusable="false">
+                            <path
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2.2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="m6 9 6 6 6-6"
+                            />
+                        </svg>
+                    </button>
                 </div>
 
                 <div className="section-header spaced">
@@ -811,7 +882,6 @@ export default function App() {
                 <div className="footer-inner">
                     <span className="kicker light">{copy.footer.kicker}</span>
                     <h2>{copy.footer.title}</h2>
-                    <p className="footer-intro">{copy.footer.intro}</p>
                     <div className="footer-mail-row">
                         <a className="footer-mail" href={`mailto:${copy.footer.email}`}>
                             {copy.footer.email}
