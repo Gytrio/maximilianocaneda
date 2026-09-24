@@ -318,12 +318,6 @@ footer[id] {
     align-items: start;
 }
 
-/* Sin el video destacado la presentacion ocupa una sola columna, acotada para que se lea bien. */
-.intro-grid.is-single {
-    grid-template-columns: 1fr;
-    max-width: 78ch;
-}
-
 .lead {
     margin: 0 0 16px;
     font-family: 'Poppins', sans-serif;
@@ -416,17 +410,97 @@ footer[id] {
     font-size: 20px;
 }
 
-/* ---------- "Sobre mi": un unico bloque de texto corrido ---------- */
-.about-text {
-    display: grid;
-    gap: 18px;
-    max-width: 76ch;
-    margin-top: 6px;
+.panel-card {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 26px;
+    box-shadow: var(--shadow-sm);
 }
 
-.about-text .texto {
-    margin: 0;
+.panel-card .texto {
     max-width: none;
+}
+
+.panel-card .texto:first-child {
+    margin-top: 0;
+}
+
+/* Sobre mi: dos parrafos destacados y el resto desplegable con degradado. */
+.about-card {
+    position: relative;
+}
+
+.about-card .texto {
+    max-width: 80ch;
+}
+
+.about-highlight {
+    color: var(--ink-soft);
+    font-size: 17px;
+}
+
+/* La fila 0fr -> 1fr anima la altura sin medirla; el min-height deja ver el comienzo del texto. */
+.about-more {
+    position: relative;
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.28s ease;
+}
+
+.about-more-inner {
+    min-height: 5.5em;
+    overflow: hidden;
+}
+
+.about-more::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, var(--bg) 92%);
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+}
+
+.about-card.is-expanded .about-more {
+    grid-template-rows: 1fr;
+}
+
+.about-card.is-expanded .about-more::after {
+    opacity: 0;
+}
+
+.about-toggle {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 4px auto 0;
+    padding: 8px 18px;
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    background: var(--bg);
+    color: var(--ink);
+    font: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.about-toggle:hover {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: #fff;
+}
+
+.about-toggle svg {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.28s ease;
+}
+
+.about-card.is-expanded .about-toggle svg {
+    transform: rotate(180deg);
 }
 
 /* ---------- Estudios y experiencia laboral ---------- */
@@ -729,16 +803,9 @@ footer {
 }
 
 .footer-inner h2 {
-    margin: 0 0 12px;
+    margin: 0 0 24px;
     color: #fff;
     font-size: clamp(28px, 4vw, 42px);
-}
-
-.footer-intro {
-    margin: 0 auto 22px;
-    max-width: 46ch;
-    color: rgba(255, 255, 255, 0.65);
-    line-height: 1.7;
 }
 
 .footer-mail-row {
@@ -1039,5 +1106,11 @@ footer {
 
     .animated {
         animation: none;
+    }
+
+    .about-more,
+    .about-more::after,
+    .about-toggle svg {
+        transition: none;
     }
 }

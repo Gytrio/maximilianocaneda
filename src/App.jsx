@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 
 import fotoPerfil from "./assets/Foto-Perfil.jpg";
 import lost from "./assets/LostSwampFoto.png";
@@ -13,29 +13,9 @@ import reaperLogo from "./assets/tech/reaper.svg";
 import htmlLogo from "./assets/tech/html5.svg";
 import cssLogo from "./assets/tech/css3.svg";
 import blenderLogo from "./assets/tech/blender.svg";
-import pythonLogo from "./assets/tech/python.svg";
 import linkedinLogo from "./assets/tech/linkedin.svg";
 
 const ROOT_PATH = "C:\\Users\\Maximiliano-Caneda";
-
-/* Poner en true para volver a mostrar el video de "Proyecto destacado" al lado de la presentacion. */
-const SHOW_FEATURED_PROJECT = false;
-
-/* Unico lugar a tocar si hace falta: la edad del "Sobre mi" se calcula sola a partir de esta fecha. */
-const BIRTH_DATE = "2000-04-05";
-
-/* Devuelve los anios cumplidos, restando uno si todavia no paso el cumpleanios de este anio. */
-function calculateAge(isoBirthDate, today = new Date()) {
-    const birth = new Date(`${isoBirthDate}T00:00:00`);
-    let age = today.getFullYear() - birth.getFullYear();
-    const monthDiff = today.getMonth() - birth.getMonth();
-
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
-        age -= 1;
-    }
-
-    return age;
-}
 
 const SECTIONS = [
     { id: "hero", navKey: "home", segment: { es: "", en: "" } },
@@ -58,7 +38,6 @@ const PRIMARY_TECH = [
 ];
 
 const SECONDARY_TECH = [
-    { src: pythonLogo, alt: "Python", name: "Python" },
     { src: reaperLogo, alt: "Reaper", name: "Reaper" },
     { src: htmlLogo, alt: "HTML5", name: "HTML5" },
     { src: cssLogo, alt: "CSS3", name: "CSS3" },
@@ -95,7 +74,8 @@ export default function App() {
     });
     const [activeSection, setActiveSection] = useState("hero");
     const [emailCopied, setEmailCopied] = useState(false);
-    const age = useMemo(() => calculateAge(BIRTH_DATE), []);
+    const [aboutExpanded, setAboutExpanded] = useState(false);
+    const aboutCardRef = useRef(null);
 
     /* El aviso de "copiado" vuelve solo al estado normal. */
     useEffect(() => {
@@ -176,45 +156,24 @@ export default function App() {
                 about: {
                     title: "Sobre mí",
                     kicker: "Perfil",
-                    /* Parrafos previos al que lleva los enlaces. */
-                    paragraphsBefore: [
-                        `Soy Maximiliano Caneda, tengo ${age} años y soy desarrollador y diseñador de videojuegos de Lanús, Buenos Aires. Mi formación en inglés desde temprana edad me permite trabajar cómodamente con documentación técnica, pipelines y referencias de programación internacionales.`,
-                        "Me gradué como Licenciado en Producción de Simuladores y Videojuegos en la Universidad Abierta Interamericana (UAI) con un promedio de 8.70, y también soy Técnico en Programación por la EEST N° 5 “John F. Kennedy”. Mi tesis se tituló “El bajo nivel competitivo genera respuestas emocionales agresivas en jugadores”. Más adelante completé una capacitación en React.js que reforzó mi perfil como desarrollador Full Stack, de modo que hoy combino programación, diseño y desarrollo de sistemas interactivos tanto en videojuegos como en aplicaciones web.",
+                    highlights: [
+                        "Soy Maximiliano Caneda, desarrollador y diseñador de videojuegos de Argentina. Hace más de cuatro años que trabajo con Unity y C#, llevando ideas desde el prototipo hasta juegos terminados y jugables. Trabajé en Games Station Studio, Lightning Vortex Technologies e Interlude.gg, y como investigador experimental en el Laboratorio LIVE de la UAI.",
+                        "Desarrollé los juegos Lost in the Swamp, Where is Steven? y Catacombs of Empire, y mecánicas para Heroes of Valhalla y Grow Empire Rome. En Heroes of Valhalla hice el sistema de habilidades automatizado. Además, tengo inglés técnico, lo que me permite trabajar con documentación, herramientas y equipos internacionales.",
                     ],
-                    work: "En el plano profesional trabajé durante un año en Interlude.gg, una empresa de juegos NFT para la que desarrollé tres juegos completos, y entre 2020 y 2024 participé activamente en el ",
-                    workEnd: ", donde exploré mecánicas experimentales junto a otros estudiantes.",
-                    /* Parrafo posterior al que lleva el enlace: cierra el relato profesional. */
-                    paragraphsAfter: [
-                        "Más recientemente trabajé en Games Station Studio, en dos de sus juegos: Heroes of Valhalla y Grow Empire: Rome. En Heroes of Valhalla desarrollé la inteligencia artificial que decide qué habilidad lanza cada héroe, evaluando las necesidades del combate, el contexto de la partida y el área de efecto para elegir la más conveniente en cada situación.",
+                    more: [
+                        "Tengo 25 años. Me gradué como Licenciado en Producción de Simuladores y Videojuegos en la Universidad Abierta Interamericana (UAI) con un promedio de 8.70, y me recibí de Técnico en Programación como Desarrollador Full Stack en la EEST N° 5 “John F. Kennedy”. Mi tesis se tituló “El bajo nivel competitivo genera respuestas emocionales agresivas en jugadores”.",
+                        "En Games Station Studio, además del sistema de habilidades, refactoricé y optimicé código legacy, corregí bugs, hice testing y documentación, y reparé herramientas internas del equipo, trabajando junto a las áreas de arte y game design.",
                     ],
-                },
-                freelance: {
-                    kicker: "Independiente",
-                    title: "Trabajos freelance",
-                    intro: "Proyectos que tomé por cuenta propia, en desarrollo de videojuegos y en programación.",
-                    items: [
-                        {
-                            period: "Unity Developer",
-                            title: "Minijuegos para otras empresas",
-                            details: [
-                                "Desarrollé un arcade de minitanques.",
-                                "Recreé un estadio con público resuelto mediante texturas y lo dejé optimizado para correr de forma fluida en celulares.",
-                                "Desarrollo en C# con el motor Unity.",
-                            ],
-                        },
-                        {
-                            period: "Programador",
-                            title: "Satelital",
-                            place: "Sistema de rendiciones de gastos con IA",
-                            details: [
-                                "Desarrollé un sistema con inteligencia artificial que automatiza las rendiciones de gastos: lee los comprobantes y verifica que el Excel esté completo.",
-                                "Completa los datos que faltan y corrige los que están mal cargados.",
-                                "Imputa cada gasto a la cuenta corriente que corresponde según su tipo.",
-                                "Incluye un visor en el que la IA cataloga cada error por tipo, lo que permite entender y resolver los problemas de forma rápida e intuitiva.",
-                                "Desarrollo en Python.",
-                            ],
-                        },
+                    work: "Trabajé durante 1 año en la empresa de juegos NFT ",
+                    workSpan: ", donde realicé 3 juegos con total libertad creativa junto a un equipo de Francia, Uruguay y Argentina. Como estudiante, participé activamente en el ",
+                    workLab: "Laboratorio de videojuegos experimentales de la UAI",
+                    workEnd: " entre 2020 y 2024, desarrollando prototipos con mecánicas experimentales.",
+                    closing: [
+                        "Trabajo con patrones de diseño como State y Facade, POO, Clean Code y metodologías ágiles, y me muevo con soltura en todo el ciclo de un juego: prototipo, gameplay, UI/UX, testing, optimización y builds.",
+                        "En 2026 completé la capacitación en Desarrollo Full Stack con React.js en Talento Tech, para combinar programación, diseño y desarrollo de sistemas interactivos tanto en videojuegos como en aplicaciones web.",
                     ],
+                    showMore: "Ver más",
+                    showLess: "Retraer",
                 },
                 education: {
                     kicker: "Formación",
@@ -239,7 +198,10 @@ export default function App() {
                             period: "2012 - 2018",
                             title: "Técnico en Programación",
                             place: "EEST N° 5 “John F. Kennedy”",
-                            details: ["Base sólida en algoritmos, estructuras de datos y desarrollo de software."],
+                            details: [
+                                "Me recibí como Desarrollador Full Stack.",
+                                "Base sólida en algoritmos, estructuras de datos y desarrollo de software.",
+                            ],
                         },
                         {
                             period: "2007 - 2018",
@@ -249,8 +211,9 @@ export default function App() {
                             ],
                         },
                         {
-                            period: "Capacitación",
+                            period: "2026",
                             title: "Desarrollo Full Stack con React.js",
+                            place: "Capacitación · Talento Tech",
                             details: ["Programación web moderna para complementar mi perfil de desarrollador."],
                         },
                     ],
@@ -263,9 +226,9 @@ export default function App() {
                         {
                             period: "2024 - 2025",
                             title: "Games Station Studio",
-                            place: "Desarrollo de videojuegos",
+                            place: "Unity Developer",
                             details: [
-                                "Desarrollé mecánicas para los juegos Heroes of Valhalla y Grow Empire: Rome.",
+                                "Desarrollé mecánicas para los juegos Heroes of Valhalla y Grow Empire Rome.",
                                 "Refactorización de código, optimización, corrección de bugs, testing, documentación y reparación de herramientas para el desarrollo legacy.",
                                 "Desarrollo en C# usando patrones de diseño y prácticas variadas, en contacto con distintas disciplinas de arte y game design.",
                             ],
@@ -273,7 +236,7 @@ export default function App() {
                         {
                             period: "2020 - 2024",
                             title: "Laboratorio LIVE - UAI",
-                            place: "Laboratorio de videojuegos experimentales",
+                            place: "Investigador experimental",
                             details: [
                                 "Desarrollo de juegos y prototipos con mecánicas experimentales o poco usadas.",
                                 "Desarrollo en C# usando patrones de diseño y prácticas como Facade, State, Clean Code y POO.",
@@ -293,7 +256,7 @@ export default function App() {
                         {
                             period: "2021 - 2022",
                             title: "Interlude.gg",
-                            place: "Unity Developer",
+                            place: "Empresa de juegos NFT",
                             details: [
                                 "Desarrollé los juegos Lost in the Swamp, Where is Steven? y Catacombs of Empire junto a sus 4 mapas en Unity, con total libertad creativa.",
                                 "Desarrollo en C# aplicando prácticas, principios y patrones como POO, metodologías ágiles, Clean Code y State.",
@@ -341,7 +304,6 @@ export default function App() {
                 footer: {
                     kicker: "Contacto",
                     title: "Contactame",
-                    intro: "¿Tenés un proyecto en mente? Escribime y lo charlamos.",
                     email: "maxicaneda45@gmail.com",
                     emailCta: "Enviar un correo",
                     copy: "Copiar correo",
@@ -379,45 +341,24 @@ export default function App() {
                 about: {
                     title: "About me",
                     kicker: "Profile",
-                    /* Parrafos previos al que lleva los enlaces. */
-                    paragraphsBefore: [
-                        `I am Maximiliano Caneda, I am ${age} years old, and a video game developer and designer based in Lanús, Buenos Aires. My early English education lets me work comfortably with technical documentation, programming pipelines, and international development resources.`,
-                        "I hold a Bachelor’s degree in Simulation and Video Game Production from Universidad Abierta Interamericana (UAI), graduating with a GPA of 8.70, and I am also a Programming Technician from EEST N° 5 “John F. Kennedy”. My thesis was titled “Low competitive levels generate aggressive emotional responses in players.” I later completed a React.js training program that strengthened my Full Stack profile, so today I combine programming, design, and system development across both games and web applications.",
+                    highlights: [
+                        "I am Maximiliano Caneda, a video game developer and designer from Argentina. I have been working with Unity and C# for over four years, taking ideas from prototype to finished, playable games. I have worked at Games Station Studio, Lightning Vortex Technologies and Interlude.gg, and as an experimental researcher at the UAI LIVE Lab.",
+                        "I built the games Lost in the Swamp, Where is Steven? and Catacombs of Empire, and developed mechanics for Heroes of Valhalla and Grow Empire Rome. For Heroes of Valhalla I built the automated skill system. I also have technical English, which lets me work with documentation, tools and international teams.",
                     ],
-                    work: "Professionally, I spent a year at Interlude.gg, an NFT game company for which I built three complete games, and between 2020 and 2024 I took an active part in the ",
-                    workEnd: ", where I explored experimental mechanics alongside other students.",
-                    /* Parrafo posterior al que lleva el enlace: cierra el relato profesional. */
-                    paragraphsAfter: [
-                        "More recently I worked at Games Station Studio on two of their games: Heroes of Valhalla and Grow Empire: Rome. On Heroes of Valhalla I developed the artificial intelligence that decides which ability each hero casts, weighing what the fight needs, the context of the match and the area of effect in order to pick the most useful one in each situation.",
+                    more: [
+                        "I am 25 years old. I hold a Bachelor’s degree in Simulation and Video Game Production from Universidad Abierta Interamericana (UAI), graduating with a GPA of 8.70, and I graduated as a Programming Technician, qualified as a Full Stack Developer, from EEST N° 5 “John F. Kennedy”. My thesis was titled “Low competitive levels generate aggressive emotional responses in players.”",
+                        "At Games Station Studio, besides the skill system, I refactored and optimised legacy code, fixed bugs, handled testing and documentation, and repaired the team’s internal tools, working alongside the art and game design teams.",
                     ],
-                },
-                freelance: {
-                    kicker: "Independent",
-                    title: "Freelance work",
-                    intro: "Projects I took on independently, in video game development and in programming.",
-                    items: [
-                        {
-                            period: "Unity Developer",
-                            title: "Minigames for other companies",
-                            details: [
-                                "Built an arcade mini-tank game.",
-                                "Recreated a stadium whose crowd was resolved through textures, and optimised it to run smoothly on mobile.",
-                                "C# development with the Unity engine.",
-                            ],
-                        },
-                        {
-                            period: "Programmer",
-                            title: "Satelital",
-                            place: "AI-powered expense report system",
-                            details: [
-                                "Developed an artificial intelligence system that automates expense reports: it reads the receipts and checks that the spreadsheet is complete.",
-                                "Fills in the missing data and corrects whatever was entered incorrectly.",
-                                "Books each expense to the matching current account according to its type.",
-                                "Includes a viewer where the AI categorises every error by type, making problems quick and intuitive to understand and resolve.",
-                                "Developed in Python.",
-                            ],
-                        },
+                    work: "I worked for 1 year at the NFT game company ",
+                    workSpan: ", where I created 3 games with full creative freedom alongside a team from France, Uruguay and Argentina. As a student, I actively participated in the ",
+                    workLab: "UAI experimental video game lab",
+                    workEnd: " between 2020 and 2024, building prototypes with experimental mechanics.",
+                    closing: [
+                        "I work with design patterns such as State and Facade, OOP, Clean Code and agile methodologies, and I am comfortable across the whole life cycle of a game: prototyping, gameplay, UI/UX, testing, optimisation and builds.",
+                        "In 2026 I completed the Full Stack Development with React.js training at Talento Tech, to combine programming, design and interactive system development across both games and web applications.",
                     ],
+                    showMore: "Show more",
+                    showLess: "Show less",
                 },
                 education: {
                     kicker: "Education",
@@ -442,7 +383,10 @@ export default function App() {
                             period: "2012 - 2018",
                             title: "Programming Technician",
                             place: "EEST N° 5 “John F. Kennedy”",
-                            details: ["Solid grounding in algorithms, data structures and software development."],
+                            details: [
+                                "Graduated as a Full Stack Developer.",
+                                "Solid grounding in algorithms, data structures and software development.",
+                            ],
                         },
                         {
                             period: "2007 - 2018",
@@ -452,8 +396,9 @@ export default function App() {
                             ],
                         },
                         {
-                            period: "Training",
+                            period: "2026",
                             title: "Full Stack development with React.js",
+                            place: "Training · Talento Tech",
                             details: ["Modern web programming to round out my developer profile."],
                         },
                     ],
@@ -466,9 +411,9 @@ export default function App() {
                         {
                             period: "2024 - 2025",
                             title: "Games Station Studio",
-                            place: "Video game development",
+                            place: "Unity Developer",
                             details: [
-                                "Developed mechanics for the games Heroes of Valhalla and Grow Empire: Rome.",
+                                "Developed mechanics for the games Heroes of Valhalla and Grow Empire Rome.",
                                 "Code refactoring, optimisation, bug fixing, testing, documentation and repair of legacy development tools.",
                                 "C# development using design patterns and varied practices, working alongside different art and game design disciplines.",
                             ],
@@ -476,7 +421,7 @@ export default function App() {
                         {
                             period: "2020 - 2024",
                             title: "LIVE Lab - UAI",
-                            place: "Experimental video game lab",
+                            place: "Experimental researcher",
                             details: [
                                 "Development of games and prototypes with experimental or rarely used mechanics.",
                                 "C# development using design patterns and practices such as Facade, State, Clean Code and OOP.",
@@ -496,7 +441,7 @@ export default function App() {
                         {
                             period: "2021 - 2022",
                             title: "Interlude.gg",
-                            place: "Unity Developer",
+                            place: "NFT game company",
                             details: [
                                 "Built the games Lost in the Swamp, Where is Steven? and Catacombs of Empire along with its 4 maps in Unity, with full creative freedom.",
                                 "C# development applying practices, principles and patterns such as OOP, agile methodologies, Clean Code and State.",
@@ -544,7 +489,6 @@ export default function App() {
                 footer: {
                     kicker: "Contact",
                     title: "Contact me",
-                    intro: "Got a project in mind? Drop me a line and let’s talk.",
                     email: "maxicaneda45@gmail.com",
                     emailCta: "Send an email",
                     copy: "Copy email",
@@ -561,7 +505,7 @@ export default function App() {
                 toggleLabel: "Switch language",
             },
         }),
-        [age]
+        []
     );
 
     const activeLanguage = language || "es";
@@ -580,6 +524,17 @@ export default function App() {
 
     const handleToggleLanguage = () => {
         setLanguage((current) => (current === "es" ? "en" : "es"));
+    };
+
+    /* Al retraer, si la tarjeta quedo por encima de la pantalla se la vuelve a mostrar. */
+    const handleToggleAbout = () => {
+        const collapsing = aboutExpanded;
+        setAboutExpanded(!collapsing);
+
+        const card = aboutCardRef.current;
+        if (collapsing && card && card.getBoundingClientRect().top < 0) {
+            card.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
     };
 
     const handleScrollTop = () => {
@@ -715,7 +670,7 @@ export default function App() {
             </section>
 
             <section className="intro">
-                <div className={`intro-grid${SHOW_FEATURED_PROJECT ? "" : " is-single"}`}>
+                <div className="intro-grid">
                     <div className="intro-copy">
                         <p className="lead">{copy.intro.lead}</p>
                         <p className="texto">{copy.intro.body}</p>
@@ -746,20 +701,18 @@ export default function App() {
                         </div>
                     </div>
 
-                    {SHOW_FEATURED_PROJECT && (
-                        <div className="intro-media">
-                            <span className="media-label">{copy.intro.featuredLabel}</span>
-                            <div className="media-frame">
-                                <iframe
-                                    src={`https://www.youtube-nocookie.com/embed/${PROJECT_MEDIA[0].videoId}`}
-                                    title={copy.intro.featuredTitle}
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                    allowFullScreen
-                                    loading="lazy"
-                                />
-                            </div>
+                    <div className="intro-media">
+                        <span className="media-label">{copy.intro.featuredLabel}</span>
+                        <div className="media-frame">
+                            <iframe
+                                src={`https://www.youtube-nocookie.com/embed/${PROJECT_MEDIA[0].videoId}`}
+                                title={copy.intro.featuredTitle}
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowFullScreen
+                                loading="lazy"
+                            />
                         </div>
-                    )}
+                    </div>
                 </div>
 
             </section>
@@ -770,70 +723,60 @@ export default function App() {
                     <h2>{copy.about.title}</h2>
                 </div>
 
-                {/* Un unico relato: presentacion, formacion, empleos y freelance en el mismo hilo. */}
-                <div className="about-text">
-                    {copy.about.paragraphsBefore.map((paragraph) => (
-                        <p className="texto" key={paragraph}>
+                <div className={`panel-card about-card${aboutExpanded ? " is-expanded" : ""}`} ref={aboutCardRef}>
+                    {copy.about.highlights.map((paragraph) => (
+                        <p className="texto about-highlight" key={paragraph}>
                             {paragraph}
                         </p>
                     ))}
-                    <p className="texto">
-                        {copy.about.work}
-                        <a href="https://live-games.itch.io/" target="_blank" rel="noreferrer">
-                            Laboratorio de videojuegos experimentales de la UAI
-                        </a>
-                        {copy.about.workEnd}
-                    </p>
-                    {copy.about.paragraphsAfter.map((paragraph) => (
-                        <p className="texto" key={paragraph}>
-                            {paragraph}
-                        </p>
-                    ))}
-                </div>
 
-                <div className="section-header spaced">
-                    <span className="kicker">{copy.experience.kicker}</span>
-                    <h2>{copy.experience.title}</h2>
-                </div>
-                <p className="texto">{copy.experience.intro}</p>
-                <ol className="record-list">
-                    {copy.experience.items.map((item) => (
-                        <li className="record-item" key={item.title}>
-                            <span className="record-period">{item.period}</span>
-                            <div className="record-body">
-                                <h4>{item.title}</h4>
-                                {item.place && <p className="record-place">{item.place}</p>}
-                                <ul className="record-detail">
-                                    {item.details.map((detail) => (
-                                        <li key={detail}>{detail}</li>
-                                    ))}
-                                </ul>
-                            </div>
-                        </li>
-                    ))}
-                </ol>
+                    {/* El resto del texto queda recortado con un degradado hasta que se expande. */}
+                    <div className="about-more" id="about-more">
+                        <div className="about-more-inner">
+                            {copy.about.more.map((paragraph) => (
+                                <p className="texto" key={paragraph}>
+                                    {paragraph}
+                                </p>
+                            ))}
+                            <p className="texto">
+                                {copy.about.work}
+                                <a href="https://twitter.com/ProjInterlude" target="_blank" rel="noreferrer">
+                                    Interlude.gg
+                                </a>
+                                {copy.about.workSpan}
+                                <a href="https://live-games.itch.io/" target="_blank" rel="noreferrer">
+                                    {copy.about.workLab}
+                                </a>
+                                {copy.about.workEnd}
+                            </p>
+                            {copy.about.closing.map((paragraph) => (
+                                <p className="texto" key={paragraph}>
+                                    {paragraph}
+                                </p>
+                            ))}
+                        </div>
+                    </div>
 
-                <div className="section-header spaced">
-                    <span className="kicker">{copy.freelance.kicker}</span>
-                    <h2>{copy.freelance.title}</h2>
+                    <button
+                        className="about-toggle"
+                        type="button"
+                        onClick={handleToggleAbout}
+                        aria-expanded={aboutExpanded}
+                        aria-controls="about-more"
+                    >
+                        {aboutExpanded ? copy.about.showLess : copy.about.showMore}
+                        <svg viewBox="0 0 24 24" aria-hidden focusable="false">
+                            <path
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2.2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="m6 9 6 6 6-6"
+                            />
+                        </svg>
+                    </button>
                 </div>
-                <p className="texto">{copy.freelance.intro}</p>
-                <ol className="record-list">
-                    {copy.freelance.items.map((item) => (
-                        <li className="record-item" key={item.title}>
-                            <span className="record-period">{item.period}</span>
-                            <div className="record-body">
-                                <h4>{item.title}</h4>
-                                {item.place && <p className="record-place">{item.place}</p>}
-                                <ul className="record-detail">
-                                    {item.details.map((detail) => (
-                                        <li key={detail}>{detail}</li>
-                                    ))}
-                                </ul>
-                            </div>
-                        </li>
-                    ))}
-                </ol>
 
                 <div className="section-header spaced">
                     <span className="kicker">{copy.education.kicker}</span>
@@ -842,6 +785,28 @@ export default function App() {
                 <p className="texto">{copy.education.intro}</p>
                 <ol className="record-list">
                     {copy.education.items.map((item) => (
+                        <li className="record-item" key={item.title}>
+                            <span className="record-period">{item.period}</span>
+                            <div className="record-body">
+                                <h4>{item.title}</h4>
+                                {item.place && <p className="record-place">{item.place}</p>}
+                                <ul className="record-detail">
+                                    {item.details.map((detail) => (
+                                        <li key={detail}>{detail}</li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </li>
+                    ))}
+                </ol>
+
+                <div className="section-header spaced">
+                    <span className="kicker">{copy.experience.kicker}</span>
+                    <h2>{copy.experience.title}</h2>
+                </div>
+                <p className="texto">{copy.experience.intro}</p>
+                <ol className="record-list">
+                    {copy.experience.items.map((item) => (
                         <li className="record-item" key={item.title}>
                             <span className="record-period">{item.period}</span>
                             <div className="record-body">
@@ -917,7 +882,6 @@ export default function App() {
                 <div className="footer-inner">
                     <span className="kicker light">{copy.footer.kicker}</span>
                     <h2>{copy.footer.title}</h2>
-                    <p className="footer-intro">{copy.footer.intro}</p>
                     <div className="footer-mail-row">
                         <a className="footer-mail" href={`mailto:${copy.footer.email}`}>
                             {copy.footer.email}
