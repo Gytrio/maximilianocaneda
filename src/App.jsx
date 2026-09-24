@@ -160,7 +160,7 @@ export default function App() {
                     title: "Sobre mí",
                     kicker: "Perfil",
                     highlights: [
-                        "Soy Maximiliano Caneda, desarrollador y diseñador de videojuegos de Argentina. Hace más de cuatro años que trabajo con Unity y C#, llevando ideas desde el prototipo hasta juegos terminados y jugables. Trabajé en Games Station Studio, Lightning Vortex Technologies e Interlude.gg, y como investigador experimental en el Laboratorio LIVE de la UAI.",
+                        "Soy Maximiliano Caneda, desarrollador y diseñador de videojuegos de Argentina. Hace más de cuatro años que trabajo con Unity y C#, llevando ideas desde el prototipo hasta juegos terminados y jugables. Trabajé en Games Station Studio, Lightning Vortex Technologies e Interlude.gg, y como investigador experimental en LIVE (Laboratorio de Innovación en Videojuegos Experimentales).",
                         "Desarrollé los juegos Lost in the Swamp, Where is Steven? y Catacombs of Empire, y mecánicas para Heroes of Valhalla y Grow Empire Rome. En Heroes of Valhalla hice el sistema de habilidades automatizado. Además, tengo inglés técnico, lo que me permite trabajar con documentación, herramientas y equipos internacionales.",
                     ],
                     more: [
@@ -168,8 +168,8 @@ export default function App() {
                         "En Games Station Studio, además del sistema de habilidades, refactoricé y optimicé código legacy, corregí bugs, hice testing y documentación, y reparé herramientas internas del equipo, trabajando junto a las áreas de arte y game design.",
                     ],
                     work: "Trabajé durante 1 año en la empresa de juegos NFT ",
-                    workSpan: ", donde realicé 3 juegos con total libertad creativa junto a un equipo de Francia, Uruguay y Argentina. Como estudiante, participé activamente en el ",
-                    workLab: "Laboratorio de videojuegos experimentales de la UAI",
+                    workSpan: ", donde realicé 3 juegos con total libertad creativa junto a un equipo de Francia, Uruguay y Argentina. Como estudiante, participé activamente en ",
+                    workLab: "LIVE (Laboratorio de Innovación en Videojuegos Experimentales)",
                     workEnd: " entre 2020 y 2024, desarrollando prototipos con mecánicas experimentales.",
                     closing: [
                         "Trabajo con patrones de diseño como State y Facade, POO, Clean Code y metodologías ágiles, y me muevo con soltura en todo el ciclo de un juego: prototipo, gameplay, UI/UX, testing, optimización y builds.",
@@ -240,7 +240,7 @@ export default function App() {
                         },
                         {
                             period: "2020 - 2024",
-                            title: "LIVE - UAI",
+                            title: "LIVE",
                             url: "https://live-games.itch.io/",
                             place: "Investigador experimental",
                             details: [
@@ -348,7 +348,7 @@ export default function App() {
                     title: "About me",
                     kicker: "Profile",
                     highlights: [
-                        "I am Maximiliano Caneda, a video game developer and designer from Argentina. I have been working with Unity and C# for over four years, taking ideas from prototype to finished, playable games. I have worked at Games Station Studio, Lightning Vortex Technologies and Interlude.gg, and as an experimental researcher at the UAI LIVE Lab.",
+                        "I am Maximiliano Caneda, a video game developer and designer from Argentina. I have been working with Unity and C# for over four years, taking ideas from prototype to finished, playable games. I have worked at Games Station Studio, Lightning Vortex Technologies and Interlude.gg, and as an experimental researcher at LIVE (Laboratorio de Innovación en Videojuegos Experimentales).",
                         "I built the games Lost in the Swamp, Where is Steven? and Catacombs of Empire, and developed mechanics for Heroes of Valhalla and Grow Empire Rome. For Heroes of Valhalla I built the automated skill system. I also have technical English, which lets me work with documentation, tools and international teams.",
                     ],
                     more: [
@@ -356,8 +356,8 @@ export default function App() {
                         "At Games Station Studio, besides the skill system, I refactored and optimised legacy code, fixed bugs, handled testing and documentation, and repaired the team’s internal tools, working alongside the art and game design teams.",
                     ],
                     work: "I worked for 1 year at the NFT game company ",
-                    workSpan: ", where I created 3 games with full creative freedom alongside a team from France, Uruguay and Argentina. As a student, I actively participated in the ",
-                    workLab: "UAI experimental video game lab",
+                    workSpan: ", where I created 3 games with full creative freedom alongside a team from France, Uruguay and Argentina. As a student, I actively participated in ",
+                    workLab: "LIVE (Laboratorio de Innovación en Videojuegos Experimentales)",
                     workEnd: " between 2020 and 2024, building prototypes with experimental mechanics.",
                     closing: [
                         "I work with design patterns such as State and Facade, OOP, Clean Code and agile methodologies, and I am comfortable across the whole life cycle of a game: prototyping, gameplay, UI/UX, testing, optimisation and builds.",
@@ -428,7 +428,7 @@ export default function App() {
                         },
                         {
                             period: "2020 - 2024",
-                            title: "LIVE - UAI",
+                            title: "LIVE",
                             url: "https://live-games.itch.io/",
                             place: "Experimental researcher",
                             details: [
