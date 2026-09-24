@@ -17,6 +17,9 @@ import linkedinLogo from "./assets/tech/linkedin.svg";
 
 const ROOT_PATH = "C:\\Users\\Maximiliano-Caneda";
 
+/* Video de "Proyecto destacado" junto a la presentacion; en false queda oculto. */
+const SHOW_FEATURED_PROJECT = false;
+
 const SECTIONS = [
     { id: "hero", navKey: "home", segment: { es: "", en: "" } },
     { id: "sobre-mi", navKey: "about", segment: { es: "Sobre-mi", en: "About-me" } },
@@ -670,7 +673,7 @@ export default function App() {
             </section>
 
             <section className="intro">
-                <div className="intro-grid">
+                <div className={`intro-grid${SHOW_FEATURED_PROJECT ? "" : " is-single"}`}>
                     <div className="intro-copy">
                         <p className="lead">{copy.intro.lead}</p>
                         <p className="texto">{copy.intro.body}</p>
@@ -701,18 +704,20 @@ export default function App() {
                         </div>
                     </div>
 
-                    <div className="intro-media">
-                        <span className="media-label">{copy.intro.featuredLabel}</span>
-                        <div className="media-frame">
-                            <iframe
-                                src={`https://www.youtube-nocookie.com/embed/${PROJECT_MEDIA[0].videoId}`}
-                                title={copy.intro.featuredTitle}
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                allowFullScreen
-                                loading="lazy"
-                            />
+                    {SHOW_FEATURED_PROJECT && (
+                        <div className="intro-media">
+                            <span className="media-label">{copy.intro.featuredLabel}</span>
+                            <div className="media-frame">
+                                <iframe
+                                    src={`https://www.youtube-nocookie.com/embed/${PROJECT_MEDIA[0].videoId}`}
+                                    title={copy.intro.featuredTitle}
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowFullScreen
+                                    loading="lazy"
+                                />
+                            </div>
                         </div>
-                    </div>
+                    )}
                 </div>
 
             </section>

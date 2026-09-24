@@ -318,6 +318,14 @@ footer[id] {
     align-items: start;
 }
 
+.intro-grid.is-single {
+    grid-template-columns: 1fr;
+}
+
+.intro-grid.is-single .lead {
+    max-width: 68ch;
+}
+
 .lead {
     margin: 0 0 16px;
     font-family: 'Poppins', sans-serif;
