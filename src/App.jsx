@@ -734,7 +734,7 @@ export default function App() {
                     <h2>{copy.about.title}</h2>
                 </div>
 
-                <div className={`panel-card about-card${aboutExpanded ? " is-expanded" : ""}`} ref={aboutCardRef}>
+                <div className={`about-card${aboutExpanded ? " is-expanded" : ""}`} ref={aboutCardRef}>
                     {copy.about.highlights.map((paragraph) => (
                         <p className="texto about-highlight" key={paragraph}>
                             {paragraph}
