@@ -4,6 +4,7 @@ import fotoPerfil from "./assets/Foto-Perfil.jpg";
 import lost from "./assets/LostSwampFoto.png";
 import steven from "./assets/WhereisStevenFoto.jpg";
 import catacombs from "./assets/Catacombsofempire.jpg";
+import rendicion from "./assets/RendicionGastosFoto.png";
 
 import csharpLogo from "./assets/tech/csharp.png";
 import unityLogo from "./assets/tech/unity.png";
@@ -31,6 +32,8 @@ const PROJECT_MEDIA = [
     { image: lost, url: "https://youtu.be/kIOqWF8WLMY", videoId: "kIOqWF8WLMY" },
     { image: steven, url: "https://youtu.be/6PNvMrnnZ7o", videoId: "6PNvMrnnZ7o" },
     { image: catacombs, url: "https://youtu.be/4uFiRBiggKE", videoId: "4uFiRBiggKE" },
+    /* Captura vertical: se encuadra desde arriba para que se vea el encabezado de la app. */
+    { image: rendicion, url: rendicion, position: "top" },
 ];
 
 const PRIMARY_TECH = [
@@ -283,7 +286,7 @@ export default function App() {
                 projects: {
                     title: "Mis Proyectos",
                     kicker: "Catálogo",
-                    intro: "Juegos completos desarrollados para clientes y como pruebas técnicas.",
+                    intro: "Juegos completos desarrollados para clientes y como pruebas técnicas, y herramientas a medida hechas como freelance.",
                     cards: [
                         {
                             code: "Supervivencia • 10 mins • 4 días",
@@ -304,6 +307,13 @@ export default function App() {
                             description:
                                 "Tuve libertad creativa para crear el juego base y los 4 mapas extras. Desarrollado para la empresa Interlude.",
                             link: "Ver gameplay",
+                        },
+                        {
+                            code: "Freelance • App de escritorio • IA",
+                            title: "Gestión de Rendiciones de Gastos",
+                            description:
+                                "Sistema de auditoría contable desarrollado como freelance. Carga la rendición de gastos en Excel (.xlsx) y los comprobantes de pago (PDF, JPG y PNG), y los procesa con IA para validarlos, con un modelo de respaldo configurado.",
+                            link: "Ver captura",
                         },
                     ],
                 },
@@ -471,7 +481,7 @@ export default function App() {
                 projects: {
                     title: "My Projects",
                     kicker: "Catalogue",
-                    intro: "Complete games built for clients and as technical tests.",
+                    intro: "Complete games built for clients and as technical tests, plus custom tools built as a freelancer.",
                     cards: [
                         {
                             code: "Survival • 10 mins • 4 days",
@@ -492,6 +502,13 @@ export default function App() {
                             description:
                                 "I had creative freedom to create the base game and four extra maps. Developed for Interlude.",
                             link: "Watch gameplay",
+                        },
+                        {
+                            code: "Freelance • Desktop app • AI",
+                            title: "Expense Report Manager",
+                            description:
+                                "An accounting audit system built as a freelance project. It loads the expense report in Excel (.xlsx) and the payment receipts (PDF, JPG and PNG), and processes them with AI to validate them, with a fallback model configured.",
+                            link: "View screenshot",
                         },
                     ],
                 },
@@ -891,7 +908,12 @@ export default function App() {
                     {copy.projects.cards.map((card, index) => (
                         <article className="card" key={card.title}>
                             <a className="card-media" href={PROJECT_MEDIA[index].url} target="_blank" rel="noreferrer">
-                                <img src={PROJECT_MEDIA[index].image} alt={card.title} loading="lazy" />
+                                <img
+                                    src={PROJECT_MEDIA[index].image}
+                                    alt={card.title}
+                                    loading="lazy"
+                                    style={PROJECT_MEDIA[index].position ? { objectPosition: PROJECT_MEDIA[index].position } : undefined}
+                                />
                             </a>
                             <div className="card-body">
                                 <span className="card-code">{card.code}</span>
