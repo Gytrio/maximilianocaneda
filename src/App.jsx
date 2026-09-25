@@ -5,6 +5,7 @@ import lost from "./assets/LostSwampFoto.png";
 import steven from "./assets/WhereisStevenFoto.jpg";
 import catacombs from "./assets/Catacombsofempire.jpg";
 import rendicion from "./assets/RendicionGastosFoto.png";
+import rendicionRevision from "./assets/RendicionRevisionFoto.webp";
 
 import csharpLogo from "./assets/tech/csharp.png";
 import unityLogo from "./assets/tech/unity.png";
@@ -32,8 +33,8 @@ const PROJECT_MEDIA = [
     { image: lost, url: "https://youtu.be/kIOqWF8WLMY", videoId: "kIOqWF8WLMY" },
     { image: steven, url: "https://youtu.be/6PNvMrnnZ7o", videoId: "6PNvMrnnZ7o" },
     { image: catacombs, url: "https://youtu.be/4uFiRBiggKE", videoId: "4uFiRBiggKE" },
-    /* Captura vertical: se encuadra desde arriba para que se vea el encabezado de la app. */
-    { image: rendicion, url: rendicion, position: "top" },
+    /* Sin video: la tarjeta abre una galeria con las capturas del programa. */
+    { image: rendicionRevision, gallery: [rendicionRevision, rendicion] },
 ];
 
 const PRIMARY_TECH = [
@@ -81,6 +82,7 @@ export default function App() {
     const [activeSection, setActiveSection] = useState("hero");
     const [emailCopied, setEmailCopied] = useState(false);
     const [aboutExpanded, setAboutExpanded] = useState(false);
+    const [lightbox, setLightbox] = useState(null);
     const aboutCardRef = useRef(null);
 
     /* El aviso de "copiado" vuelve solo al estado normal. */
@@ -137,6 +139,33 @@ export default function App() {
             window.removeEventListener("resize", syncActiveSection);
         };
     }, [language]);
+
+    /* Galeria abierta: bloquea el scroll y se maneja con Escape y las flechas. */
+    useEffect(() => {
+        if (!lightbox) {
+            return undefined;
+        }
+
+        const handleKey = (event) => {
+            if (event.key === "Escape") {
+                setLightbox(null);
+            } else if (event.key === "ArrowRight") {
+                setLightbox((current) => ({ ...current, index: (current.index + 1) % current.images.length }));
+            } else if (event.key === "ArrowLeft") {
+                setLightbox((current) => ({
+                    ...current,
+                    index: (current.index - 1 + current.images.length) % current.images.length,
+                }));
+            }
+        };
+
+        document.body.style.overflow = "hidden";
+        window.addEventListener("keydown", handleKey);
+        return () => {
+            document.body.style.overflow = "auto";
+            window.removeEventListener("keydown", handleKey);
+        };
+    }, [lightbox]);
 
     const content = useMemo(
         () => ({
@@ -312,8 +341,8 @@ export default function App() {
                             code: "Freelance • App de escritorio • IA",
                             title: "Gestión de Rendiciones de Gastos",
                             description:
-                                "Sistema de auditoría contable desarrollado como freelance. Carga la rendición de gastos en Excel (.xlsx) y los comprobantes de pago (PDF, JPG y PNG), y los procesa con IA para validarlos, con un modelo de respaldo configurado.",
-                            link: "Ver captura",
+                                "Sistema de auditoría contable desarrollado como freelance. Carga la rendición de gastos en Excel (.xlsx) y los comprobantes de pago (PDF, JPG y PNG) y los procesa con IA para validarlos. Las diferencias detectadas se revisan a mano, comparando el importe declarado con el comprobante, y las correcciones actualizan los reportes.",
+                            link: "Ver capturas",
                         },
                     ],
                 },
@@ -333,6 +362,7 @@ export default function App() {
                     english: "Inglés",
                 },
                 scrollTop: "Ir al inicio",
+                gallery: { close: "Cerrar", previous: "Anterior", next: "Siguiente" },
                 toggleLabel: "Cambiar idioma",
             },
             en: {
@@ -507,8 +537,8 @@ export default function App() {
                             code: "Freelance • Desktop app • AI",
                             title: "Expense Report Manager",
                             description:
-                                "An accounting audit system built as a freelance project. It loads the expense report in Excel (.xlsx) and the payment receipts (PDF, JPG and PNG), and processes them with AI to validate them, with a fallback model configured.",
-                            link: "View screenshot",
+                                "An accounting audit system built as a freelance project. It loads the expense report in Excel (.xlsx) and the payment receipts (PDF, JPG and PNG) and processes them with AI to validate them. Detected discrepancies are reviewed by hand, comparing the declared amount with the receipt, and the corrections update the reports.",
+                            link: "View screenshots",
                         },
                     ],
                 },
@@ -528,6 +558,7 @@ export default function App() {
                     english: "English",
                 },
                 scrollTop: "Back to top",
+                gallery: { close: "Close", previous: "Previous", next: "Next" },
                 toggleLabel: "Switch language",
             },
         }),
@@ -905,30 +936,48 @@ export default function App() {
                 <p className="texto">{copy.projects.intro}</p>
 
                 <div className="proyectos">
-                    {copy.projects.cards.map((card, index) => (
-                        <article className="card" key={card.title}>
-                            <a className="card-media" href={PROJECT_MEDIA[index].url} target="_blank" rel="noreferrer">
-                                <img
-                                    src={PROJECT_MEDIA[index].image}
-                                    alt={card.title}
-                                    loading="lazy"
-                                    style={PROJECT_MEDIA[index].position ? { objectPosition: PROJECT_MEDIA[index].position } : undefined}
-                                />
-                            </a>
-                            <div className="card-body">
-                                <span className="card-code">{card.code}</span>
-                                <h3>
-                                    <a href={PROJECT_MEDIA[index].url} target="_blank" rel="noreferrer">
-                                        {card.title}
+                    {copy.projects.cards.map((card, index) => {
+                        const media = PROJECT_MEDIA[index];
+                        const openGallery = () => setLightbox({ images: media.gallery, index: 0, title: card.title });
+
+                        return (
+                            <article className="card" key={card.title}>
+                                {media.gallery ? (
+                                    <button className="card-media" type="button" onClick={openGallery} aria-label={card.link}>
+                                        <img src={media.image} alt={card.title} loading="lazy" />
+                                    </button>
+                                ) : (
+                                    <a className="card-media" href={media.url} target="_blank" rel="noreferrer">
+                                        <img src={media.image} alt={card.title} loading="lazy" />
                                     </a>
-                                </h3>
-                                <p>{card.description}</p>
-                                <a className="link-button" href={PROJECT_MEDIA[index].url} target="_blank" rel="noreferrer">
-                                    {card.link}
-                                </a>
-                            </div>
-                        </article>
-                    ))}
+                                )}
+                                <div className="card-body">
+                                    <span className="card-code">{card.code}</span>
+                                    <h3>
+                                        {media.gallery ? (
+                                            <button type="button" onClick={openGallery}>
+                                                {card.title}
+                                            </button>
+                                        ) : (
+                                            <a href={media.url} target="_blank" rel="noreferrer">
+                                                {card.title}
+                                            </a>
+                                        )}
+                                    </h3>
+                                    <p>{card.description}</p>
+                                    {media.gallery ? (
+                                        <button className="link-button" type="button" onClick={openGallery}>
+                                            {card.link}
+                                        </button>
+                                    ) : (
+                                        <a className="link-button" href={media.url} target="_blank" rel="noreferrer">
+                                            {card.link}
+                                        </a>
+                                    )}
+                                </div>
+                            </article>
+                        );
+                    })}
                 </div>
             </section>
 
@@ -995,6 +1044,51 @@ export default function App() {
                     </p>
                 </div>
             </footer>
+
+            {lightbox && (
+                <div
+                    className="lightbox"
+                    role="dialog"
+                    aria-modal="true"
+                    aria-label={lightbox.title}
+                    onClick={() => setLightbox(null)}
+                >
+                    <button className="lightbox-close" type="button" onClick={() => setLightbox(null)} aria-label={copy.gallery.close}>
+                        ×
+                    </button>
+                    <figure className="lightbox-figure" onClick={(event) => event.stopPropagation()}>
+                        <img src={lightbox.images[lightbox.index]} alt={`${lightbox.title} ${lightbox.index + 1}`} />
+                        {lightbox.images.length > 1 && (
+                            <figcaption className="lightbox-controls">
+                                <button
+                                    type="button"
+                                    onClick={() =>
+                                        setLightbox((current) => ({
+                                            ...current,
+                                            index: (current.index - 1 + current.images.length) % current.images.length,
+                                        }))
+                                    }
+                                    aria-label={copy.gallery.previous}
+                                >
+                                    ‹
+                                </button>
+                                <span>
+                                    {lightbox.index + 1} / {lightbox.images.length}
+                                </span>
+                                <button
+                                    type="button"
+                                    onClick={() =>
+                                        setLightbox((current) => ({ ...current, index: (current.index + 1) % current.images.length }))
+                                    }
+                                    aria-label={copy.gallery.next}
+                                >
+                                    ›
+                                </button>
+                            </figcaption>
+                        )}
+                    </figure>
+                </div>
+            )}
 
             <button className="scroll-top-toast" type="button" onClick={handleScrollTop} aria-label={copy.scrollTop}>
                 <span className="scroll-top-icon" aria-hidden>
