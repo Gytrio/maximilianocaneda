@@ -196,7 +196,7 @@ export default function App() {
                         "Desarrollé los juegos Lost in the Swamp, Where is Steven? y Catacombs of Empire, y mecánicas para Heroes of Valhalla y Grow Empire Rome. En Heroes of Valhalla hice el sistema de habilidades automatizado. Además, tengo inglés técnico, lo que me permite trabajar con documentación, herramientas y equipos internacionales.",
                     ],
                     more: [
-                        "Tengo 25 años. Me gradué como Licenciado en Producción de Simuladores y Videojuegos en la Universidad Abierta Interamericana (UAI) con un promedio de 8.70, y me recibí de Técnico en Programación como Desarrollador Full Stack en la EEST N° 5 “John F. Kennedy”. Mi tesis se tituló “El bajo nivel competitivo genera respuestas emocionales agresivas en jugadores”.",
+                        "Me gradué como Licenciado en Producción de Simuladores y Videojuegos en la Universidad Abierta Interamericana (UAI) con un promedio de 8.70, y me recibí de Técnico en Programación como Desarrollador Full Stack en la EEST N° 5 “John F. Kennedy”. Mi tesis se tituló “El bajo nivel competitivo genera respuestas emocionales agresivas en jugadores”.",
                         "En Games Station Studio, además del sistema de habilidades, refactoricé y optimicé código legacy, corregí bugs, hice testing y documentación, y reparé herramientas internas del equipo, trabajando junto a las áreas de arte y game design.",
                     ],
                     work: "Trabajé durante 1 año en la empresa de juegos NFT ",
@@ -392,7 +392,7 @@ export default function App() {
                         "I built the games Lost in the Swamp, Where is Steven? and Catacombs of Empire, and developed mechanics for Heroes of Valhalla and Grow Empire Rome. For Heroes of Valhalla I built the automated skill system. I also have technical English, which lets me work with documentation, tools and international teams.",
                     ],
                     more: [
-                        "I am 25 years old. I hold a Bachelor’s degree in Simulation and Video Game Production from Universidad Abierta Interamericana (UAI), graduating with a GPA of 8.70, and I graduated as a Programming Technician, qualified as a Full Stack Developer, from EEST N° 5 “John F. Kennedy”. My thesis was titled “Low competitive levels generate aggressive emotional responses in players.”",
+                        "I hold a Bachelor’s degree in Simulation and Video Game Production from Universidad Abierta Interamericana (UAI), graduating with a GPA of 8.70, and I graduated as a Programming Technician, qualified as a Full Stack Developer, from EEST N° 5 “John F. Kennedy”. My thesis was titled “Low competitive levels generate aggressive emotional responses in players.”",
                         "At Games Station Studio, besides the skill system, I refactored and optimised legacy code, fixed bugs, handled testing and documentation, and repaired the team’s internal tools, working alongside the art and game design teams.",
                     ],
                     work: "I worked for 1 year at the NFT game company ",
