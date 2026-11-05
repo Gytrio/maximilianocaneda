@@ -59,7 +59,7 @@ export const PROJECTS = [
     {
         id: "lost-in-the-swamp",
         period: { start: 2021 },
-        video: { type: "file", src: projectMedia("lost-in-the-swamp", "Gameplay Lost in the Swamp.webm") },
+        video: { type: "file", src: projectMedia("lost-in-the-swamp", "gameplay.webm") },
         poster: lost,
     },
 ];
