@@ -1,0 +1,559 @@
+/* ---------- Seccion Proyectos: un proyecto por vez + timeline negra a la izquierda ---------- */
+
+/* La seccion es un contenedor: el layout se adapta al ancho del panel, no al de la pantalla. */
+.sec-proyectos {
+    max-width: 1040px;
+    container-type: inline-size;
+    /* Compensa el padding inferior del panel (--panel-pad lo define el escenario): el espacio bajo la flecha lo
+       pone la timeline, y asi el panel no queda apenas scrolleable (la rueda cambiaria de proyecto tarde). */
+    margin-bottom: calc(-1 * var(--panel-pad, 0px));
+}
+
+.sec-proyectos .sec-header,
+.sec-proyectos > .sec-text {
+    max-width: 760px;
+}
+
+/* Riel a la izquierda y el proyecto activo a la derecha. */
+.prj-stage {
+    --prj-rail: 64px;
+    --prj-dot: 24px;
+    --prj-line: 3px;
+    /* Alto de la timeline: lo mide Proyectos.jsx para que llegue casi al final de la pantalla (fallback fijo). */
+    --prj-track-h: calc((var(--prj-count) - 1) * 72px + var(--prj-dot));
+    /* Distancia entre dots: el alto disponible repartido entre todos los proyectos. */
+    --prj-gap: calc((var(--prj-track-h) - var(--prj-dot)) / max(1, var(--prj-count) - 1));
+    display: grid;
+    grid-template-columns: var(--prj-rail) minmax(0, 1fr);
+    column-gap: clamp(8px, 2cqw, 20px);
+    align-items: start;
+    margin-top: 36px;
+}
+
+/* ---------- Timeline de proyectos ---------- */
+
+.prj-rail {
+    position: sticky;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+/* Alto de toda la timeline; la linea une el primer y el ultimo dot y crece al abrir la seccion. */
+.prj-rail-track {
+    position: relative;
+    width: var(--prj-dot);
+    height: var(--prj-track-h);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.prj-rail-track::before {
+    content: "";
+    position: absolute;
+    top: calc(var(--prj-dot) / 2);
+    left: calc(var(--prj-dot) / 2 - var(--prj-line) / 2);
+    width: var(--prj-line);
+    height: calc((var(--prj-count) - 1) * var(--prj-gap));
+    background: var(--ink);
+    transform-origin: top center;
+    animation: prj-line-grow 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Todos los dots visibles: entran escalonados con fade y su nucleo hace el pop. */
+.prj-rail-item {
+    position: absolute;
+    top: calc(var(--i) * var(--prj-gap));
+    left: 0;
+    z-index: 1;
+    animation: prj-fade-in 420ms ease calc(var(--i) * 80ms) both;
+}
+
+.prj-dot {
+    position: relative;
+    display: block;
+    width: var(--prj-dot);
+    height: var(--prj-dot);
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: none;
+    cursor: pointer;
+    transition: transform 160ms ease;
+}
+
+.prj-dot:hover,
+.prj-dot:focus-visible {
+    transform: scale(1.25);
+}
+
+.prj-dot:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 4px;
+}
+
+/* Cuerpo del dot: recibe el glitch (asi no pisa el pop del nucleo ni el hover del boton). */
+.prj-dot-body {
+    position: absolute;
+    inset: 0;
+}
+
+.prj-dot-core {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: var(--ink);
+    animation: prj-dot-pop 520ms ease-in-out calc(var(--i, 0) * 80ms) both;
+}
+
+/* ---------- Dot activo: goteo constante ---------- */
+
+.prj-dot-waves {
+    position: absolute;
+    inset: 0;
+    display: none;
+    pointer-events: none;
+}
+
+.prj-dot.is-active .prj-dot-waves {
+    display: block;
+}
+
+/* Dos ondas desfasadas medio intervalo: una gota cada medio ciclo de MOTION.dropInterval. */
+.prj-wave {
+    position: absolute;
+    inset: 0;
+    border: 2px solid var(--ink);
+    border-radius: 50%;
+    opacity: 0;
+    animation: prj-wave var(--prj-drop, 1000ms) cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+.prj-wave + .prj-wave {
+    animation-delay: calc(var(--prj-drop, 1000ms) / 2);
+}
+
+@keyframes prj-wave {
+    0% {
+        transform: scale(1);
+        opacity: 0.55;
+    }
+    100% {
+        transform: scale(3.2);
+        opacity: 0;
+    }
+}
+
+/* ---------- Dot activo: glitch al azar (useRandomGlitch; el del dot esta en src/styles/dotGlitch.css) ---------- */
+
+/* Glitch ligero de las ondas: se corren apenas, se tiñen de rojo y se cortan en franjas. */
+.prj-dot[data-glitch] .prj-dot-waves {
+    animation: prj-wave-glitch 200ms steps(2, end) both;
+}
+
+.prj-dot[data-glitch] .prj-wave {
+    border-color: var(--accent);
+}
+
+.prj-dot[data-glitch="2"] .prj-dot-waves {
+    clip-path: inset(0 0 45% 0);
+}
+
+.prj-dot[data-glitch="3"] .prj-dot-waves {
+    clip-path: inset(35% 0 0 0);
+}
+
+@keyframes prj-wave-glitch {
+    0% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    50% {
+        transform: translateX(calc(var(--glitch-x) * 0.5));
+        opacity: 0.55;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Flechas: arriba (proyecto anterior) sobre la timeline y abajo (siguiente) debajo. En los extremos se atenuan. */
+.prj-arrow {
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    margin-left: calc(var(--prj-dot) / 2 - 23px);
+    padding: 0;
+    border: 2px solid var(--ink);
+    border-radius: 50%;
+    background: var(--bg);
+    color: var(--ink);
+    cursor: pointer;
+    transition: background 160ms ease, color 160ms ease, transform 160ms ease, opacity 200ms ease;
+}
+
+.prj-arrow--up svg {
+    transform: rotate(180deg);
+}
+
+.prj-arrow:not(:disabled):hover,
+.prj-arrow:not(:disabled):focus-visible {
+    background: var(--ink);
+    color: #fff;
+}
+
+.prj-arrow--down:not(:disabled):hover {
+    transform: translateY(2px);
+}
+
+.prj-arrow--up:not(:disabled):hover {
+    transform: translateY(-2px);
+}
+
+.prj-arrow:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+}
+
+.prj-arrow:disabled {
+    opacity: 0.22;
+    cursor: default;
+}
+
+/* ---------- Proyecto en pantalla ---------- */
+
+.prj-slides {
+    min-width: 0;
+}
+
+/* Solo se ve el activo; el que se va sale con un fade corto. Todos siguen montados (el video conserva su punto).
+   El selector lleva .prj-slides para ganarle a los display de los layouts (incluidos los de mobile). */
+.prj-slides .prj-slide[data-state="hidden"] {
+    display: none;
+}
+
+.prj-slide[data-state="active"] {
+    animation: prj-slide-in 450ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.prj-slide[data-state="leaving"] {
+    animation: prj-fade-out 200ms ease-in forwards;
+    pointer-events: none;
+}
+
+/* Encabezado: el periodo arriba y, debajo, el titulo (con el cartel de estado a su lado si lo hay). */
+.prj-head {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    margin: 0 0 12px;
+}
+
+.prj-title-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 12px;
+}
+
+.prj-period {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    color: var(--accent);
+    white-space: nowrap;
+}
+
+.prj-title {
+    margin: 0;
+    font-family: 'Poppins', 'Inter', system-ui, sans-serif;
+    font-size: clamp(1.15rem, 2.2cqw, 1.5rem);
+    line-height: 1.25;
+}
+
+.prj-desc {
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: 15.5px;
+    line-height: 1.75;
+}
+
+.prj-desc p {
+    margin: 0;
+}
+
+.prj-desc p + p {
+    margin-top: 0.85em;
+}
+
+/* Cartel "En desarrollo": pastilla con borde de acento y un punto que late. */
+.prj-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 3px 10px 3px 8px;
+    border: 1.5px solid var(--accent);
+    border-radius: 999px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--accent);
+    white-space: nowrap;
+}
+
+.prj-badge-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: prj-badge-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes prj-badge-pulse {
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.35;
+        transform: scale(0.7);
+    }
+}
+
+/* Layout "flow": el medio flota a un costado y la descripcion larga continua por debajo. */
+.prj-card--flow {
+    display: flow-root;
+}
+
+.prj-card--flow .prj-media {
+    width: min(56%, 560px);
+    margin-bottom: 14px;
+}
+
+.prj-slide--start.prj-card--flow .prj-media {
+    float: left;
+    margin-right: clamp(18px, 3cqw, 34px);
+}
+
+.prj-slide--end.prj-card--flow .prj-media {
+    float: right;
+    margin-left: clamp(18px, 3cqw, 34px);
+}
+
+/* Layout "split" (video + fotos): el texto queda en su columna y no continua por debajo. */
+.prj-card--split {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+        "media head"
+        "media desc";
+    column-gap: clamp(18px, 3cqw, 34px);
+}
+
+.prj-slide--end.prj-card--split {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+    grid-template-areas:
+        "head media"
+        "desc media";
+}
+
+.prj-card--split .prj-media {
+    grid-area: media;
+    display: grid;
+    gap: 10px;
+    align-content: start;
+}
+
+.prj-card--split .prj-head {
+    grid-area: head;
+}
+
+.prj-card--split .prj-desc {
+    grid-area: desc;
+    align-self: start;
+}
+
+/* Marco 16:9 para video o imagen unica. */
+.prj-frame {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: 12px;
+    background: var(--dark);
+}
+
+.prj-frame-fill {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    object-fit: cover;
+}
+
+video.prj-frame-fill {
+    object-fit: contain;
+}
+
+/* El reproductor de YouTube no recibe clicks: asi no muestra sus controles. */
+.prj-frame-locked {
+    pointer-events: none;
+}
+
+/* Mosaico de fotos; con cantidad impar la primera ocupa las dos columnas. */
+.prj-mosaic {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: clamp(72px, 13cqw, 150px);
+    gap: 8px;
+}
+
+.prj-mosaic[data-odd] > :first-child {
+    grid-column: span 2;
+}
+
+.prj-mosaic-item {
+    display: block;
+    overflow: hidden;
+    border-radius: 10px;
+    background: var(--bg-soft);
+}
+
+.prj-mosaic-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 400ms ease;
+}
+
+.prj-mosaic-item:hover img {
+    transform: scale(1.05);
+}
+
+@keyframes prj-line-grow {
+    from {
+        transform: scaleY(0);
+    }
+    to {
+        transform: scaleY(1);
+    }
+}
+
+@keyframes prj-fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes prj-fade-out {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes prj-slide-in {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@keyframes prj-dot-pop {
+    0% {
+        transform: scale(0);
+    }
+    50% {
+        transform: scale(1.28);
+    }
+    68% {
+        transform: scale(0.86);
+    }
+    82% {
+        transform: scale(1.07);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Panel angosto (mobile): todo en una columna, medio arriba y texto debajo. */
+@container (max-width: 620px) {
+    .prj-stage {
+        --prj-rail: 38px;
+        --prj-dot: 18px;
+        --prj-line: 2.5px;
+    }
+
+    .prj-card--flow .prj-media,
+    .prj-slide--start.prj-card--flow .prj-media,
+    .prj-slide--end.prj-card--flow .prj-media {
+        float: none;
+        width: 100%;
+        margin: 0 0 14px;
+    }
+
+    .prj-card--split,
+    .prj-slide--end.prj-card--split {
+        display: block;
+    }
+
+    .prj-card--split .prj-media {
+        margin-bottom: 14px;
+    }
+
+    .prj-arrow {
+        width: 36px;
+        height: 36px;
+        margin-left: calc(var(--prj-dot) / 2 - 18px);
+    }
+
+    .prj-desc {
+        font-size: 14.5px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .prj-rail-track::before,
+    .prj-dot,
+    .prj-arrow,
+    .prj-mosaic-item img {
+        transition: none;
+    }
+
+    .prj-rail-track::before,
+    .prj-rail-item,
+    .prj-badge-dot,
+    .prj-dot-core,
+    .prj-wave,
+    .prj-slide[data-state="active"],
+    .prj-slide[data-state="leaving"] {
+        animation: none;
+    }
+
+    /* Sin ondas animadas: el dot activo se distingue con un anillo fijo. */
+    .prj-dot.is-active .prj-wave:first-child {
+        opacity: 0.5;
+        transform: scale(1.6);
+    }
+}

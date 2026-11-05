@@ -1,0 +1,431 @@
+/* ---------- Timeline de navegacion (dentro del workspace) ---------- */
+
+/* Ocupa todo el workspace y centra la lista en vertical. */
+.tl-root {
+    --tl-dot-size: 23.4px;
+    --tl-line-w: 2.6px;
+    --tl-drop-size: calc(var(--tl-dot-size) * 0.3);
+    --tl-drop-from: -28px;
+    --tl-ripple-scale: 3.2;
+    --tl-font-size: clamp(1rem, 1.7vw, 1.5rem);
+    --tl-line-height: 1.3;
+    --tl-gap: clamp(36px, 9vh, 88px);
+    --tl-text-gap: 18px;
+    --tl-color: var(--ink);
+    --tl-focus-offset: 6px;
+
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    padding-left: clamp(28px, 8vw, 120px);
+    padding-right: 20px;
+    pointer-events: none;
+    opacity: 1;
+    transition: opacity var(--hide-fade) ease;
+}
+
+/* Fuera de la fase split: fade rapido y sin animaciones activas. */
+.tl-root.is-hidden {
+    opacity: 0;
+}
+
+/* Tapado por una seccion: se oculta al instante. */
+.tl-root.is-covered {
+    visibility: hidden;
+    transition: none;
+}
+
+.tl-nav {
+    min-width: 0;
+    max-width: 100%;
+}
+
+/* Lista vertical; es la referencia de posicion de la linea. */
+.tl-list {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--tl-gap);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+/* Linea que une los centros del primer y ultimo dot (top/alto medidos en JS), detras de los dots. */
+.tl-list::before {
+    content: "";
+    position: absolute;
+    top: var(--line-top, 0px);
+    left: calc(var(--tl-dot-size) / 2 - var(--tl-line-w) / 2);
+    width: var(--tl-line-w);
+    height: var(--line-height, 0px);
+    background: var(--tl-color);
+    transform-origin: top center;
+    z-index: 0;
+}
+
+.tl-item {
+    position: relative;
+    z-index: 1;
+}
+
+/* Boton que agrupa dot y texto: click en cualquiera de los dos es el mismo boton. */
+.tl-button {
+    display: inline-flex;
+    align-items: flex-start;
+    gap: var(--tl-text-gap);
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--tl-color);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    pointer-events: none;
+    border-radius: 6px;
+}
+
+/* Solo cuando el timeline esta visible los botones reciben el puntero. */
+.tl-root.is-visible .tl-button {
+    pointer-events: auto;
+}
+
+.tl-button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: var(--tl-focus-offset);
+}
+
+/* Contenedor del dot: recibe el hover (escala) y queda centrado en la primera linea del texto. */
+.tl-dot {
+    position: relative;
+    flex: 0 0 auto;
+    width: var(--tl-dot-size);
+    height: var(--tl-dot-size);
+    margin-top: calc((var(--tl-font-size) * var(--tl-line-height) - var(--tl-dot-size)) / 2);
+    transition: transform var(--hover-dur) ease;
+}
+
+/* Cuerpo del dot: por encima de la ola; recibe el glitch al azar (src/styles/dotGlitch.css). */
+.tl-dot-body {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    --dot-glitch-color: var(--tl-color);
+}
+
+/* Circulo negro visible: recibe la animacion de pop. */
+.tl-dot-core {
+    position: relative;
+    z-index: 1;
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: var(--tl-color);
+}
+
+/* Contenedor de los anillos: ocupa la caja del dot sin agrandarla y no existe fuera de la secuencia. */
+.tl-dot-ripple {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    display: none;
+    pointer-events: none;
+}
+
+/* Cada anillo nace en el borde del dot: solo borde, sin relleno, invisible hasta su turno. */
+.tl-dot-ripple::before,
+.tl-dot-ripple::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    box-sizing: border-box;
+    border: 1.5px solid var(--tl-color);
+    border-radius: 50%;
+    opacity: 0;
+}
+
+/* Gota chica centrada en el dot; su caida la desplaza desde arriba. */
+.tl-dot-drop {
+    position: absolute;
+    top: calc(50% - var(--tl-drop-size) / 2);
+    left: calc(50% - var(--tl-drop-size) / 2);
+    z-index: 2;
+    display: none;
+    width: var(--tl-drop-size);
+    height: var(--tl-drop-size);
+    border-radius: 50%;
+    background: var(--tl-color);
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Texto por encima de la ola para que los anillos nunca lo tapen. */
+.tl-label {
+    position: relative;
+    z-index: 1;
+    min-width: 0;
+    font-family: 'Poppins', 'Inter', system-ui, sans-serif;
+    font-weight: 500;
+    font-size: var(--tl-font-size);
+    line-height: var(--tl-line-height);
+    color: var(--tl-color);
+    transition: color var(--hover-dur) ease;
+}
+
+/* Hover y foco: el dot crece y el texto toma el color de acento. */
+.tl-button:hover .tl-dot,
+.tl-button:focus-visible .tl-dot {
+    transform: scale(1.25);
+}
+
+.tl-button:hover .tl-label,
+.tl-button:focus-visible .tl-label {
+    color: var(--accent);
+}
+
+/* Item activo (seccion abierta): texto en acento, en ambas variantes. */
+.tl-button[aria-current="page"] .tl-label {
+    color: var(--accent);
+}
+
+/* Secuencia de entrada: solo existe mientras el timeline esta visible. */
+.tl-root.is-playing .tl-dot-core {
+    animation: tl-dot-pop var(--dot-pop) ease-in-out calc(var(--i) * var(--dot-stagger)) both;
+}
+
+.tl-root.is-playing .tl-list::before {
+    animation: tl-line-grow var(--line-dur) var(--ease-out) both;
+}
+
+/* Gota y ola solo existen durante la secuencia. */
+.tl-root.is-playing .tl-dot-ripple,
+.tl-root.is-playing .tl-dot-drop {
+    display: block;
+}
+
+/* La gota cae en el turno de su dot y llega al centro justo en el impacto (pico del pop). */
+.tl-root.is-playing .tl-dot-drop {
+    animation: tl-drop-fall var(--drop-fall) var(--ease-drop)
+        calc(var(--i) * var(--dot-stagger) + var(--impact-at) - var(--drop-fall)) forwards;
+}
+
+/* Primer anillo: sale en el impacto. */
+.tl-root.is-playing .tl-dot-ripple::before {
+    animation: tl-ripple var(--dot-ripple) var(--ease-out)
+        calc(var(--i) * var(--dot-stagger) + var(--impact-at)) forwards;
+}
+
+/* Segundo anillo: igual que el primero, con un pequeno retraso. */
+.tl-root.is-playing .tl-dot-ripple::after {
+    animation: tl-ripple var(--dot-ripple) var(--ease-out)
+        calc(var(--i) * var(--dot-stagger) + var(--impact-at) + var(--ripple-gap)) forwards;
+}
+
+.tl-root.is-playing .tl-label {
+    animation: tl-label-in var(--label-in) var(--ease-out)
+        calc(var(--labels-at) + var(--i) * var(--label-stagger)) both;
+}
+
+/* Pop elastico del dot. */
+@keyframes tl-dot-pop {
+    0% {
+        transform: scale(0);
+    }
+    50% {
+        transform: scale(1.28);
+    }
+    68% {
+        transform: scale(0.86);
+    }
+    82% {
+        transform: scale(1.07);
+    }
+    92% {
+        transform: scale(0.98);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Caida de la gota: aparece arriba, acelera hasta el centro y se funde al tocar el dot. */
+@keyframes tl-drop-fall {
+    0% {
+        transform: translateY(var(--tl-drop-from));
+        opacity: 0;
+    }
+    15% {
+        opacity: 1;
+    }
+    85% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 0;
+    }
+}
+
+/* Anillo de la ola: se expande desde el borde del dot mientras se desvanece. */
+@keyframes tl-ripple {
+    from {
+        transform: scale(1);
+        opacity: 0.5;
+    }
+    to {
+        transform: scale(var(--tl-ripple-scale));
+        opacity: 0;
+    }
+}
+
+/* Crecimiento de la linea desde arriba. */
+@keyframes tl-line-grow {
+    from {
+        transform: scaleY(0);
+    }
+    to {
+        transform: scaleY(1);
+    }
+}
+
+/* Entrada del texto: fade + desplazamiento de izquierda a derecha. */
+@keyframes tl-label-in {
+    from {
+        opacity: 0;
+        transform: translateX(-18px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* ---------- Salida inversa (exit="reverse") ---------- */
+
+/* Al terminar la salida ya no queda nada visible: se oculta sin fade para que no reaparezca el estado estatico. */
+.tl-root.tl-root--reverse.is-hidden {
+    transition: none;
+}
+
+/* Textos: salen de abajo hacia arriba, escalonados. */
+.tl-root.is-exiting .tl-label {
+    animation: tl-label-out var(--label-out) var(--ease-drop)
+        calc((var(--n) - 1 - var(--i)) * var(--label-out-stagger)) both;
+}
+
+/* Dots: se achican a 0 de abajo hacia arriba despues de los textos. */
+.tl-root.is-exiting .tl-dot-core {
+    animation: tl-dot-out var(--dot-out) var(--ease-drop)
+        calc(var(--dots-out-at) + (var(--n) - 1 - var(--i)) * var(--dot-out-stagger)) both;
+}
+
+/* Linea: se retrae hacia arriba a la par de los dots. */
+.tl-root.is-exiting .tl-list::before {
+    animation: tl-line-shrink var(--line-out) var(--ease-drop) var(--dots-out-at) both;
+}
+
+@keyframes tl-label-out {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(-18px);
+    }
+}
+
+@keyframes tl-dot-out {
+    from {
+        transform: scale(1);
+    }
+    to {
+        transform: scale(0);
+    }
+}
+
+@keyframes tl-line-shrink {
+    from {
+        transform: scaleY(1);
+    }
+    to {
+        transform: scaleY(0);
+    }
+}
+
+/* ---------- Variante de la franja negra (variant="strip") ---------- */
+
+/* Llena el slot de IdentityPanel, alineado arriba, en blanco y con tamanos compactos. */
+/* El padding deja lugar a la ola (radio maximo menos radio del dot) por si el padre recorta. */
+.tl-root.tl-root--strip {
+    --tl-dot-size: 12px;
+    --tl-line-w: 1.6px;
+    --tl-drop-from: -16px;
+    --tl-font-size: 0.8rem;
+    --tl-line-height: 1.25;
+    --tl-gap: clamp(10px, 2.4vh, 22px);
+    --tl-text-gap: 10px;
+    --tl-color: #fff;
+    --tl-focus-offset: 3px;
+
+    align-items: flex-start;
+    padding: 14px 18px 0;
+    overflow: visible;
+    background: transparent;
+}
+
+.tl-root--strip .tl-nav {
+    width: 100%;
+}
+
+/* Textos largos envuelven en dos lineas; el dot queda en la primera. */
+.tl-root--strip .tl-label {
+    overflow-wrap: break-word;
+}
+
+/* Mobile: menos margen y texto mas chico; puede envolver en dos lineas con el dot en la primera. */
+/* El margen izquierdo deja lugar a la ola (radio maximo menos radio del dot) para que el workspace no la recorte. */
+@media (max-width: 719px) {
+    .tl-root {
+        --tl-font-size: 0.95rem;
+        --tl-text-gap: 14px;
+        padding-left: 28px;
+        padding-right: 16px;
+    }
+
+    /* Franja angosta (38vw): texto mas chico y margenes justos para la ola. */
+    .tl-root.tl-root--strip {
+        --tl-font-size: 0.7rem;
+        --tl-text-gap: 8px;
+        padding-left: 14px;
+        padding-right: 12px;
+    }
+}
+
+/* Movimiento reducido: todo aparece al instante. */
+@media (prefers-reduced-motion: reduce) {
+    .tl-root,
+    .tl-dot,
+    .tl-label {
+        transition: none;
+    }
+
+    .tl-root.is-playing .tl-dot-core,
+    .tl-root.is-playing .tl-list::before,
+    .tl-root.is-playing .tl-label,
+    .tl-root.is-exiting .tl-dot-core,
+    .tl-root.is-exiting .tl-list::before,
+    .tl-root.is-exiting .tl-label {
+        animation: none;
+    }
+
+    /* Sin gota ni anillos. */
+    .tl-root.is-playing .tl-dot-ripple,
+    .tl-root.is-playing .tl-dot-drop {
+        display: none;
+    }
+}

@@ -1,0 +1,201 @@
+/*
+ * Raiz circular del hero. Comparte caja y traslacion con el goteo (.identity-panel__drops), asi queda
+ * concentrica con sus anillos: el centro de la raiz es el centro de la foto.
+ * No usa mix-blend-mode a proposito: en hero el fondo es blanco y el blend invertiria el rojo del acento.
+ */
+.root-glitch {
+    /* Diametro: 1.7 veces la diagonal del viewport. El centro viaja hasta la franja (pegado al borde
+       izquierdo), asi que hace falta ese margen para que la esquina opuesta siga alcanzada
+       (respaldo sin hypot()). */
+    --root-size: calc((100vw + var(--vh-full)) * 1.2);
+    /* Separacion entre anillos. */
+    --root-ring: clamp(26px, 4.5vmin, 58px);
+    /* Unico control de intensidad: cuanto se ve la raiz entera. */
+    --root-alpha: 0.45;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: var(--photo-w);
+    height: var(--photo-h);
+    /* Primera traslacion: la misma de la foto, asi en hero la raiz queda concentrica con el goteo.
+       Segunda: baja el centro hasta la mitad del alto del viewport a medida que avanza el scroll, para que
+       en split quede en el centro exacto de la franja negra (en horizontal ya cae ahi, porque la caja mide
+       --photo-w y arranca en left 0). */
+    transform: translate(
+            calc((100vw - var(--photo-w)) / 2 * (1 - var(--p))),
+            calc((var(--vh-full) - var(--identity-h)) / 2 * (1 - var(--p)))
+        )
+        translateY(calc((var(--vh-full) - var(--photo-h)) / 2 * var(--p)));
+    /* Nunca se apaga del todo: en split sigue viva, un poco mas tenue para no pelear con el timeline. */
+    opacity: calc(var(--root-alpha) * (1 - var(--p) * 0.38));
+    transition: opacity var(--hover-scale, 240ms) var(--hover-ease, ease-out);
+    pointer-events: none;
+    will-change: transform, opacity;
+}
+
+@supports (width: hypot(1px, 1px)) {
+    .root-glitch {
+        --root-size: calc(hypot(100vw, var(--vh-full)) * 1.7);
+    }
+}
+
+/* Con una seccion abierta el contenido se apoya sobre la raiz: baja un poco la intensidad para no
+   restarle contraste al texto (data-slot-active lo pone el panel cuando hay una seccion activa).
+   Ojo: el valor se multiplica despues por el factor de scroll, que en split vale 0.62. */
+.identity-panel[data-slot-active] .root-glitch {
+    --root-alpha: 0.38;
+}
+
+/* Hover sobre la foto o el texto: la raiz se intensifica junto con el goteo. */
+.identity-panel[data-phase="hero"]:has(.identity-panel__photo:hover, .identity-panel__text:hover) .root-glitch {
+    --root-alpha: 0.8;
+}
+
+/* Disco centrado en la foto, recortado en circulo y desvanecido hacia afuera. */
+.root-glitch__field {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: var(--root-size);
+    height: var(--root-size);
+    margin: calc(var(--root-size) / -2);
+    border-radius: 50%;
+    overflow: hidden;
+    -webkit-mask-image: radial-gradient(
+        closest-side,
+        #000 0%,
+        rgba(0, 0, 0, 0.8) 34%,
+        rgba(0, 0, 0, 0.32) 66%,
+        transparent 100%
+    );
+    mask-image: radial-gradient(
+        closest-side,
+        #000 0%,
+        rgba(0, 0, 0, 0.8) 34%,
+        rgba(0, 0, 0, 0.32) 66%,
+        transparent 100%
+    );
+}
+
+/* Anillos concentricos finos que laten muy despacio. */
+.root-glitch__rings {
+    position: absolute;
+    inset: 0;
+    background-image: repeating-radial-gradient(
+        circle at 50% 50%,
+        transparent 0 calc(var(--root-ring) - 1px),
+        rgba(15, 15, 20, 0.5) calc(var(--root-ring) - 1px) var(--root-ring)
+    );
+    animation: root-glitch-breathe var(--root-dur, 7000ms) ease-in-out infinite;
+    will-change: transform;
+}
+
+/* Barrido horizontal: dos tramas de distinto paso (como .glitch-cracks) recortadas en bandas, para que
+   lea como senal rota y no como un rayado parejo. Baja a saltos, desincronizada con el resto. */
+.root-glitch__scan {
+    position: absolute;
+    inset: -8%;
+    background-image:
+        repeating-linear-gradient(0deg, transparent 0 5px, rgba(15, 15, 20, 0.26) 5px 6px),
+        repeating-linear-gradient(0deg, transparent 0 23px, rgba(15, 15, 20, 0.14) 23px 25px);
+    -webkit-mask-image: repeating-linear-gradient(
+        0deg,
+        #000 0 44px,
+        transparent 44px 62px,
+        #000 62px 104px,
+        transparent 104px 113px
+    );
+    mask-image: repeating-linear-gradient(
+        0deg,
+        #000 0 44px,
+        transparent 44px 62px,
+        #000 62px 104px,
+        transparent 104px 113px
+    );
+    animation: root-glitch-drift calc(var(--root-dur, 7000ms) / 3) steps(6, end) infinite;
+    will-change: transform;
+}
+
+/* Matriz de puntos del acento (la misma de .glitch-pixels), recortada en columnas para que aparezca
+   en parches y no como una grilla pareja. Parpadea a destiempo del barrido. */
+.root-glitch__pixels {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, var(--accent) 0 1.5px, transparent 1.7px);
+    background-size: 8px 8px;
+    -webkit-mask-image: repeating-linear-gradient(
+        90deg,
+        #000 0 64px,
+        transparent 64px 112px,
+        #000 112px 196px,
+        transparent 196px 232px
+    );
+    mask-image: repeating-linear-gradient(
+        90deg,
+        #000 0 64px,
+        transparent 64px 112px,
+        #000 112px 196px,
+        transparent 196px 232px
+    );
+    opacity: 0.55;
+    animation: root-glitch-flicker calc(var(--root-dur, 7000ms) / 2.2) steps(4, end) infinite;
+}
+
+/* Latido lento de los anillos: se expanden apenas y vuelven. */
+@keyframes root-glitch-breathe {
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.035);
+    }
+}
+
+/* Corrimiento vertical del barrido, exactamente un ciclo de la trama (6px) para que no se note el salto. */
+@keyframes root-glitch-drift {
+    from {
+        transform: translateY(0);
+    }
+
+    to {
+        transform: translateY(6px);
+    }
+}
+
+/* Parpadeo de la trama roja, en saltos secos. */
+@keyframes root-glitch-flicker {
+    0% {
+        opacity: 0.45;
+    }
+
+    25% {
+        opacity: 0.12;
+    }
+
+    50% {
+        opacity: 0.6;
+    }
+
+    75% {
+        opacity: 0.3;
+    }
+
+    100% {
+        opacity: 0.45;
+    }
+}
+
+/* Sin animaciones si el visitante pidio reducir movimiento: la raiz queda quieta, no desaparece. */
+@media (prefers-reduced-motion: reduce) {
+    .root-glitch {
+        transition: none;
+    }
+
+    .root-glitch__rings,
+    .root-glitch__scan,
+    .root-glitch__pixels {
+        animation: none;
+    }
+}

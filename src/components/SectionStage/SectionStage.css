@@ -1,0 +1,155 @@
+/* Escenario: ocupa todo el workspace, encima del timeline; recorta el circulo para que nazca en el borde izquierdo. */
+.section-stage {
+    --panel-pad: clamp(24px, 6vw, 88px);
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+/* Capa blanca que tapa el timeline desde el fundido (o desde el click en un cambio) hasta volver a idle. Orden: blanco, panel, circulo. */
+/* Transparente a proposito: el blanco de la pagina (y la raiz del glitch) los pinta .identity-panel, que
+   esta por debajo. Si esta capa fuera opaca taparia la raiz dentro de las secciones. Sigue existiendo porque
+   es la superficie sobre la que el circulo negro se funde y la que tapa el timeline. */
+.stage-white {
+    position: absolute;
+    inset: 0;
+    background: transparent;
+}
+
+/* Circulo negro: mide el diametro final desde el inicio y solo se escala hacia 1. */
+.stage-circle {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: var(--dark);
+    transform-origin: 50% 50%;
+    will-change: transform, opacity;
+}
+
+/* Panel de la seccion: scroll propio y contenido a todo el ancho del workspace. */
+.stage-panel {
+    position: absolute;
+    inset: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    pointer-events: auto;
+    padding: var(--panel-pad);
+    /* Transparente por el mismo motivo que .stage-white: deja pasar la raiz mientras el contenido scrollea. */
+    background: transparent;
+    color: var(--ink);
+    outline: none;
+}
+
+.section-stage[data-status="closing"] .stage-panel,
+.stage-panel.is-stale {
+    pointer-events: none;
+}
+
+/* Panel viejo durante el crecimiento de un cambio: estatico en su posicion final, sin entrada ni salida. */
+.stage-panel.is-stale .stage-inner {
+    animation: none;
+    opacity: 1;
+    transform: none;
+}
+
+/* Entrada desde el borde de la franja negra con fade. */
+.section-stage[data-status="entering"] .stage-inner,
+.section-stage[data-status="open"] .stage-inner {
+    animation: stage-in var(--stage-in) var(--stage-ease-out) both;
+}
+
+/* Salida corta hacia la izquierda con fade. */
+.section-stage[data-status="closing"] .stage-inner {
+    animation: stage-out var(--stage-out) ease-in both;
+}
+
+@keyframes stage-in {
+    from {
+        opacity: 0;
+        transform: translateX(calc(-1 * var(--panel-pad) - 6vw));
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes stage-out {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(-24px);
+    }
+}
+
+/* Boton Volver: pequeno, monoespaciado, arriba a la izquierda del panel. */
+.stage-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 clamp(20px, 4vw, 40px);
+    padding: 6px 12px;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.02em;
+    color: var(--ink);
+    background: transparent;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: color 160ms ease, border-color 160ms ease;
+}
+
+.stage-back:hover,
+.stage-back:focus-visible {
+    color: var(--accent);
+    border-color: var(--accent);
+}
+
+.stage-back:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.stage-back-arrow {
+    font-size: 1rem;
+    line-height: 1;
+}
+
+@media (max-width: 719px) {
+    .section-stage {
+        --panel-pad: 18px;
+    }
+}
+
+/* Movimiento reducido: sin circulo ni animaciones, el panel aparece directo. */
+.section-stage.is-reduced .stage-circle {
+    display: none;
+}
+
+.section-stage.is-reduced .stage-inner {
+    animation: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .stage-circle {
+        display: none;
+    }
+
+    .section-stage .stage-inner {
+        animation: none !important;
+    }
+
+    .stage-back {
+        transition: none;
+    }
+}

@@ -1,0 +1,160 @@
+/* Llena la caja de la foto y deja salir las ramas, sin interceptar el puntero; se apaga a saltos al final. */
+.branch-glitch {
+    position: absolute;
+    inset: 0;
+    overflow: visible;
+    pointer-events: none;
+    will-change: opacity;
+    animation: branch-glitch-life var(--glitch-dur) steps(1, end) forwards;
+}
+
+/* Estira el SVG a la caja (viewBox 0..100) y permite pintar fuera de ella. */
+.branch-glitch__svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    mix-blend-mode: screen;
+}
+
+/* Hace parpadear cada rama con saltos de opacidad y posicion, desfasada por --phase. */
+.branch-glitch__branch {
+    will-change: opacity, transform;
+    animation: branch-glitch-flicker calc(var(--glitch-dur) / 4) steps(1, end) infinite;
+    animation-delay: calc(var(--glitch-dur) * -0.25 * var(--phase));
+}
+
+/* Traza cada tramo como una fisura blanca fina y recta; aparece de golpe en su momento --at. */
+.branch-glitch__seg {
+    fill: none;
+    stroke: #fff;
+    stroke-width: 1.2px;
+    stroke-linecap: square;
+    stroke-linejoin: miter;
+    opacity: 0;
+    animation: branch-glitch-seg-in 1ms steps(1, end) forwards;
+    animation-delay: calc(var(--glitch-dur) * var(--at));
+}
+
+/* Ubica un fragmento de trama o de fisuras centrado en un punto (--x, --y) de las ramas. */
+.branch-glitch__spot {
+    position: absolute;
+    left: calc(var(--x) * 1% - var(--spot-w) / 2);
+    top: calc(var(--y) * 1% - var(--spot-h) / 2);
+    width: var(--spot-w);
+    height: var(--spot-h);
+    opacity: 0;
+    will-change: opacity;
+    animation: branch-glitch-spot calc(var(--glitch-dur) * 0.4) steps(1, end) forwards;
+    animation-delay: calc(var(--glitch-dur) * var(--at));
+}
+
+/* Define el tamano de los destellos de la trama roja. */
+.branch-glitch__spot--pixels {
+    --spot-w: 24%;
+    --spot-h: 18%;
+}
+
+/* Desfasa el recorte de la trama roja para que cada destello corte otra zona. */
+.branch-glitch__spot--pixels .glitch-pixels {
+    animation-delay: calc(var(--glitch-dur) * -0.22 * var(--phase));
+}
+
+/* Define el tamano de los bloques de fisuras en las puntas. */
+.branch-glitch__spot--cracks {
+    --spot-w: 18%;
+    --spot-h: 12%;
+}
+
+/* Revela un tramo de rama de un salto. */
+@keyframes branch-glitch-seg-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Corta la rama en parpadeos y la corre unos pixeles de su lugar. */
+@keyframes branch-glitch-flicker {
+    0% {
+        opacity: 1;
+        transform: translate(0, 0);
+    }
+    18% {
+        opacity: 0.25;
+        transform: translate(1.5px, -1px);
+    }
+    32% {
+        opacity: 1;
+        transform: translate(0, 0);
+    }
+    58% {
+        opacity: 0.6;
+        transform: translate(-1px, 1px);
+    }
+    70% {
+        opacity: 1;
+        transform: translate(0, 0);
+    }
+    100% {
+        opacity: 1;
+        transform: translate(0, 0);
+    }
+}
+
+/* Enciende un fragmento de golpe, lo corta un par de veces y lo deja apagado. */
+@keyframes branch-glitch-spot {
+    0% {
+        opacity: 1;
+    }
+    28% {
+        opacity: 0;
+    }
+    42% {
+        opacity: 1;
+    }
+    66% {
+        opacity: 0.5;
+    }
+    82% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+/* Mantiene todo encendido y lo apaga a saltos en el ultimo tramo de MOTION.branchGlitch. */
+@keyframes branch-glitch-life {
+    0% {
+        opacity: 1;
+    }
+    72% {
+        opacity: 0.3;
+    }
+    77% {
+        opacity: 1;
+    }
+    84% {
+        opacity: 0;
+    }
+    89% {
+        opacity: 0.7;
+    }
+    94% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+/* Anula el glitch si el visitante pidio reducir animaciones. */
+@media (prefers-reduced-motion: reduce) {
+    .branch-glitch {
+        display: none;
+    }
+}

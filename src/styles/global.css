@@ -1,0 +1,199 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap');
+
+/* Variables */
+:root {
+    --bg: #ffffff;
+    --bg-soft: #f6f6f8;
+    --ink: #0f0f14;
+    --ink-soft: #33333d;
+    --muted: #62626f;
+    --line: #e3e3e9;
+    --line-strong: #c9c9d2;
+    --accent: #e11d3f;
+    --accent-strong: #ff4b68;
+    --dark: #0b0b0f;
+    --shadow-sm: 0 1px 2px rgba(15, 15, 20, 0.06);
+    --shadow: 0 18px 40px rgba(15, 15, 20, 0.08);
+    --radius: 14px;
+    --max: 1180px;
+}
+
+/* Reset minimo */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4 {
+    font-family: 'Poppins', 'Inter', system-ui, sans-serif;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+}
+
+a {
+    color: var(--accent);
+}
+
+a:hover {
+    color: var(--accent-strong);
+}
+
+/* ---------- Layout raiz: hero que se convierte en franja + area de trabajo ---------- */
+:root {
+    /* Ancho de la foto = ancho de la franja negra. */
+    --photo-w: clamp(200px, 22vw, 300px);
+}
+
+@media (max-width: 720px) {
+    :root {
+        --photo-w: 38vw;
+    }
+}
+
+/* Un solo viewport de recorrido con imanes al inicio y al final; la scrollbar no se muestra. */
+html {
+    scroll-snap-type: y mandatory;
+    scrollbar-width: none;
+}
+
+html::-webkit-scrollbar {
+    display: none;
+}
+
+/* Con el modal de idioma o una seccion abierta el documento no scrollea. */
+html.is-scroll-locked {
+    overflow: hidden;
+}
+
+body {
+    overflow-x: hidden;
+}
+
+/* Area blanca a la derecha de la franja: aloja el timeline y el escenario de secciones. */
+.workspace {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: var(--photo-w);
+    overflow: hidden;
+    z-index: 10;
+    pointer-events: none;
+}
+
+/* Solo aporta recorrido de scroll; el contenido visible vive en capas fijas. */
+.scroll-runway {
+    position: relative;
+    z-index: 0;
+}
+
+.scroll-stop {
+    height: 100vh;
+}
+
+.scroll-stop:first-child {
+    scroll-snap-align: start;
+}
+
+/* El ultimo iman se alinea por el final para coincidir con el scroll maximo aun con barras moviles. */
+.scroll-stop:last-child {
+    scroll-snap-align: end;
+}
+
+/* ---------- Modal de idioma ---------- */
+.language-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+}
+
+.language-card {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    padding: 34px 30px;
+    width: min(420px, 90%);
+    text-align: center;
+    box-shadow: var(--shadow);
+}
+
+.language-card h2 {
+    margin: 0 0 8px;
+    font-size: 24px;
+}
+
+.language-card p {
+    margin: 0;
+    color: var(--muted);
+}
+
+.language-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 22px;
+}
+
+.language-actions button {
+    border: 1px solid var(--ink);
+    border-radius: 999px;
+    padding: 11px 22px;
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    background: var(--ink);
+    color: #fff;
+    transition: transform 0.18s ease, background 0.2s ease, border-color 0.2s ease;
+}
+
+.language-actions button:last-child {
+    background: transparent;
+    color: var(--ink);
+}
+
+.language-actions button:hover {
+    transform: translateY(-2px);
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    .language-actions button {
+        transition: none;
+    }
+}

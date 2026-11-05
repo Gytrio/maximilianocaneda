@@ -1,0 +1,544 @@
+/* Escala del hover: registrada para poder transicionarla; los hijos de la identidad la heredan en el mismo frame. */
+@property --hover-s {
+    syntax: "<number>";
+    inherits: true;
+    initial-value: 1;
+}
+
+/* Capa de fondo fija: pinta el blanco de la pagina, la franja negra y la identidad en un mismo
+   contexto de apilamiento, para que mix-blend-mode del texto mezcle contra ambos. */
+.identity-panel {
+    --vh-full: 100vh;
+    --identity-reserve: 15rem; /* alto minimo reservado para nombre, roles y pie bajo la foto */
+    --slot-min: 11.5rem; /* alto minimo garantizado para el timeline de la franja con slotActive */
+    --p: var(--scroll-p, 0);
+    /* Alturas medidas por el componente (se pisan con estilo inline). */
+    --identity-h: 0px;
+    --text-h: 0px;
+    --contact-h: 0px;
+    /* Tope de alto de la foto; con slotActive en split se baja para dejar --slot-min libre. */
+    --photo-max: calc(var(--vh-full) - var(--identity-reserve));
+    /* Alto real de la foto (4/5 recortado por --photo-max); lo usan el goteo, la capa del glitch y los origenes. */
+    --photo-h: min(calc(var(--photo-w) * 1.25), var(--photo-max));
+    /* Diametro final de cada onda: ~1.6 veces la diagonal de la foto (respaldo sin hypot()). */
+    --drop-size: calc(var(--photo-w) * 2.56);
+    position: fixed;
+    inset: 0;
+    z-index: 5;
+    height: var(--vh-full);
+    background: var(--bg);
+    isolation: isolate;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+@supports (height: 100dvh) {
+    .identity-panel {
+        --vh-full: 100dvh;
+    }
+}
+
+@supports (width: hypot(1px, 1px)) {
+    .identity-panel {
+        --drop-size: calc(hypot(var(--photo-w), var(--photo-h)) * 1.6);
+    }
+}
+
+/* Reserva del slot: si el alto libre bajo el texto (pantalla - foto - texto - pie) no llega a --slot-min, la foto
+   se recorta lo justo; nunca baja de un 40% de su ancho. Con alto suficiente el min() deja el tope original. */
+.identity-panel[data-phase="split"][data-slot-active] {
+    --photo-max: max(
+        calc(var(--photo-w) * 0.4),
+        min(
+            calc(var(--vh-full) - var(--identity-reserve)),
+            calc(var(--vh-full) - var(--text-h) - var(--contact-h) - var(--slot-min))
+        )
+    );
+}
+
+/* Franja negra: se forma desde el borde izquierdo a medida que avanza el scroll. */
+.identity-panel__strip {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: var(--photo-w);
+    background: var(--dark);
+    transform-origin: left center;
+    transform: scaleX(var(--p));
+    will-change: transform;
+}
+
+/* Bloque de identidad: sin transform propio (no aisla el blending); cada hijo aplica la misma traslacion.
+   Aca vive y se transiciona --hover-s, que foto, texto y capa del glitch heredan a la vez. */
+.identity-panel__identity {
+    --hover-s: 1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: var(--photo-w);
+    transition: --hover-s var(--hover-scale, 240ms) var(--hover-ease, ease-out);
+}
+
+/* Traslacion interpolada: centrado en p = 0, arriba a la izquierda dentro de la franja en p = 1. */
+.identity-panel__drops {
+    transform: translate(
+        calc((100vw - var(--photo-w)) / 2 * (1 - var(--p))),
+        calc((var(--vh-full) - var(--identity-h)) / 2 * (1 - var(--p)))
+    );
+    will-change: transform;
+}
+
+/* Misma traslacion y, despues, la inclinacion por velocidad (--tilt, escrita por JS en la raiz) y la escala del
+   hover: ambas giran/escalan alrededor de su transform-origin (centro del bloque) y recien despues se trasladan,
+   asi la pieza se inclina y crece en su lugar. El rebote y la sacudida usan la propiedad individual translate. */
+.identity-panel__photo,
+.identity-panel__text,
+.identity-panel__branch {
+    transform: translate(
+        calc((100vw - var(--photo-w)) / 2 * (1 - var(--p))),
+        calc((var(--vh-full) - var(--identity-h)) / 2 * (1 - var(--p)))
+    ) rotate(var(--tilt, 0deg)) scale(var(--hover-s));
+}
+
+/* Foto y texto reciben el puntero (la raiz sigue en none). */
+.identity-panel__photo,
+.identity-panel__text {
+    pointer-events: auto;
+    will-change: transform, translate, rotate;
+}
+
+/* Hace que foto y texto actuen como boton solo en hero. */
+.identity-panel[data-phase="hero"] .identity-panel__photo,
+.identity-panel[data-phase="hero"] .identity-panel__text {
+    cursor: pointer;
+}
+
+/* Hover sobre la foto o el texto, solo en hero: toda la identidad se agranda un poco. */
+.identity-panel[data-phase="hero"] .identity-panel__identity:has(> .identity-panel__photo:hover, > .identity-panel__text:hover) {
+    --hover-s: 1.04;
+}
+
+/* Capa del glitch de ramificacion: misma caja, traslacion, escala y origen que la foto, por encima de foto y texto. */
+.identity-panel__branch {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 3;
+    width: var(--photo-w);
+    height: var(--photo-h);
+    overflow: visible;
+    transform-origin: 50% calc(var(--identity-h) / 2);
+    pointer-events: none;
+    will-change: transform;
+}
+
+/* Slot del timeline de la franja: entre el bloque de texto (en split el bloque esta en top 0) y el pie de contacto.
+   Por encima de la franja y del goteo, por debajo del pie; solo visible en split. */
+.identity-panel__slot {
+    position: absolute;
+    top: var(--identity-h);
+    bottom: var(--contact-h);
+    left: 0;
+    z-index: 1;
+    width: var(--photo-w);
+    pointer-events: none;
+}
+
+.identity-panel[data-phase="hero"] .identity-panel__slot {
+    visibility: hidden;
+}
+
+/* Goteo detras de la foto: misma traslacion que ella, recortado al ancho de la franja a medida que p llega a 1. */
+.identity-panel__drops {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: var(--photo-w);
+    height: var(--photo-h);
+    clip-path: inset(-100vmax calc((1 - var(--p)) * -100vmax) -100vmax -100vmax);
+    mix-blend-mode: difference;
+    opacity: 0.45;
+    transition: opacity var(--hover-scale, 240ms) var(--hover-ease, ease-out);
+    pointer-events: none;
+}
+
+/* Segundo set de anillos (desfasado medio intervalo): solo aparece en hover. */
+.identity-panel__drops-extra {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity var(--hover-scale, 240ms) var(--hover-ease, ease-out);
+}
+
+/* Hace que el hover intensifique el goteo solo en hero; en split sigue normal. */
+.identity-panel[data-phase="hero"] .identity-panel__identity:has(> .identity-panel__photo:hover, > .identity-panel__text:hover) .identity-panel__drops {
+    opacity: 0.85;
+}
+
+.identity-panel[data-phase="hero"] .identity-panel__identity:has(> .identity-panel__photo:hover, > .identity-panel__text:hover) .identity-panel__drops-extra {
+    opacity: 1;
+}
+
+/* Anillo de la gota: crece desde el ancho de la foto hasta --drop-size y se desvanece, una vez por intervalo. */
+.identity-panel__drop {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    box-sizing: border-box;
+    width: var(--drop-size);
+    height: var(--drop-size);
+    margin: calc(var(--drop-size) / -2);
+    border: 1.5px solid #fff;
+    border-radius: 50%;
+    opacity: 0;
+    transform: scale(0.4);
+    animation: identity-drop var(--drop-interval, 1000ms) cubic-bezier(0.25, 0.6, 0.4, 1) infinite;
+    will-change: transform, opacity;
+}
+
+.identity-panel__drop--offset {
+    animation-delay: calc(var(--drop-interval, 1000ms) / -2);
+}
+
+@keyframes identity-drop {
+    0% {
+        opacity: 0;
+        transform: scale(0.4);
+    }
+
+    12% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(1);
+    }
+}
+
+/* Foto al ras de la franja; en viewports bajos (o para reservar el slot) se recorta en alto. La transicion de
+   max-height es la unica excepcion a transform/opacity (recorte del slot). */
+.identity-panel__photo {
+    display: block;
+    width: 100%;
+    max-width: none;
+    height: auto;
+    aspect-ratio: 4 / 5;
+    max-height: var(--photo-max);
+    transition: max-height var(--slot-reserve, 300ms) var(--hover-ease, ease-out);
+    object-fit: cover;
+    object-position: center 25%;
+    border-radius: 0;
+    transform-origin: 50% calc(var(--identity-h) / 2);
+}
+
+/* Texto: mismo origen que la foto (centro del bloque) para que ambos escalen y roten como uno solo. */
+.identity-panel__text {
+    transform-origin: 50% calc(var(--identity-h) / 2 - var(--photo-h));
+}
+
+/* Foco de teclado visible en hero (en split no son enfocables). */
+.identity-panel__photo:focus-visible {
+    outline: 2px solid var(--dark);
+    outline-offset: 4px;
+}
+
+.identity-panel__text:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+}
+
+/* Nombre y roles: blanco + difference se ve negro sobre blanco y claro sobre la franja. */
+.identity-panel__text {
+    padding: clamp(0.5rem, calc(var(--photo-w) * 0.05), 1rem) clamp(0.4rem, calc(var(--photo-w) * 0.05), 1rem);
+    color: #fff;
+    text-align: center;
+    mix-blend-mode: difference;
+}
+
+.identity-panel__name {
+    margin: 0;
+    color: #fff;
+    font-family: 'Poppins', 'Inter', system-ui, sans-serif;
+    font-weight: 600;
+    font-size: clamp(0.85rem, calc(var(--photo-w) * 0.075), 1.5rem);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+}
+
+.identity-panel__roles {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.15em 0.45em;
+    margin: 0.5em 0 0;
+    padding: 0;
+    list-style: none;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: clamp(0.62rem, calc(var(--photo-w) * 0.045), 0.88rem);
+    line-height: 1.35;
+    letter-spacing: 0.01em;
+}
+
+.identity-panel__roles li {
+    white-space: nowrap;
+}
+
+/* Separador entre roles. */
+.identity-panel__roles li + li::before {
+    content: "\2022";
+    margin-right: 0.45em;
+    opacity: 0.7;
+}
+
+/* Pista de scroll: solo en hero, se desvanece en el primer tercio del recorrido. */
+.identity-panel__hint {
+    position: absolute;
+    left: 50%;
+    bottom: clamp(0.75rem, 3vh, 1.75rem);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    transform: translateX(-50%);
+    opacity: calc(1 - var(--p) * 3);
+}
+
+/* Las dos lineas de la pista: una debajo de la otra, bien juntas. */
+.identity-panel__hint-lines {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.15rem;
+}
+
+/* Segunda linea (el click en la foto): mas chica y apagada que la principal. */
+.identity-panel__hint-alt {
+    font-size: 0.66rem;
+    opacity: 0.7;
+}
+
+.identity-panel__hint-arrow {
+    animation: identity-hint-bob 1.8s ease-in-out infinite;
+}
+
+@keyframes identity-hint-bob {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(5px);
+    }
+}
+
+/* Pie de contacto: abajo dentro de la franja, aparece en el ultimo tramo del scroll. */
+.identity-panel__contact {
+    container-type: inline-size;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: var(--photo-w);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    z-index: 2;
+    padding: clamp(0.6rem, 2vh, 1.1rem) 0.5rem;
+    opacity: calc((var(--p) - 0.8) * 5);
+    pointer-events: none;
+}
+
+.identity-panel[data-phase="split"] .identity-panel__contact {
+    pointer-events: auto;
+}
+
+/* Botones claros sobre negro; el hover aparece con un velo animado solo por opacity. */
+.identity-panel__btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    height: 2.25rem;
+    min-width: 2.25rem;
+    padding: 0 0.7rem;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    border-radius: 999px;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.9);
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.identity-panel__btn--icon {
+    padding: 0;
+}
+
+.identity-panel__btn::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: rgba(255, 255, 255, 0.14);
+    opacity: 0;
+    transition: opacity 180ms ease;
+    pointer-events: none;
+}
+
+.identity-panel__btn:hover,
+.identity-panel__btn:focus-visible {
+    color: #fff;
+}
+
+.identity-panel__btn:hover::after {
+    opacity: 1;
+}
+
+.identity-panel__btn:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+}
+
+.identity-panel__btn svg {
+    flex-shrink: 0;
+}
+
+.identity-panel__btn--copy[data-copied] {
+    border-color: rgba(255, 255, 255, 0.6);
+}
+
+.identity-panel__copy-label {
+    white-space: nowrap;
+}
+
+.identity-panel__btn--lang {
+    gap: 0.2rem;
+    padding: 0 0.6rem;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.04em;
+}
+
+.identity-panel__btn--lang span {
+    opacity: 0.5;
+}
+
+.identity-panel__btn--lang span[data-active] {
+    opacity: 1;
+    font-weight: 600;
+}
+
+.identity-panel__btn--lang .identity-panel__lang-sep {
+    opacity: 0.35;
+}
+
+/* Franja angosta: el texto del boton de correo queda solo para lectores de pantalla. */
+@container (max-width: 250px) {
+    .identity-panel__btn--copy {
+        padding: 0;
+    }
+
+    .identity-panel__copy-label {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        clip-path: inset(50%);
+    }
+}
+
+/* Mobile: la franja mide 38vw, roles apilados y controles compactos. */
+@media (max-width: 719.98px) {
+    .identity-panel {
+        --identity-reserve: 13rem;
+    }
+
+    .identity-panel__name {
+        font-size: clamp(0.8rem, calc(var(--photo-w) * 0.1), 1.35rem);
+    }
+
+    .identity-panel__roles {
+        flex-direction: column;
+        gap: 0.1em;
+        font-size: clamp(0.58rem, calc(var(--photo-w) * 0.068), 0.82rem);
+    }
+
+    .identity-panel__roles li + li::before {
+        content: none;
+    }
+
+    .identity-panel__contact {
+        gap: 0.35rem;
+        padding-inline: 0.25rem;
+    }
+
+    .identity-panel__btn {
+        height: 2rem;
+        min-width: 2rem;
+    }
+
+    .identity-panel__btn--lang {
+        padding: 0 0.4rem;
+    }
+}
+
+/* Viewports bajos: menos reserva, texto y pie mas compactos para no solaparse. */
+@media (max-height: 600px) {
+    .identity-panel {
+        --identity-reserve: 11.5rem;
+    }
+
+    .identity-panel__name {
+        font-size: clamp(0.78rem, 3.4vh, 1.2rem);
+    }
+
+    .identity-panel__roles {
+        margin-top: 0.3em;
+        font-size: clamp(0.56rem, 2.2vh, 0.75rem);
+    }
+
+    .identity-panel__contact {
+        padding-block: 0.45rem;
+    }
+
+    .identity-panel__btn {
+        height: 1.9rem;
+        min-width: 1.9rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .identity-panel__hint-arrow {
+        animation: none;
+    }
+
+    .identity-panel__btn::after {
+        transition: none;
+    }
+
+    /* Sin goteo; el hover conserva el agrandado y el recorte de la foto, pero sin transicion. */
+    .identity-panel__drops {
+        display: none;
+    }
+
+    .identity-panel__identity,
+    .identity-panel__photo {
+        transition: none;
+    }
+}

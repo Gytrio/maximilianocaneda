@@ -1,0 +1,108 @@
+/* ---------- Glitch de dots (compartido por el timeline principal y el de proyectos) ----------
+   Uso: el elemento con useRandomGlitch recibe data-glitch="1|2|3" y --glitch-x; adentro, un elemento con la clase
+   .dot-glitch (posicionado por quien lo usa) envuelve el circulo. --dot-glitch-color es el color del dot
+   (negro por defecto; blanco en la franja negra). El rojo es siempre --accent. */
+
+/* Copias del dot para los cortes: una roja (::before) y una del color del dot (::after), recortadas en franjas. */
+.dot-glitch::before,
+.dot-glitch::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.dot-glitch::before {
+    background: var(--accent);
+}
+
+.dot-glitch::after {
+    background: var(--dot-glitch-color, var(--ink));
+}
+
+/* Sacudida seca, comun a todas las variantes. */
+[data-glitch] .dot-glitch {
+    animation: dot-glitch-jitter 200ms steps(3, end) both;
+}
+
+/* Variante 1: franja roja desplazada arriba. */
+[data-glitch="1"] .dot-glitch::before {
+    opacity: 0.95;
+    transform: translateX(var(--glitch-x));
+    clip-path: inset(12% 0 52% 0);
+}
+
+/* Variante 2: franja del color del dot corrida hacia el otro lado y una roja finita abajo. */
+[data-glitch="2"] .dot-glitch::after {
+    opacity: 1;
+    transform: translateX(calc(var(--glitch-x) * -1.6));
+    clip-path: inset(48% 0 22% 0);
+}
+
+[data-glitch="2"] .dot-glitch::before {
+    opacity: 0.85;
+    transform: translateX(var(--glitch-x));
+    clip-path: inset(80% 0 6% 0);
+}
+
+/* Variante 3: estiramiento y parpadeo robotico. */
+[data-glitch="3"] .dot-glitch {
+    animation: dot-glitch-stretch 240ms steps(4, end) both;
+}
+
+[data-glitch="3"] .dot-glitch::before {
+    opacity: 0.7;
+    transform: translateX(calc(var(--glitch-x) * 0.6));
+    clip-path: inset(0 0 70% 0);
+}
+
+@keyframes dot-glitch-jitter {
+    0% {
+        transform: translate(0, 0);
+    }
+    33% {
+        transform: translate(var(--glitch-x), -1px);
+    }
+    66% {
+        transform: translate(calc(var(--glitch-x) * -0.6), 1px);
+    }
+    100% {
+        transform: translate(0, 0);
+    }
+}
+
+@keyframes dot-glitch-stretch {
+    0% {
+        transform: none;
+        opacity: 1;
+    }
+    25% {
+        transform: scaleX(1.4) translateX(var(--glitch-x));
+        opacity: 0.6;
+    }
+    50% {
+        transform: scaleY(0.6);
+        opacity: 1;
+    }
+    75% {
+        transform: translateX(calc(var(--glitch-x) * -1));
+        opacity: 0.35;
+    }
+    100% {
+        transform: none;
+        opacity: 1;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    [data-glitch] .dot-glitch {
+        animation: none;
+    }
+
+    [data-glitch] .dot-glitch::before,
+    [data-glitch] .dot-glitch::after {
+        opacity: 0;
+    }
+}

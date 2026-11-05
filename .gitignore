@@ -12,6 +12,10 @@ dist
 dist-ssr
 *.local
 
+# Cache de Vite (pre-bundling de dependencias)
+.vite
+node_modules/.vite
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
