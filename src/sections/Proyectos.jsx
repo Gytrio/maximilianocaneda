@@ -19,6 +19,9 @@ const WHEEL_COOLDOWN = 650;
 const WHEEL_GESTURE_GAP = 180;
 /* Movimiento minimo (px) de un swipe tactil para cambiar de proyecto. */
 const SWIPE_MIN = 50;
+/* Teclas de paso, las mismas que usa la cadena de secciones: un proyecto por pulsacion. */
+const KEYS_NEXT = ["ArrowDown", "PageDown", " "];
+const KEYS_PREV = ["ArrowUp", "PageUp"];
 
 /* Arma el texto del periodo: "2021", "2021 - 2022" o "2021 - Actualidad". */
 function formatPeriod(period, presentLabel) {
@@ -47,6 +50,31 @@ function findScrollParent(element) {
     return null;
 }
 
+/* Direccion de un paso segun la tecla: 1 abajo, -1 arriba, 0 si no es una tecla de paso. */
+function keyDirection(key) {
+    if (KEYS_NEXT.includes(key)) {
+        return 1;
+    }
+    return KEYS_PREV.includes(key) ? -1 : 0;
+}
+
+/* Deja la tecla a quien la tiene: campos de texto y la barra espaciadora de botones y enlaces (flechas, dots,
+   links de los proyectos). Mismo criterio que useSectionChainScroll. */
+function keyBelongsToTarget(event) {
+    const target = event.target;
+    if (!target || typeof target.tagName !== "string") {
+        return false;
+    }
+    if (target.isContentEditable) {
+        return true;
+    }
+    if (["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName)) {
+        return true;
+    }
+    const activates = target.tagName === "BUTTON" || target.tagName === "A" || target.getAttribute?.("role") === "button";
+    return event.key === " " && activates;
+}
+
 /* Flecha de la timeline (la de arriba es la misma girada). */
 function ArrowButton({ direction, label, disabled, onClick }) {
     return (
@@ -54,6 +82,9 @@ function ArrowButton({ direction, label, disabled, onClick }) {
             type="button"
             className={`prj-arrow prj-arrow--${direction}`}
             onClick={onClick}
+            /* Contrato con useSectionChainScroll: mientras esta flecha siga habilitada, la cadena de secciones le
+               cede el gesto en ese borde. Va en el mismo boton que lleva disabled, que es lo que mira el guardia. */
+            data-chain-hold={direction}
             disabled={disabled}
             aria-label={label}
             title={label}
@@ -165,7 +196,7 @@ export default function Proyectos({ language }) {
         activeRef.current = activeIndex;
     }, [goTo, activeIndex]);
 
-    /* Rueda, swipe y flechas del teclado pasan al proyecto anterior/siguiente. Si el proyecto es mas alto que la
+    /* Rueda, swipe y las teclas de paso pasan al proyecto anterior/siguiente. Si el proyecto es mas alto que la
        pantalla, primero se scrollea el panel y recien en el borde (arriba o abajo) se cambia de proyecto. */
     useEffect(() => {
         const panel = findScrollParent(stageRef.current);
@@ -219,10 +250,16 @@ export default function Proyectos({ language }) {
         };
 
         const onKeyDown = (event) => {
-            if (event.key !== "ArrowDown" && event.key !== "ArrowUp") {
+            /* Con modificadores la tecla es otra cosa (seleccion, atajos, shift + espacio): no es un paso. */
+            if (event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) {
                 return;
             }
-            const direction = event.key === "ArrowDown" ? 1 : -1;
+            const direction = keyDirection(event.key);
+            if (!direction || keyBelongsToTarget(event)) {
+                return;
+            }
+            /* En los extremos step devuelve false y no se frena el evento: la cadena se lleva el gesto a la
+               seccion anterior o siguiente. */
             if (atEdge(direction) && step(direction)) {
                 event.preventDefault();
             }

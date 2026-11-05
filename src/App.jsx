@@ -5,6 +5,7 @@ import Timeline from "./components/Timeline/Timeline.jsx";
 import SectionStage from "./components/SectionStage/SectionStage.jsx";
 import StripGlitch from "./components/StripGlitch/StripGlitch.jsx";
 import useScrollPhase from "./hooks/useScrollPhase.js";
+import useSectionChainScroll from "./hooks/useSectionChainScroll.js";
 import useSectionTransition from "./hooks/useSectionTransition.js";
 import { TIMELINE_SECTIONS, getSection } from "./sections/registry.js";
 import { UI } from "./content/ui.js";
@@ -116,6 +117,17 @@ export default function App() {
         },
         [open]
     );
+
+    /* Scroll en cadena: del timeline negro a la primera seccion y de cada seccion a la siguiente o la anterior. */
+    useSectionChainScroll({
+        enabled: Boolean(language),
+        phase,
+        timelineRevealed,
+        status,
+        activeId,
+        onSelect: handleSelect,
+        onClose: close,
+    });
 
     const handleToggleLanguage = useCallback(() => {
         setLanguage((current) => (current === "en" ? "es" : "en"));

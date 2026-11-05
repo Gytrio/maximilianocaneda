@@ -112,7 +112,7 @@ export const SECTIONS_COPY = {
         education: {
             kicker: "Formación",
             title: "Estudios",
-            intro: "Mi formación académica y las capacitaciones que fui sumando.",
+            intro: "Mi formación académica, de la escuela técnica a la licenciatura.",
             items: [
                 {
                     period: "2021 - 2024",
@@ -144,11 +144,22 @@ export const SECTIONS_COPY = {
                         "Me permite trabajar con documentación técnica, pipelines y referencias de programación internacionales.",
                     ],
                 },
+            ],
+            trainingTitle: "Capacitaciones",
+            training: [
                 {
                     period: "2026",
                     title: "Desarrollo Full Stack con React.js",
                     place: "Capacitación · Talento Tech",
                     details: ["Programación web moderna para complementar mi perfil de desarrollador."],
+                },
+                {
+                    period: "2019",
+                    title: "Programación Android con Java",
+                    place: "Capacitación · INET",
+                    details: [
+                        "Programación de aplicaciones Android nativas en Java en el Instituto Nacional de Educación Tecnológica (INET).",
+                    ],
                 },
             ],
         },
@@ -304,7 +315,7 @@ export const SECTIONS_COPY = {
         education: {
             kicker: "Education",
             title: "Studies",
-            intro: "My academic background and the training I have added along the way.",
+            intro: "My academic background, from technical school to the bachelor’s degree.",
             items: [
                 {
                     period: "2021 - 2024",
@@ -336,11 +347,22 @@ export const SECTIONS_COPY = {
                         "Lets me work comfortably with technical documentation, pipelines and international programming resources.",
                     ],
                 },
+            ],
+            trainingTitle: "Training",
+            training: [
                 {
                     period: "2026",
                     title: "Full Stack development with React.js",
                     place: "Training · Talento Tech",
                     details: ["Modern web programming to round out my developer profile."],
+                },
+                {
+                    period: "2019",
+                    title: "Android programming with Java",
+                    place: "Training · INET",
+                    details: [
+                        "Native Android application programming in Java at the National Institute of Technological Education (INET).",
+                    ],
                 },
             ],
         },

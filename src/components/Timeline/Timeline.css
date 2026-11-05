@@ -372,19 +372,96 @@
     --tl-color: #fff;
     --tl-focus-offset: 3px;
 
+    /* Marco redondeado que rodea la navegacion (solo en la franja). */
+    --tl-frame-color: rgba(255, 255, 255, 0.65);
+    --tl-frame-w: 1.5px;
+    --tl-frame-radius: 18px;
+    /* El padding interno supera el alcance de la ola (radio maximo menos radio del dot) para que no cruce el borde. */
+    --tl-frame-pad: 14px;
+    /* Hueco entre el marco y los bordes del slot: el padding de la raiz ya lo suma al pad del marco. */
+    --tl-frame-gap: 4px;
+    /* Tramo opaco y fin del difuminado de la mascara, sobre una altura de 300%: 1/3 es el alto del marco. */
+    --tl-frame-mask-solid: 33.33%;
+    --tl-frame-mask-soft: 44%;
+    --tl-frame-mask: linear-gradient(
+        to bottom,
+        #000 0,
+        #000 var(--tl-frame-mask-solid),
+        transparent var(--tl-frame-mask-soft),
+        transparent 100%
+    );
+
     align-items: flex-start;
-    padding: 14px 18px 0;
+    /* El padding arriba es hueco + pad del marco: asi el borde de arriba del marco cae dentro del slot
+       y el alto que pide el timeline es nav + 2 x (hueco + pad), lo que reserva --slot-min. */
+    padding: calc(var(--tl-frame-gap) + var(--tl-frame-pad)) 24px 0;
     overflow: visible;
     background: transparent;
 }
 
+/* Referencia de posicion del marco: la nav mide exactamente el bloque de dots + textos. */
 .tl-root--strip .tl-nav {
+    position: relative;
     width: 100%;
 }
 
 /* Textos largos envuelven en dos lineas; el dot queda en la primera. */
 .tl-root--strip .tl-label {
     overflow-wrap: break-word;
+}
+
+/* Marco decorativo: rodea la nav con su propio padding, detras de los items y sin recortar la ola ni la gota. */
+.tl-root--strip .tl-frame {
+    position: absolute;
+    z-index: 0;
+    inset: calc(var(--tl-frame-pad) * -1);
+    border: var(--tl-frame-w) solid var(--tl-frame-color);
+    border-radius: var(--tl-frame-radius);
+    pointer-events: none;
+}
+
+/* Mascara de tres alturas: su borde difuminado barre el marco al correr la posicion, sin cortes duros. */
+.tl-root--strip.is-playing .tl-frame,
+.tl-root--strip.is-exiting .tl-frame {
+    -webkit-mask-image: var(--tl-frame-mask);
+    mask-image: var(--tl-frame-mask);
+    -webkit-mask-size: 100% 300%;
+    mask-size: 100% 300%;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+}
+
+/* Entrada: el marco se llena de arriba hacia abajo junto con los dots. */
+.tl-root--strip.is-playing .tl-frame {
+    animation: tl-frame-draw var(--frame-draw) var(--ease-out) both;
+}
+
+/* Salida inversa: se retrae de abajo hacia arriba y cierra la secuencia. */
+.tl-root--strip.is-exiting .tl-frame {
+    animation: tl-frame-undraw var(--frame-out) var(--ease-drop) var(--frame-out-at) both;
+}
+
+/* Mascara abajo del todo (marco oculto) hasta arriba del todo (marco completo). */
+@keyframes tl-frame-draw {
+    from {
+        -webkit-mask-position: 0 100%;
+        mask-position: 0 100%;
+    }
+    to {
+        -webkit-mask-position: 0 0;
+        mask-position: 0 0;
+    }
+}
+
+@keyframes tl-frame-undraw {
+    from {
+        -webkit-mask-position: 0 0;
+        mask-position: 0 0;
+    }
+    to {
+        -webkit-mask-position: 0 100%;
+        mask-position: 0 100%;
+    }
 }
 
 /* Mobile: menos margen y texto mas chico; puede envolver en dos lineas con el dot en la primera. */
@@ -397,12 +474,17 @@
         padding-right: 16px;
     }
 
-    /* Franja angosta (38vw): texto mas chico y margenes justos para la ola. */
+    /* Franja angosta (38vw): texto mas chico, margenes justos para la ola y marco mas ajustado. */
+    /* La ola se achica en vez de agrandar el pad: con 38vw el marco no tiene 2px mas para cada lado.
+       Alcance de la ola = (dot * escala - dot) / 2 = (12 * 2.6 - 12) / 2 = 9.6px, debajo del pad de 12px. */
     .tl-root.tl-root--strip {
         --tl-font-size: 0.7rem;
         --tl-text-gap: 8px;
-        padding-left: 14px;
-        padding-right: 12px;
+        --tl-ripple-scale: 2.6;
+        --tl-frame-radius: 12px;
+        --tl-frame-pad: 12px;
+        padding-left: 18px;
+        padding-right: 16px;
     }
 }
 
@@ -427,5 +509,13 @@
     .tl-root.is-playing .tl-dot-ripple,
     .tl-root.is-playing .tl-dot-drop {
         display: none;
+    }
+
+    /* El marco esta dibujado entero, sin mascara ni animacion. */
+    .tl-root--strip.is-playing .tl-frame,
+    .tl-root--strip.is-exiting .tl-frame {
+        -webkit-mask-image: none;
+        mask-image: none;
+        animation: none;
     }
 }

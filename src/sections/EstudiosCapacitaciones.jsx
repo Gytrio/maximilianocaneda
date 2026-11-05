@@ -14,6 +14,8 @@ export default function EstudiosCapacitaciones({ language }) {
             </header>
             <p className="sec-text">{copy.intro}</p>
             <RecordList items={copy.items} />
+            <h3 className="sec-subtitle">{copy.trainingTitle}</h3>
+            <RecordList items={copy.training} />
         </article>
     );
 }

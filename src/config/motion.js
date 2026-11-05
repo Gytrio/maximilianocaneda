@@ -23,6 +23,7 @@ export const MOTION = {
     rootGlitch: 7000, // latido de la raiz circular del hero (los otros ritmos derivan de este)
     exitScale: 0.6, // factor de duracion de la salida inversa del timeline (sobre las duraciones de entrada)
     slotReserve: 300, // transicion del recorte de la foto cuando aparece el timeline de la franja
+    stripFrameDraw: 760, // dibujo del marco redondeado del timeline de la franja, de arriba hacia abajo
 };
 
 export const EASING = {
@@ -38,4 +39,11 @@ export const SCROLL = {
     /* El timeline empieza a aparecer en el tramo final del recorrido, sin esperar la llegada (ni el rebote). */
     revealTimeline: 0.88,
     hideTimeline: 0.8,
+};
+
+/* Navegacion por scroll en cadena: del timeline a la primera seccion y de una seccion a la siguiente. */
+export const SCROLL_CHAIN = {
+    threshold: 90, // delta acumulado (px) sobre el borde del panel antes de pasar de seccion
+    cooldown: 520, // espera minima entre dos pasos de la cadena
+    edgeSlack: 2, // tolerancia (px) para considerar el panel al tope o al final
 };

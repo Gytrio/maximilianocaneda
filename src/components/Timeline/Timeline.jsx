@@ -42,6 +42,9 @@ function exitTimings(count) {
     const dotOutStagger = MOTION.dotStagger * scale;
     const dotsOutAt = steps * labelOutStagger + labelOut;
     const lineOut = steps * dotOutStagger + dotOut;
+    const total = Math.ceil(dotsOutAt + lineOut);
+    /* El marco de la franja se retrae ultimo: termina junto con el ultimo dot. */
+    const frameOut = MOTION.stripFrameDraw * scale;
     return {
         labelOut,
         labelOutStagger,
@@ -49,7 +52,9 @@ function exitTimings(count) {
         dotOutStagger,
         dotsOutAt,
         lineOut,
-        total: Math.ceil(dotsOutAt + lineOut),
+        frameOut,
+        frameOutAt: Math.max(0, total - frameOut),
+        total,
     };
 }
 
@@ -126,6 +131,9 @@ export default function Timeline({
         "--dot-out-stagger": `${timings.dotOutStagger}ms`,
         "--dots-out-at": `${timings.dotsOutAt}ms`,
         "--line-out": `${timings.lineOut}ms`,
+        "--frame-draw": `${MOTION.stripFrameDraw}ms`,
+        "--frame-out": `${timings.frameOut}ms`,
+        "--frame-out-at": `${timings.frameOutAt}ms`,
     };
 
     const classes = [
@@ -144,6 +152,8 @@ export default function Timeline({
     return (
         <div className={classes} style={style} inert={!visible}>
             <nav className="tl-nav" aria-label={label}>
+                {/* Marco decorativo de la franja: se remonta con play.id para que el dibujado arranque de cero. */}
+                {variant === "strip" ? <div key={`frame-${play.id}`} className="tl-frame" aria-hidden="true" /> : null}
                 <ol key={play.id} ref={listRef} className="tl-list">
                     {items.map((item, index) => (
                         <TimelineItem

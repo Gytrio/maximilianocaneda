@@ -295,3 +295,25 @@ const { status, activeId, displayId, switching, origin, dotSize, open, close } =
   (`MOTION.stripBurstWait`) y duracion (`MOTION.stripBurstScale` x stripGlitch) al azar.
 - IdentityPanel: el resorte de la inclinacion se integra en sub-pasos fijos de 8 ms y el angulo tiene tope; con un
   solo paso largo (cuadros lentos) la integracion divergia y la foto giraba sin control.
+
+### Iteracion 10
+- **Marco del timeline de la franja** (Agente VISUAL, `Timeline.jsx` + `Timeline.css`): el timeline de la franja
+  negra queda rodeado por un rectangulo de bordes redondeados y borde blanco. Nodo `.tl-frame`, decorativo
+  (`aria-hidden`, `pointer-events: none`), dentro de `.tl-nav` y absoluto con `inset: calc(var(--tl-frame-pad) * -1)`,
+  asi mide exactamente el bloque de dots + textos. Solo en la variante strip; el timeline del area blanca no lleva
+  marco. Se dibuja de arriba hacia abajo con `mask-image` (gradiente de borde suave, `mask-size: 100% 300%`,
+  `mask-repeat: no-repeat`, animando `mask-position`) en `MOTION.stripFrameDraw`; en la salida inversa se retrae
+  ultimo, con la duracion escalada por `MOTION.exitScale`. Diales: `--tl-frame-color`, `--tl-frame-w`,
+  `--tl-frame-radius`, `--tl-frame-pad`, `--tl-frame-mask-solid`, `--tl-frame-mask-soft`.
+- **Cadena de scroll entre secciones** (Agente LOGICA, `hooks/useSectionChainScroll.js` + `App.jsx`): desde el
+  timeline del area blanca, un gesto hacia abajo abre la primera seccion interactiva del registro. Con una seccion
+  abierta, el contenido de `.stage-panel` scrollea nativo; al llegar al borde y seguir acumulando mas de
+  `SCROLL_CHAIN.threshold` pasa a la seccion siguiente (o a la anterior hacia arriba, y desde la primera cierra y
+  vuelve al timeline). En la ultima seccion hacia abajo no hace nada. `SCROLL_CHAIN.cooldown` evita que un gesto
+  salte dos secciones. Rueda, touch y teclado (`ArrowDown`/`PageDown`/`Space`, `ArrowUp`/`PageUp`); `Escape` sigue
+  cerrando. Reutiliza `handleSelect` de `App.jsx`, por lo que el origen de la transicion sigue siendo el dot
+  (el de la franja con una seccion abierta, el del workspace desde el timeline).
+- **Contrato `data-chain-hold`**: una seccion que tenga navegacion interna propia en el borde del panel declara
+  `data-chain-hold="up"` / `data-chain-hold="down"` en el control que la gobierna (el mismo nodo que lleva
+  `disabled`). Mientras ese control exista habilitado, la cadena cede el gesto a la seccion. Lo usa `Proyectos`
+  para recorrer los proyectos de a uno y pasar a la seccion siguiente solo en el ultimo.

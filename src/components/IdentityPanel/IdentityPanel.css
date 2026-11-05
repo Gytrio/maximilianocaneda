@@ -10,7 +10,13 @@
 .identity-panel {
     --vh-full: 100vh;
     --identity-reserve: 15rem; /* alto minimo reservado para nombre, roles y pie bajo la foto */
-    --slot-min: 11.5rem; /* alto minimo garantizado para el timeline de la franja con slotActive */
+    /* Lineas de texto que el timeline suma al envolver en la franja angosta (14px cada una). */
+    --slot-wrap: 0px;
+    /* Alto minimo del slot: lo que mide el timeline de la franja con su marco y nada mas, asi la foto no se
+       recorta de gusto. 140px = 18px de padding arriba (hueco 4px + pad del marco 14px) + 5 items de 20px
+       + 14px del pad de abajo + 8px de aire sobre el pie de contacto. Los 4 huecos replican --tl-gap de
+       Timeline.css (clamp(10px, 2.4vh, 22px)): si alla cambia el hueco o la cantidad de items, cambia aca. */
+    --slot-min: calc(140px + var(--slot-wrap) + 4 * clamp(10px, 2.4vh, 22px));
     --p: var(--scroll-p, 0);
     /* Alturas medidas por el componente (se pisan con estilo inline). */
     --identity-h: 0px;
@@ -460,6 +466,21 @@
         overflow: hidden;
         clip: rect(0 0 0 0);
         clip-path: inset(50%);
+    }
+}
+
+/* Franja mas angosta de 239px (--photo-w = clamp(200px, 22vw, 300px) = 22vw en este tramo): el texto mas
+   largo del timeline envuelve en dos lineas y el slot necesita 14px mas; con menos de 206px envuelven dos
+   textos. Si cambian las etiquetas del timeline o su tipografia, hay que revisar estos dos umbrales. */
+@media (max-width: 1086.98px) {
+    .identity-panel {
+        --slot-wrap: 14px;
+    }
+}
+
+@media (max-width: 936.98px) {
+    .identity-panel {
+        --slot-wrap: 28px;
     }
 }
 

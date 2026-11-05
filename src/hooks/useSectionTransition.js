@@ -12,12 +12,16 @@ const STEPS = {
     closing: { duration: MOTION.closing, next: "idle" },
 };
 
+/* Estados con la seccion ya en pantalla y su timeline clickeable: desde ahi otro item cambia de seccion y
+   Escape cierra. El timeline de la franja aparece en entering, asi que ese click tiene que contar. */
+const ON_SCREEN = ["entering", "open"];
+
 /* Maquina de estados de la transicion entre timeline y seccion. */
 function reducer(state, action) {
     switch (action.type) {
         case "open": {
-            /* Desde idle es apertura normal; desde open con otro id es cambio de seccion. */
-            const isSwitch = state.status === "open" && action.id !== state.activeId;
+            /* Desde idle es apertura normal; con la seccion en pantalla y otro id es cambio de seccion. */
+            const isSwitch = ON_SCREEN.includes(state.status) && action.id !== state.activeId;
             if (state.status !== "idle" && !isSwitch) {
                 return state;
             }
@@ -31,7 +35,7 @@ function reducer(state, action) {
             };
         }
         case "close":
-            if (state.status !== "entering" && state.status !== "open") {
+            if (!ON_SCREEN.includes(state.status)) {
                 return state;
             }
             /* Cerrar a mitad de un cambio lo cancela: switching no sobrevive al closing. */
@@ -91,9 +95,9 @@ export default function useSectionTransition() {
         };
     }, [state.status, reduced]);
 
-    /* Abre una seccion desde idle o cambia a otra desde open; ignorado en cualquier otro caso. */
+    /* Abre una seccion desde idle o cambia a otra con la seccion ya en pantalla; ignorado en cualquier otro caso. */
     const open = useCallback((id, { origin = null, dotSize = null } = {}) => {
-        const isSwitch = statusRef.current === "open" && id !== activeIdRef.current;
+        const isSwitch = ON_SCREEN.includes(statusRef.current) && id !== activeIdRef.current;
         if (statusRef.current !== "idle" && !isSwitch) {
             return;
         }
@@ -103,9 +107,9 @@ export default function useSectionTransition() {
         dispatch({ type: "open", id, origin, dotSize, instant });
     }, []);
 
-    /* Vuelve al timeline; solo valido desde entering u open. */
+    /* Vuelve al timeline; solo valido con la seccion en pantalla. */
     const close = useCallback(() => {
-        if (statusRef.current !== "entering" && statusRef.current !== "open") {
+        if (!ON_SCREEN.includes(statusRef.current)) {
             return;
         }
         const instant = reducedRef.current;
