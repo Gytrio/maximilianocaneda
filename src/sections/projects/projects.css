@@ -203,10 +203,11 @@
     transform: rotate(180deg);
 }
 
+/* La flecha se invierte en hover: el icono va con --on-ink, la tinta que corresponde sobre --ink. */
 .prj-arrow:not(:disabled):hover,
 .prj-arrow:not(:disabled):focus-visible {
     background: var(--ink);
-    color: #fff;
+    color: var(--on-ink);
 }
 
 .prj-arrow--down:not(:disabled):hover {
@@ -384,7 +385,9 @@
     align-self: start;
 }
 
-/* Marco 16:9 para video o imagen unica. */
+/* Marco 16:9 para video o imagen unica. El fondo es el letterbox del video: queda en --dark en los dos
+   temas (en oscuro pasa a negro puro, que es justo lo que quiere una caja de video). El media nunca se
+   filtra ni se oscurece. */
 .prj-frame {
     position: relative;
     aspect-ratio: 16 / 9;

@@ -317,3 +317,91 @@ const { status, activeId, displayId, switching, origin, dotSize, open, close } =
   `data-chain-hold="up"` / `data-chain-hold="down"` en el control que la gobierna (el mismo nodo que lleva
   `disabled`). Mientras ese control exista habilitado, la cadena cede el gesto a la seccion. Lo usa `Proyectos`
   para recorrer los proyectos de a uno y pasar a la seccion siguiente solo en el ultimo.
+
+### Iteracion 11: tema claro/oscuro y wipe circular del cambio
+
+Son dos cosas que llegaron juntas: los tokens de tema (iteracion anterior, que quedo sin documentar) y el
+wipe circular que acompana el cambio.
+
+#### Tokens de tema (Arquitecto, `src/styles/global.css`)
+- El tema vive en `document.documentElement` como `data-theme="light" | "dark"`, **siempre explicito**. A
+  proposito no se pinta con `@media (prefers-color-scheme)`: el hook resuelve el sistema y escribe el
+  atributo, asi la eleccion manual del visitante gana sin peleas de especificidad.
+- `:root` trae el tema claro (los valores historicos) y `:root[data-theme="dark"]` lo redefine.
+- Tokens que se invierten con el tema: `--bg`, `--bg-soft`, `--ink`, `--ink-soft`, `--muted`, `--line`,
+  `--line-strong`, `--accent` (mas luminoso en oscuro, el `#e11d3f` vibra sobre fondo oscuro),
+  `--accent-strong`, `--dark`, `--shadow-sm`, `--shadow`, `color-scheme`.
+- `--ink-rgb`: componentes rgb de `--ink`. **Unico** modo de usar la tinta con alfa (`rgba(var(--ink-rgb), a)`):
+  lo necesitan los glitch, que no pueden pasar por `color-mix` sin perder el `steps()`.
+- `--on-ink`: texto o icono apoyado sobre una superficie pintada con `--ink` (botones invertidos).
+- `--focus-ring`: anillo de foco sobre el fondo de la pagina (no sobre la franja).
+- `--overlay`: velo del modal de idioma.
+- **Franja negra (`--strip-*`)**: tokens propios, separados de `--bg`/`--ink`, para que la franja **NO se
+  invierta** con el tema. En los dos temas es oscura con contenido blanco; solo cambia cuanto.
+  `--strip-bg`, `--strip-ink`, `--strip-ink-rgb`, `--strip-line`, `--strip-line-strong`, `--strip-veil`,
+  `--strip-frame`, y `--strip-edge` (hairline del borde derecho: transparente en claro, visible en oscuro,
+  donde la franja y el workspace son las dos superficies oscuras y hay que separarlas).
+- **Tiles de tecnologia (`--tile-*`)**: superficie clara en los dos temas, porque los iconos son imagenes y
+  algunas (unity, csharp) son casi negras. No se filtran las imagenes: se conserva la superficie.
+  `--tile-bg`, `--tile-line`, `--tile-line-strong`, `--tile-ink`.
+- `--bg-light` / `--bg-dark`: fondo de pagina de cada tema, declarados **una sola vez** en `:root` y por eso
+  legibles desde los dos. Los usa el wipe, que se pinta con el fondo del tema DESTINO mientras el vigente
+  sigue siendo el otro (un elemento anidado con `data-theme` no redefine los tokens de `:root`). `--bg` es
+  `var(--bg-light)` en claro y `var(--bg-dark)` en oscuro: una sola fuente de verdad.
+- Ninguna propiedad de color se transiciona: el salto de tema es seco y lo tapa el wipe.
+
+#### Script de `index.html` (Arquitecto)
+Antes del primer pintado resuelve el tema (eleccion guardada en `portfolio-theme` y, si no hay, el sistema) y
+escribe `data-theme`, para que no se vea un parpadeo del tema equivocado al recargar. `useTheme` hace la
+misma cuenta y queda dueno del atributo desde que monta.
+
+#### `hooks/useTheme.js` — Agente LOGICA
+```js
+const { theme, wipe, toggleTheme } = useTheme();
+// theme: "light" | "dark"
+toggleTheme(origin); // origin: { x, y, size } en px de VIEWPORT (centro del boton y su lado mayor), o undefined
+// wipe: null | { x, y, size, to: "light" | "dark", phase: "wiping" | "fading" }
+```
+- Sigue al sistema en vivo mientras no haya eleccion; el primer `toggleTheme` crea la eleccion manual, que se
+  guarda en `localStorage` (`portfolio-theme`) y gana sobre el sistema. `data-theme` se escribe en
+  `useLayoutEffect`.
+- Maquina del wipe: `wiping` durante `MOTION.themeWipe` -> en ese tick se cambia el tema **y** `phase` pasa a
+  `"fading"` -> a los `MOTION.themeFade` ms `wipe` vuelve a null.
+- Un toggle mientras hay uno en curso se **ignora** (candado por ref, leido en el momento del click, igual que
+  `open` en `useSectionTransition` cuando `status !== "idle"`).
+- Camino instantaneo, con `wipe` siempre en null, si hay `prefers-reduced-motion`, si no llego `origin`, o si
+  el navegador no soporta Web Animations.
+- Timers limpiados al desmontar; seguro bajo `StrictMode` (los timers solo nacen en el click, nunca en un efecto).
+- `toggleTheme` es estable: el tema vigente y el reduced motion viven en refs.
+
+#### `components/ThemeWipe/ThemeWipe.jsx` + `.css` — Agente CODIGO (jsx) / VISUAL (css)
+```jsx
+{wipe && <ThemeWipe wipe={wipe} />}   // App lo monta asi: ThemeWipe asume que wipe nunca es null
+```
+- Capa `.theme-wipe`: `position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 1000`. El
+  1000 es el maximo del proyecto a proposito: tapa **todo**, incluidas la franja negra y el modal de idioma
+  (999). No subir nada por encima.
+- Mismo mecanismo que `SectionStage`, adaptado a viewport completo: `coverDiameter` (identica formula),
+  `left = x - d/2`, `top = y - d/2`, y `transform: scale(size/d -> 1)` con Web Animations
+  (`MOTION.themeWipe`, `EASING.abrupt`, `fill: "forwards"`). El fundido es `opacity` 1 -> 0 en
+  `MOTION.themeFade`.
+- El efecto de crecimiento tiene deps `[x, y, size]` **sin `phase`**: si volviera a correr en el fundido,
+  cancelaria el `fill: forwards` del scale y destaparia la pantalla a mitad del cambio.
+- Color del circulo por `data-to`: `var(--bg-dark)` o `var(--bg-light)`, el fondo del tema **destino**, para que
+  al desvanecerse no haya salto. Nunca `var(--bg)`, que durante el wipe todavia es el tema viejo.
+- `@media (prefers-reduced-motion: reduce)` lo oculta por completo, como red de seguridad: el hook ya evita
+  montarlo.
+
+#### `IdentityPanel` (Agente CODIGO)
+El boton de tema (`.identity-panel__btn--theme`, en el pie de la franja) pasa en su `onClick` el centro y el
+lado mayor del boton en coordenadas de viewport, igual que `handleSelect` de `App.jsx` con los dots. El icono
+sol/luna y `aria-pressed` dependen de la prop `theme`, que el hook da vuelta en el instante del cambio real
+(con la pantalla tapada): quedan sincronizados con lo que se ve, sin estado local.
+
+#### Compromisos conocidos
+- En el sentido oscuro->claro la franja negra queda tapada por el circulo blanco y vuelve a su negro durante
+  los `MOTION.themeFade` ms del fundido (se la ve "lavada" un instante). Es consecuencia directa de tapar toda
+  la pantalla con un solo color: la franja no se invierte con el tema, asi que ningun color del circulo puede
+  coincidir a la vez con la pagina y con la franja. Es un fundido suave, no un salto.
+- El wipe no reacciona a un `resize` durante sus `MOTION.themeWipe` ms: el diametro se calcula al montar. Si se
+  agranda la ventana dentro de esa ventana de tiempo, puede quedar un borde sin tapar en el instante del cambio.

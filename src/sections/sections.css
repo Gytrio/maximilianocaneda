@@ -147,21 +147,24 @@
     list-style: none;
 }
 
+/* Tile de tecnologia: superficie clara en los dos temas (--tile-*), porque los iconos son imagenes y
+   unity.png y csharp.png son casi negros. A proposito no se les aplica ningun filter, invert ni opacity:
+   lo que se conserva es la superficie, no se toca la imagen. */
 .sec-tech {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 12px;
     padding: 24px 14px 16px;
-    border: 1px solid var(--line);
+    border: 1px solid var(--tile-line);
     border-radius: var(--radius);
-    background: var(--bg);
+    background: var(--tile-bg);
     transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
 }
 
 .sec-tech:hover {
     transform: translateY(-4px);
-    border-color: var(--line-strong);
+    border-color: var(--tile-line-strong);
     box-shadow: var(--shadow);
 }
 
@@ -171,11 +174,12 @@
     object-fit: contain;
 }
 
+/* El texto vive dentro del tile, no sobre el fondo de la pagina: va con la tinta del tile. */
 .sec-tech span {
     font-family: 'JetBrains Mono', monospace;
     font-size: 12px;
     letter-spacing: 0.06em;
-    color: var(--muted);
+    color: var(--tile-ink);
     text-transform: uppercase;
 }
 

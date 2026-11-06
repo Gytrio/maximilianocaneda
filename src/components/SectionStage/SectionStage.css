@@ -11,14 +11,16 @@
 /* Capa blanca que tapa el timeline desde el fundido (o desde el click en un cambio) hasta volver a idle. Orden: blanco, panel, circulo. */
 /* Transparente a proposito: el blanco de la pagina (y la raiz del glitch) los pinta .identity-panel, que
    esta por debajo. Si esta capa fuera opaca taparia la raiz dentro de las secciones. Sigue existiendo porque
-   es la superficie sobre la que el circulo negro se funde y la que tapa el timeline. */
+   es la superficie sobre la que el circulo de la franja se funde y la que tapa el timeline. */
 .stage-white {
     position: absolute;
     inset: 0;
     background: transparent;
 }
 
-/* Circulo negro: mide el diametro final desde el inicio y solo se escala hacia 1. */
+/* Circulo de la franja: mide el diametro final desde el inicio y solo se escala hacia 1.
+   Usa --strip-bg porque es la franja expandiendose; como la franja se invierte con el tema, el circulo
+   tambien (oscuro en claro, claro en oscuro). */
 .stage-circle {
     position: absolute;
     left: 0;
@@ -26,7 +28,7 @@
     width: 0;
     height: 0;
     border-radius: 50%;
-    background: var(--dark);
+    background: var(--strip-bg);
     transform-origin: 50% 50%;
     will-change: transform, opacity;
 }
@@ -93,6 +95,9 @@
 
 /* Boton Volver: pequeno, monoespaciado, arriba a la izquierda del panel. */
 .stage-back {
+    /* Color del borde en reposo, en su propia propiedad: asi el ajuste solo-oscuro de mas abajo no le
+       gana por especificidad al border-color del hover. */
+    --back-line: var(--line);
     display: inline-flex;
     align-items: center;
     gap: 8px;
@@ -102,12 +107,18 @@
     font-size: 0.78rem;
     letter-spacing: 0.02em;
     color: var(--ink);
-    /* Blanco solido: el panel es transparente, asi que sin esto la raiz del glitch se ve a traves. */
+    /* Fondo de pagina solido: el panel es transparente, asi que sin esto la raiz del glitch se ve a traves. */
     background: var(--bg);
-    border: 1px solid var(--line);
+    border: 1px solid var(--back-line);
     border-radius: 999px;
     cursor: pointer;
     transition: color 160ms ease, border-color 160ms ease;
+}
+
+/* En oscuro el boton y el fondo de la pagina son casi el mismo gris: --line desaparece y la pastilla
+   deja de leerse, asi que el borde en reposo sube a --line-strong. Solo en oscuro, para no mover el claro. */
+:root[data-theme="dark"] .stage-back {
+    --back-line: var(--line-strong);
 }
 
 .stage-back:hover,

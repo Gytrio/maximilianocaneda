@@ -357,9 +357,9 @@
     }
 }
 
-/* ---------- Variante de la franja negra (variant="strip") ---------- */
+/* ---------- Variante de la franja (variant="strip") ---------- */
 
-/* Llena el slot de IdentityPanel, alineado arriba, en blanco y con tamanos compactos. */
+/* Llena el slot de IdentityPanel, alineado arriba, en la tinta de la franja y con tamanos compactos. */
 /* El padding deja lugar a la ola (radio maximo menos radio del dot) por si el padre recorta. */
 .tl-root.tl-root--strip {
     --tl-dot-size: 12px;
@@ -369,18 +369,21 @@
     --tl-line-height: 1.25;
     --tl-gap: clamp(10px, 2.4vh, 22px);
     --tl-text-gap: 10px;
-    --tl-color: #fff;
+    /* Tinta de la franja: se invierte con ella (franja oscura en claro, franja clara en oscuro). */
+    --tl-color: var(--strip-ink);
     --tl-focus-offset: 3px;
 
     /* Marco redondeado que rodea la navegacion (solo en la franja). */
-    --tl-frame-color: rgba(255, 255, 255, 0.65);
+    --tl-frame-color: var(--strip-frame);
     --tl-frame-w: 1.5px;
     --tl-frame-radius: 18px;
     /* El padding interno supera el alcance de la ola (radio maximo menos radio del dot) para que no cruce el borde. */
     --tl-frame-pad: 14px;
     /* Hueco entre el marco y los bordes del slot: el padding de la raiz ya lo suma al pad del marco. */
     --tl-frame-gap: 4px;
-    /* Tramo opaco y fin del difuminado de la mascara, sobre una altura de 300%: 1/3 es el alto del marco. */
+    /* Tramo opaco y fin del difuminado de la mascara, sobre una altura de 300%: 1/3 es el alto del marco.
+       Los #000 de --tl-frame-mask son paradas de alfa de un mask-image, no colores visibles, y por eso
+       no se tokenizan: cambiarlos por tinta del tema no pintaria distinto, solo rompe la mascara. */
     --tl-frame-mask-solid: 33.33%;
     --tl-frame-mask-soft: 44%;
     --tl-frame-mask: linear-gradient(

@@ -94,7 +94,7 @@ async function copyToClipboard(text) {
    y pie de contacto. El movimiento hero->franja, el goteo, el hover y el recorte de la foto se resuelven en CSS a
    partir de --scroll-p y de alturas medidas; la sacudida de llegada usa Web Animations. React solo re-renderiza por
    idioma, fase, slot o click. */
-export default function IdentityPanel({ language, phase, onToggleLanguage, slotActive = false, children }) {
+export default function IdentityPanel({ language, phase, onToggleLanguage, theme = "light", onToggleTheme, slotActive = false, children }) {
     const copy = UI[language] ?? UI.es;
     const panelRef = useRef(null);
     const identityRef = useRef(null);
@@ -303,6 +303,16 @@ export default function IdentityPanel({ language, phase, onToggleLanguage, slotA
         }
     }, [copy.contact.email]);
 
+    /* Pasa al toggle el centro y el tamano del boton en coordenadas de viewport: ahi nace el circulo del tema. */
+    const handleToggleTheme = useCallback((event) => {
+        const rect = event.currentTarget.getBoundingClientRect();
+        onToggleTheme?.({
+            x: rect.left + rect.width / 2,
+            y: rect.top + rect.height / 2,
+            size: Math.max(rect.width, rect.height),
+        });
+    }, [onToggleTheme]);
+
     const copyLabel = emailCopied ? copy.contact.copied : copy.contact.copy;
 
     return (
@@ -401,6 +411,24 @@ export default function IdentityPanel({ language, phase, onToggleLanguage, slotA
                     <span data-active={language === "es" || undefined}>ES</span>
                     <span className="identity-panel__lang-sep">/</span>
                     <span data-active={language === "en" || undefined}>EN</span>
+                </button>
+
+                <button
+                    type="button"
+                    className="identity-panel__btn identity-panel__btn--icon identity-panel__btn--theme"
+                    onClick={handleToggleTheme}
+                    aria-label={copy.themeLabel}
+                    aria-pressed={theme === "dark"}
+                    title={copy.themeNames[theme === "dark" ? "light" : "dark"]}
+                >
+                    {/* Icono del tema al que se cambia: sol si hoy esta oscuro, luna si esta claro */}
+                    <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                        {theme === "dark" ? (
+                            <path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7ZM12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M18.4 5.6 17 7M7 17l-1.4 1.4" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+                        ) : (
+                            <path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5Z" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+                        )}
+                    </svg>
                 </button>
             </footer>
         </div>

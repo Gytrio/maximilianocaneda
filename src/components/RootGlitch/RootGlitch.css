@@ -10,7 +10,10 @@
     --root-size: calc((100vw + var(--vh-full)) * 1.2);
     /* Separacion entre anillos. */
     --root-ring: clamp(26px, 4.5vmin, 58px);
-    /* Unico control de intensidad: cuanto se ve la raiz entera. */
+    /* Unico control de intensidad: cuanto se ve la raiz entera. Mismo valor en los dos temas: la tinta
+       sale de --ink-rgb, y el salto de claridad contra el fondo queda parejo (en claro va de 255 a ~198,
+       en oscuro de 18 a ~65; en L* son ~20 puntos de diferencia en los dos casos). Si en pantalla la
+       trama quedara muy presente en oscuro, se baja aca con un bloque solo para data-theme="dark". */
     --root-alpha: 0.45;
     position: absolute;
     top: 0;
@@ -51,7 +54,9 @@
     --root-alpha: 0.8;
 }
 
-/* Disco centrado en la foto, recortado en circulo y desvanecido hacia afuera. */
+/* Disco centrado en la foto, recortado en circulo y desvanecido hacia afuera.
+   Los #000 y rgba(0,0,0,...) de este radial son paradas de alfa de un mask-image, no colores visibles:
+   no se tokenizan. Lo mismo vale para los repeating de __scan y __pixels mas abajo. */
 .root-glitch__field {
     position: absolute;
     top: 50%;
@@ -77,14 +82,15 @@
     );
 }
 
-/* Anillos concentricos finos que laten muy despacio. */
+/* Anillos concentricos finos que laten muy despacio. Son lineas visibles sobre el fondo de la pagina:
+   van con la tinta del tema, via rgba(var(--ink-rgb), a). */
 .root-glitch__rings {
     position: absolute;
     inset: 0;
     background-image: repeating-radial-gradient(
         circle at 50% 50%,
         transparent 0 calc(var(--root-ring) - 1px),
-        rgba(15, 15, 20, 0.5) calc(var(--root-ring) - 1px) var(--root-ring)
+        rgba(var(--ink-rgb), 0.5) calc(var(--root-ring) - 1px) var(--root-ring)
     );
     animation: root-glitch-breathe var(--root-dur, 7000ms) ease-in-out infinite;
     will-change: transform;
@@ -96,8 +102,8 @@
     position: absolute;
     inset: -8%;
     background-image:
-        repeating-linear-gradient(0deg, transparent 0 5px, rgba(15, 15, 20, 0.26) 5px 6px),
-        repeating-linear-gradient(0deg, transparent 0 23px, rgba(15, 15, 20, 0.14) 23px 25px);
+        repeating-linear-gradient(0deg, transparent 0 5px, rgba(var(--ink-rgb), 0.26) 5px 6px),
+        repeating-linear-gradient(0deg, transparent 0 23px, rgba(var(--ink-rgb), 0.14) 23px 25px);
     -webkit-mask-image: repeating-linear-gradient(
         0deg,
         #000 0 44px,

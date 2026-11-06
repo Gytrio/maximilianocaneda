@@ -3,22 +3,26 @@
  * Las capas toman su ritmo de --glitch-dur, que define el componente que las usa.
  */
 
-/* Pinta las fisuras blancas finas, verticales y horizontales, en tramas de distinto tamano. */
+/* Pinta las fisuras finas, verticales y horizontales, en tramas de distinto tamano.
+   Usan --strip-ink: viven sobre la franja y sobre la foto, nunca sobre el fondo de la pagina, asi que
+   se invierten con la franja (blancas en claro, oscuras en oscuro). */
 .glitch-cracks {
     position: absolute;
     inset: 0;
     background-image:
-        linear-gradient(90deg, transparent calc(100% - 1px), #fff calc(100% - 1px)),
-        linear-gradient(0deg, transparent calc(100% - 1px), #fff calc(100% - 1px)),
-        linear-gradient(90deg, transparent calc(100% - 2px), #fff calc(100% - 2px)),
-        linear-gradient(0deg, transparent calc(100% - 1px), #fff calc(100% - 1px));
+        linear-gradient(90deg, transparent calc(100% - 1px), var(--strip-ink) calc(100% - 1px)),
+        linear-gradient(0deg, transparent calc(100% - 1px), var(--strip-ink) calc(100% - 1px)),
+        linear-gradient(90deg, transparent calc(100% - 2px), var(--strip-ink) calc(100% - 2px)),
+        linear-gradient(0deg, transparent calc(100% - 1px), var(--strip-ink) calc(100% - 1px));
     background-size: 15% 10%, 20% 25%, 37% 60%, 55% 7%;
     /*
-     * El dueno pidio overlay, pero overlay con blanco sobre negro puro da negro (2 x fondo x fuente ~ 0)
-     * y las fisuras serian invisibles. Screen mantiene el blanco sobre negro y aclara sobre la foto.
-     * Para volver a overlay alcanza con cambiar esta linea.
+     * Composicion normal a proposito: no vuelvas a poner mix-blend-mode. Antes era screen, que con
+     * tinta blanca pura da blanco sobre cualquier fondo (1-(1-b)(1-1) = 1), o sea exactamente lo mismo
+     * que normal con blanco, tambien con alfa parcial. Como en claro --strip-ink es #ffffff, el tema
+     * claro queda igual pixel por pixel sobre la franja y sobre la foto; en oscuro la tinta pasa a
+     * #121217 y screen no pintaria nada, normal si. La capa no tiene hijos, asi que perder el contexto
+     * de apilamiento del blend no cambia el orden de pintado.
      */
-    mix-blend-mode: screen;
     will-change: opacity, transform, clip-path;
     animation: glitch-cracks-jump calc(var(--glitch-dur, 900ms) / 3) steps(4, end) infinite;
 }

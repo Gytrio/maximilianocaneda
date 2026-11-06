@@ -15,6 +15,8 @@ export const UI = {
             copied: "¡Copiado!",
         },
         toggleLabel: "Cambiar idioma",
+        themeLabel: "Cambiar tema",
+        themeNames: { light: "Claro", dark: "Oscuro" },
         languageModal: {
             title: "Elegí el idioma",
             subtitle: "Seleccioná cómo querés navegar el porfolio.",
@@ -37,6 +39,8 @@ export const UI = {
             copied: "Copied!",
         },
         toggleLabel: "Switch language",
+        themeLabel: "Switch theme",
+        themeNames: { light: "Light", dark: "Dark" },
         languageModal: {
             title: "Choose your language",
             subtitle: "Select how you want to explore the portfolio.",

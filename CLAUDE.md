@@ -6,7 +6,8 @@ React 19 + Vite, JS puro. Sin dependencias nuevas.
 
 Leer **`.claude/FLUJO-DE-DESARROLLO.md`** antes de escribir codigo. Resumen:
 
-- La sesion principal **gestiona**, no implementa: delega a agentes especialistas.
+- La sesion principal **delega cuando el pedido cruza dominios**. Si el cambio entra en **un solo
+  archivo**, lo escribe y lo verifica ella misma: levantar un agente cuesta mas que el cambio.
 - El **Arquitecto** define contratos y reparte archivos (dueño unico por archivo), y escribe el mismo
   los compartidos (`config/motion.js`, `styles/global.css`, `sections/registry.js`).
 - **LOGICA** (`hooks/*`, `App.jsx`), **VISUAL** (`*.css`), **CODIGO** (`*.jsx`, `content/*`) y **QA**

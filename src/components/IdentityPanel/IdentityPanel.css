@@ -62,14 +62,20 @@
     );
 }
 
-/* Franja negra: se forma desde el borde izquierdo a medida que avanza el scroll. */
+/* Franja: se forma desde el borde izquierdo a medida que avanza el scroll; es oscura en claro y clara
+   en oscuro, porque se invierte con el tema.
+   El hairline del borde derecho va como box-shadow interior y no como border-right: con box-sizing
+   border-box un borde le comeria 1px al ancho de la franja. Hoy --strip-edge es transparente en los dos
+   temas (la franja ya contrasta sola con el workspace), asi que no pinta nada y queda como gancho. Como
+   la franja se forma con scaleX(var(--p)), el hairline acompana su borde. */
 .identity-panel__strip {
     position: absolute;
     top: 0;
     bottom: 0;
     left: 0;
     width: var(--photo-w);
-    background: var(--dark);
+    background: var(--strip-bg);
+    box-shadow: inset -1px 0 0 var(--strip-edge);
     transform-origin: left center;
     transform: scaleX(var(--p));
     will-change: transform;
@@ -186,7 +192,9 @@
     opacity: 1;
 }
 
-/* Anillo de la gota: crece desde el ancho de la foto hasta --drop-size y se desvanece, una vez por intervalo. */
+/* Anillo de la gota: crece desde el ancho de la foto hasta --drop-size y se desvanece, una vez por intervalo.
+   El #fff del borde NO se tokeniza: el padre .identity-panel__drops mezcla con mix-blend-mode difference,
+   asi que aca blanco significa "invertir el fondo", no "pintar blanco". Un token lo romperia. */
 .identity-panel__drop {
     position: absolute;
     top: 50%;
@@ -244,18 +252,24 @@
     transform-origin: 50% calc(var(--identity-h) / 2 - var(--photo-h));
 }
 
-/* Foco de teclado visible en hero (en split no son enfocables). */
+/* Foco de teclado visible en hero (en split no son enfocables).
+   La foto usa --focus-ring porque su anillo cae sobre el fondo de la pagina: en oscuro el negro de
+   --dark no se veria. */
 .identity-panel__photo:focus-visible {
-    outline: 2px solid var(--dark);
+    outline: 2px solid var(--focus-ring);
     outline-offset: 4px;
 }
 
+/* El #fff de este anillo NO se tokeniza: .identity-panel__text mezcla con difference, asi que el blanco
+   invierte lo que haya detras y se lee en los dos temas. */
 .identity-panel__text:focus-visible {
     outline: 2px solid #fff;
     outline-offset: 2px;
 }
 
-/* Nombre y roles: blanco + difference se ve negro sobre blanco y claro sobre la franja. */
+/* Nombre y roles: blanco + difference se ve negro sobre blanco y claro sobre la franja.
+   Estos dos #fff NO se tokenizan: con mix-blend-mode difference blanco significa "invertir el fondo".
+   Gracias a eso el nombre y los roles se adaptan solos al tema claro y al oscuro. */
 .identity-panel__text {
     padding: clamp(0.5rem, calc(var(--photo-w) * 0.05), 1rem) clamp(0.4rem, calc(var(--photo-w) * 0.05), 1rem);
     color: #fff;
@@ -348,7 +362,6 @@
 
 /* Pie de contacto: abajo dentro de la franja, aparece en el ultimo tramo del scroll. */
 .identity-panel__contact {
-    container-type: inline-size;
     position: absolute;
     left: 0;
     bottom: 0;
@@ -368,7 +381,9 @@
     pointer-events: auto;
 }
 
-/* Botones claros sobre negro; el hover aparece con un velo animado solo por opacity. */
+/* Botones en la tinta de la franja; el hover aparece con un velo animado solo por opacity.
+   Usan los tokens --strip-*: viven dentro de la franja y se invierten con ella (claros sobre franja
+   oscura en tema claro, oscuros sobre franja clara en tema oscuro). */
 .identity-panel__btn {
     position: relative;
     display: inline-flex;
@@ -378,10 +393,10 @@
     height: 2.25rem;
     min-width: 2.25rem;
     padding: 0 0.7rem;
-    border: 1px solid rgba(255, 255, 255, 0.28);
+    border: 1px solid var(--strip-line);
     border-radius: 999px;
     background: transparent;
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(var(--strip-ink-rgb), 0.9);
     font-family: 'Inter', system-ui, sans-serif;
     font-size: 0.75rem;
     font-weight: 500;
@@ -390,7 +405,13 @@
     cursor: pointer;
 }
 
-.identity-panel__btn--icon {
+/* Botones de solo icono (LinkedIn, tema, y el correo en cualquier ancho de franja): la forma cuadrada sale
+   de height y min-width del boton base, el centrado del inline-flex. .identity-panel__btn--theme no
+   necesita regla propia: con --icon ya queda igual que sus hermanos. A proposito no se estila por
+   aria-pressed: el icono ya dice a que tema se cambia y un estado visual extra lo haria leer como un boton
+   distinto. --copy entra aca porque su label ya no se muestra nunca (ver mas abajo). */
+.identity-panel__btn--icon,
+.identity-panel__btn--copy {
     padding: 0;
 }
 
@@ -399,7 +420,7 @@
     position: absolute;
     inset: 0;
     border-radius: inherit;
-    background: rgba(255, 255, 255, 0.14);
+    background: var(--strip-veil);
     opacity: 0;
     transition: opacity 180ms ease;
     pointer-events: none;
@@ -407,7 +428,7 @@
 
 .identity-panel__btn:hover,
 .identity-panel__btn:focus-visible {
-    color: #fff;
+    color: var(--strip-ink);
 }
 
 .identity-panel__btn:hover::after {
@@ -415,7 +436,7 @@
 }
 
 .identity-panel__btn:focus-visible {
-    outline: 2px solid #fff;
+    outline: 2px solid var(--strip-ink);
     outline-offset: 2px;
 }
 
@@ -424,7 +445,7 @@
 }
 
 .identity-panel__btn--copy[data-copied] {
-    border-color: rgba(255, 255, 255, 0.6);
+    border-color: var(--strip-line-strong);
 }
 
 .identity-panel__copy-label {
@@ -452,20 +473,39 @@
     opacity: 0.35;
 }
 
-/* Franja angosta: el texto del boton de correo queda solo para lectores de pantalla. */
-@container (max-width: 250px) {
-    .identity-panel__btn--copy {
-        padding: 0;
+/* El texto del boton de correo queda SIEMPRE solo para lectores de pantalla, ya no bajo @container: con
+   cuatro botones en el pie (LinkedIn, correo, idioma, tema) no entra en ningun ancho de franja. Medido en el
+   navegador con la franja en su tope (--photo-w = 300px): la fila pide 301px con "Copiar correo" y 286px con
+   "Copy email", asi que el umbral viejo de 250px dejaba el label visible entre 266px y 300px de franja y el
+   pie se partia en dos renglones. Colapsarlo siempre tambien evita que el label aparezca solo en ingles.
+   Si el pie vuelve a tener tres botones, esto puede volver a un @container (ahi la fila pedia ~211px). */
+.identity-panel__copy-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+}
+
+/* Franja angosta: el pie se compacta para que los cuatro botones sigan en una fila. Con el label del correo
+   ya colapsado la fila pide 211px, y la franja no llega a eso hasta los 961px de viewport (--photo-w =
+   clamp(200px, 22vw, 300px) se queda clavada en su piso de 200px por debajo de 909px), asi que entre 720px y
+   960px tambien se partia en dos renglones. Con estos valores la fila baja a 190px y entra con 10px de aire.
+   Umbral en 991.98px y no en 961px: empieza a compactar un poco antes de que haga falta, para tolerar
+   variaciones de tipografia. A 992px, sin compactar, la fila todavia entra con 7px de aire.
+   Va por @media y no por @container: los dos ahorros grandes (gap y padding-inline) son propiedades del pie
+   mismo, y un contenedor no se puede consultar a si mismo. Son los mismos valores que usa el bloque mobile,
+   que de aca en adelante solo ajusta el alto de los botones. */
+@media (max-width: 991.98px) {
+    .identity-panel__contact {
+        gap: 0.35rem;
+        padding-inline: 0.25rem;
     }
 
-    .identity-panel__copy-label {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        margin: -1px;
-        overflow: hidden;
-        clip: rect(0 0 0 0);
-        clip-path: inset(50%);
+    .identity-panel__btn--lang {
+        padding: 0 0.4rem;
     }
 }
 
@@ -504,18 +544,25 @@
         content: none;
     }
 
-    .identity-panel__contact {
-        gap: 0.35rem;
-        padding-inline: 0.25rem;
-    }
-
+    /* El hueco y los paddings compactos del pie ya vienen del bloque de 991.98px. */
     .identity-panel__btn {
         height: 2rem;
         min-width: 2rem;
     }
+}
 
-    .identity-panel__btn--lang {
-        padding: 0 0.4rem;
+/* Franja muy angosta: con cuatro botones la fila ya no entra y el pie pasa a una grilla 2x2. Medido en el
+   navegador a 420px de viewport: la fila pide 177.8px y la franja (38vw) da 159.6px, asi que se partia en
+   dos renglones desalineados. El quiebre real cae en 468px de viewport; el umbral va en 499.98px para no
+   dejar la fila de una sola linea con menos de 12px de aire. Dos columnas iguales con los botones centrados:
+   se lee como una decision y no como un wrap roto, y los botones conservan su tamano tactil (la otra salida,
+   encogerlos, los dejaba en ~26px). El pie mas alto no rompe el layout: el JS mide --contact-h y la foto y el
+   slot se reparten lo que queda. */
+@media (max-width: 499.98px) {
+    .identity-panel__contact {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        justify-items: center;
     }
 }
 

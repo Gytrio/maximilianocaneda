@@ -5,13 +5,24 @@ archivos vive en `docs/arquitectura-portfolio.md`; aca esta el **proceso**.
 
 ## Principio
 
-La sesion principal de chat **no escribe codigo**. Gestiona: entiende el pedido, lo traduce a
-contratos y delega. Cada agente especialista escribe su parte una sola vez, completa y verificada
+La sesion principal **delega cuando el pedido cruza dominios**: entiende el pedido, lo traduce a
+contratos y reparte. Cada agente especialista escribe su parte una sola vez, completa y verificada
 por el mismo, de modo que no haya que volver a revisar lo mismo en ciclos.
+
+**Excepcion por tamano.** Si el cambio entra en **un solo archivo**, la sesion principal lo escribe y
+lo verifica ella misma, sin levantar agentes. Un subagente arranca sin contexto: vuelve a leer este
+flujo, la arquitectura y los archivos antes de tocar una linea, y ese arranque cuesta mas que el
+cambio. Medido en este repo: un arreglo de ~20 lineas de CSS en un solo archivo costo 9 minutos y 33
+llamadas a herramientas por la via larga.
+
+En los dos caminos valen igual: dueño unico por archivo, las reglas duras de abajo, y verificar lo
+propio antes de cerrar. Si a mitad de camino el cambio se desborda a un segundo archivo de otro
+dominio, se para y se delega.
 
 ```
 Usuario
-  -> Sesion principal (gestion)
+  -> Sesion principal        un solo archivo: lo escribe y lo verifica ella misma
+       (cruza dominios)
        -> ARQUITECTO            decide contratos, limites y reparto
             -> AGENTE LOGICA    hooks, maquinas de estado, eventos
             -> AGENTE VISUAL    CSS, animaciones, layout
@@ -62,8 +73,12 @@ agente dueño del archivo.
 
 ## Criterio de "listo"
 
-Un trabajo se entrega cuando el agente dueño verifico su propia parte y QA confirmo los criterios de
-aceptacion en el navegador. La sesion principal solo reporta el resultado al usuario.
+Por la via larga, un trabajo se entrega cuando el agente dueño verifico su propia parte y QA confirmo
+los criterios de aceptacion en el navegador; ahi la sesion principal solo reporta el resultado.
+
+Por la via corta (un solo archivo), la sesion principal hace las dos cosas: el cambio y su
+verificacion. El liston no baja, se gradua: lint siempre; navegador cuando el cambio se ve o se
+mueve; `npm run build` cuando toca imports, assets o configuracion.
 
 ## Contratos de seleccion (no renombrar sin avisar)
 

@@ -4,9 +4,11 @@ import IdentityPanel from "./components/IdentityPanel/IdentityPanel.jsx";
 import Timeline from "./components/Timeline/Timeline.jsx";
 import SectionStage from "./components/SectionStage/SectionStage.jsx";
 import StripGlitch from "./components/StripGlitch/StripGlitch.jsx";
+import ThemeWipe from "./components/ThemeWipe/ThemeWipe.jsx";
 import useScrollPhase from "./hooks/useScrollPhase.js";
 import useSectionChainScroll from "./hooks/useSectionChainScroll.js";
 import useSectionTransition from "./hooks/useSectionTransition.js";
+import useTheme from "./hooks/useTheme.js";
 import { TIMELINE_SECTIONS, getSection } from "./sections/registry.js";
 import { UI } from "./content/ui.js";
 
@@ -29,6 +31,9 @@ export default function App() {
 
     const workspaceRef = useRef(null);
     const lastSelectedRef = useRef(null);
+
+    /* Tema claro u oscuro: sigue al sistema hasta que el visitante elige, y la eleccion se guarda. */
+    const { theme, wipe, toggleTheme } = useTheme();
 
     const { phase, timelineRevealed } = useScrollPhase({ enabled: Boolean(language) });
     const { status, activeId, displayId, switching, origin, dotSize, open, close } = useSectionTransition();
@@ -158,6 +163,8 @@ export default function App() {
                 language={activeLanguage}
                 phase={phase}
                 onToggleLanguage={handleToggleLanguage}
+                theme={theme}
+                onToggleTheme={toggleTheme}
                 slotActive={activeId !== null}
             >
                 <Timeline
@@ -200,6 +207,9 @@ export default function App() {
                 <div className="scroll-stop" />
                 <div className="scroll-stop" />
             </div>
+
+            {/* Circulo que tapa todo el viewport mientras se cambia el tema. */}
+            {wipe && <ThemeWipe wipe={wipe} />}
         </>
     );
 }

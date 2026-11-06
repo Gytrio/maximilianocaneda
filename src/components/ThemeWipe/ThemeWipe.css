@@ -1,0 +1,38 @@
+/*
+ * Wipe circular del cambio de tema. Nace en el boton, crece hasta tapar el viewport, y recien ahi se
+ * cambia el tema; despues se desvanece y deja ver el portfolio ya en el tema nuevo.
+ * Todo el movimiento (tamano, posicion, scale y opacity) lo hace ThemeWipe.jsx con Web Animations:
+ * aca no hay keyframes ni transitions a proposito. Este archivo solo da la capa, la forma y el color.
+ */
+.theme-wipe {
+    position: fixed;
+    inset: 0;
+    /* Maximo del proyecto, a proposito: tiene que tapar TODO, incluido el modal de idioma
+       (.language-modal usa 999 en global.css) y la franja negra. No subir nada por encima. */
+    z-index: 1000;
+    pointer-events: none;
+    /* El circulo crece mas grande que la pantalla: aca se recorta para que no genere scroll. */
+    overflow: hidden;
+}
+
+/* El JS escribe inline width, height, left y top: desde aca solo sale la forma. */
+.theme-wipe__circle {
+    position: absolute;
+    border-radius: 50%;
+    /* Fondo del tema DESTINO, no var(--bg): durante el wipe el tema vigente todavia es el viejo, y si el
+       circulo se pintara con el, al desvanecerse habria un salto de color. */
+    background: var(--bg-light);
+    will-change: transform, opacity;
+}
+
+.theme-wipe[data-to="dark"] .theme-wipe__circle {
+    background: var(--bg-dark);
+}
+
+/* Red de seguridad: el hook ya evita montarlo con movimiento reducido, pero si llegara a montarse no se
+   tiene que ver ningun overlay tapando la pagina. */
+@media (prefers-reduced-motion: reduce) {
+    .theme-wipe {
+        display: none;
+    }
+}

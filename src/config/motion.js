@@ -24,6 +24,8 @@ export const MOTION = {
     exitScale: 0.6, // factor de duracion de la salida inversa del timeline (sobre las duraciones de entrada)
     slotReserve: 300, // transicion del recorte de la foto cuando aparece el timeline de la franja
     stripFrameDraw: 760, // dibujo del marco redondeado del timeline de la franja, de arriba hacia abajo
+    themeWipe: 520, // circulo que nace en el boton de tema y crece hasta tapar toda la pantalla
+    themeFade: 320, // fundido del circulo una vez cambiado el tema, que descubre el tema nuevo
 };
 
 export const EASING = {
